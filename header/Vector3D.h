@@ -2,7 +2,7 @@
 #ifndef PARTICLE_ACCELERATOR_VECTOR3D_H
 #define PARTICLE_ACCELERATOR_VECTOR3D_H
 
-using component = double;
+typedef double component;
 
 class Vector3D {
 public:
