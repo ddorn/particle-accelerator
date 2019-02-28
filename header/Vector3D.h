@@ -2,6 +2,8 @@
 #ifndef PARTICLE_ACCELERATOR_VECTOR3D_H
 #define PARTICLE_ACCELERATOR_VECTOR3D_H
 
+#include <ostream>
+
 typedef double component;
 
 class Vector3D {
@@ -21,6 +23,12 @@ public:
 
     Vector3D cross(Vector3D) const;
     component dot(Vector3D) const;
+
+    bool operator==(const Vector3D &rhs) const;
+    bool operator!=(const Vector3D &rhs) const;
+    Vector3D operator+(const Vector3D &rhs) const;
+
+    friend std::ostream &operator<<(std::ostream &os, const Vector3D &d);
 
 private:
     component x_, y_, z_;
