@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.12)
+
+project(ParticleAccelerator)
+
+set(CMAKE_CXX_STANDARD  17)
+
+add_executable(test_vector3d test/test_vector3d.cpp src/Vector3D.cpp)
