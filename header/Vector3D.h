@@ -7,8 +7,8 @@ using component = double;
 class Vector3D {
 public:
 
-    Vector3D();
-    Vector3D(component, component, component);
+    Vector3D() : x_(0), y_(0), z_(0) {}
+    Vector3D(component x, component y, component z) : x_(x), y_(y), z_(z) {}
 
     component x() const { return x_; }
     component y() const { return y_; }
