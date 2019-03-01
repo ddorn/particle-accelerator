@@ -18,15 +18,23 @@ public:
 
     component norm() const;
     component normSquared() const;
-    component distanceTo(Vector3D) const;
-    component unit() const;
+    component distanceTo(const Vector3D&) const;
+    Vector3D unit() const;
+    Vector3D opposite() const;
 
-    Vector3D cross(Vector3D) const;
-    component dot(Vector3D) const;
+    Vector3D cross(const Vector3D&) const;
+    Vector3D operator^(const Vector3D&) const;
+    component dot(const Vector3D&) const;
+    component operator*(const Vector3D& rhs) const;
+    component tripleProduct(const Vector3D&, const Vector3D&) const;
 
     bool operator==(const Vector3D &rhs) const;
     bool operator!=(const Vector3D &rhs) const;
     Vector3D operator+(const Vector3D &rhs) const;
+    Vector3D operator-(const Vector3D &rhs) const;
+    Vector3D operator*(const component &scalar) const;
+    Vector3D operator/(const component &scalar) const;
+    Vector3D operator-() const;
 
     friend std::ostream &operator<<(std::ostream &os, const Vector3D &d);
 
@@ -35,5 +43,6 @@ private:
 
 };
 
+Vector3D operator*(component scalar, const Vector3D &rhs);
 
 #endif //PARTICLE_ACCELERATOR_VECTOR3D_H
