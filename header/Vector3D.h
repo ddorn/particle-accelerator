@@ -16,6 +16,7 @@ public:
     component y() const { return y_; }
     component z() const { return z_; }
 
+
     component norm() const;
     component normSquared() const;
     component distanceTo(const Vector3D&) const;
@@ -40,6 +41,7 @@ public:
 
 private:
     component x_, y_, z_;
+    static component precision;
 
 };
 

@@ -5,7 +5,7 @@
 #include <cmath>
 #include "../header/Vector3D.h"
 
-constexpr component epsilon(1e-6);
+component Vector3D::precision(1e-6);
 
 component Vector3D::norm() const {
     return sqrt(normSquared());
@@ -16,9 +16,9 @@ component Vector3D::normSquared() const {
 }
 
 bool Vector3D::operator==(const Vector3D &rhs) const {
-    return fabs(x() - rhs.x()) < epsilon &&
-           fabs(y() - rhs.y()) < epsilon &&
-           fabs(z() - rhs.z()) < epsilon;
+    return fabs(x() - rhs.x()) < precision &&
+           fabs(y() - rhs.y()) < precision &&
+           fabs(z() - rhs.z()) < precision;
 }
 
 bool Vector3D::operator!=(const Vector3D &rhs) const {
