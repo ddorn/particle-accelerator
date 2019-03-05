@@ -7,39 +7,66 @@
 
 component Vector3D::precision(1e-6);
 
+
+// Base functions on which other are based
+
+Vector3D& Vector3D::operator+=(const Vector3D &rhs) {
+    // We define it internally because is is very close to the class and we''l base other
+    // functions on it (+)
+    x_ += rhs.x();
+    y_ += rhs.y();
+    z_ += rhs.z();
+    return *this;
+}
+
+Vector3D& Vector3D::operator-=(const Vector3D &rhs) {
+    // I cannot find a way to express this function in terms of += without one unnecessary copy
+    // Therefore, I prefer a little code repetition than un-efficient code.
+    x_ -= rhs.x();
+    y_ -= rhs.y();
+    z_ -= rhs.z();
+    return *this;
+}
+
+Vector3D &Vector3D::operator*=(const component &scalar) {
+    x_ *= scalar;
+    y_ *= scalar;
+    z_ *= scalar;
+
+    return *this;
+}
+
+
+bool operator==(const Vector3D& lhs, const Vector3D &rhs) {
+    return fabs(lhs.x() - rhs.x()) < Vector3D::precision &&
+           fabs(lhs.y() - rhs.y()) < Vector3D::precision &&
+           fabs(lhs.z() - rhs.z()) < Vector3D::precision;
+}
+bool operator!=(const Vector3D &lhs, const Vector3D &rhs) { return !(lhs == rhs); }
+
+
+// Mathematical operators
+
+Vector3D operator-(Vector3D lhs, const Vector3D &rhs) { return lhs -= rhs; }
+Vector3D operator+(Vector3D lhs, const Vector3D &rhs) { return lhs += rhs; }
+
+Vector3D operator*(component scalar, Vector3D rhs) { return rhs *= scalar; }
+Vector3D operator*(Vector3D lhs, component scalar) { return lhs *= scalar; }
+
+Vector3D& operator/=(Vector3D &lhs, component scalar) { return lhs *= (1 / scalar); }
+Vector3D operator/(Vector3D lhs, component scalar) { return lhs /= scalar; }
+
 component Vector3D::norm() const {
     return sqrt(normSquared());
 }
-
 component Vector3D::normSquared() const {
     return x()*x() + y()*y() + z()*z();
 }
 
-bool Vector3D::operator==(const Vector3D &rhs) const {
-    return fabs(x() - rhs.x()) < precision &&
-           fabs(y() - rhs.y()) < precision &&
-           fabs(z() - rhs.z()) < precision;
-}
 
-bool Vector3D::operator!=(const Vector3D &rhs) const {
-    return !(rhs == *this);
-}
-
-std::ostream &operator<<(std::ostream &os, const Vector3D &d) {
+std::ostream& operator<<(std::ostream &os, const Vector3D &d) {
     os << "Vector3D(" << d.x() << ", " << d.y() << ", " << d.z() << ")";
     return os;
-}
-
-const Vector3D operator*(component scalar, const Vector3D &rhs) {
-    return rhs*scalar;
-}
-
-const Vector3D Vector3D::operator+(const Vector3D &rhs) const {
-    return Vector3D(x() + rhs.x(), y() + rhs.y(), z() + rhs.z());
-}
-
-const Vector3D Vector3D::operator-(const Vector3D &rhs) const {
-    return Vector3D(x() - rhs.x(), y() - rhs.y(), z() - rhs.z());
 }
 
 
@@ -55,15 +82,6 @@ const Vector3D Vector3D::unit() const {
 
 const Vector3D Vector3D::opposite() const {
     return Vector3D(-x(),-y(),-z());
-}
-
-const Vector3D Vector3D::operator*(const component &scalar) const {
-    return Vector3D(x() * scalar, y() * scalar, z() * scalar);
-}
-
-const Vector3D Vector3D::operator/(const component &scalar) const {
-    // scalar could be 0, but it will throw the right error, so we don't do anything to prevent this
-    return (*this) * (1 / scalar);
 }
 
 component Vector3D::dot(const Vector3D &rhs) const {
@@ -89,7 +107,4 @@ const Vector3D Vector3D::operator-() const {
 component Vector3D::tripleProduct(const Vector3D &v, const Vector3D &w) const {
     return (*this) * (v ^ w);
 }
-
-
-
 
