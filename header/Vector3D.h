@@ -37,14 +37,13 @@ public:
     Vector3D operator/(const component &scalar) const;
     Vector3D operator-() const;
 
-    friend std::ostream &operator<<(std::ostream &os, const Vector3D &d);
-
 private:
     component x_, y_, z_;
     static component precision;
 
 };
 
+std::ostream &operator<<(std::ostream &os, const Vector3D &d);
 Vector3D operator*(component scalar, const Vector3D &rhs);
 
 #endif //PARTICLE_ACCELERATOR_VECTOR3D_H
