@@ -49,29 +49,33 @@ bool operator!=(const Vector3D &lhs, const Vector3D &rhs) { return !(lhs == rhs)
 // Mathematical operators
 
 
-Vector3D operator-(Vector3D lhs, const Vector3D &rhs) { return lhs -= rhs; }
-Vector3D operator-(Vector3D const& vec) { return Vector3D(-vec.x(), -vec.y(), -vec.z()); }
-Vector3D operator+(Vector3D lhs, const Vector3D &rhs) { return lhs += rhs; }
+const Vector3D operator-(Vector3D lhs, const Vector3D &rhs) { return lhs -= rhs; }
+const Vector3D operator-(Vector3D const& vec) { return Vector3D(-vec.x(), -vec.y(), -vec.z()); }
+const Vector3D operator+(Vector3D lhs, const Vector3D &rhs) { return lhs += rhs; }
 
-Vector3D operator*(component scalar, Vector3D rhs) { return rhs *= scalar; }
-Vector3D operator*(Vector3D lhs, component scalar) { return lhs *= scalar; }
+const Vector3D operator*(component scalar, Vector3D rhs) { return rhs *= scalar; }
+const Vector3D operator*(Vector3D lhs, component scalar) { return lhs *= scalar; }
 
 Vector3D& operator/=(Vector3D &lhs, component scalar) { return lhs *= (1 / scalar); }
-Vector3D operator/(Vector3D lhs, component scalar) { return lhs /= scalar; }
+const Vector3D operator/(Vector3D lhs, component scalar) { return lhs /= scalar; }
 
 component operator*(Vector3D const& lhs, const Vector3D &rhs) {
     return lhs.x() * rhs.x() + lhs.y() * rhs.y() + lhs.z() * rhs.z();
 }
-Vector3D operator^(Vector3D const& lhs, const Vector3D & rhs) {
+const Vector3D operator^(Vector3D const& lhs, const Vector3D & rhs) {
     return Vector3D(
             lhs.y() * rhs.z() - lhs.z() * rhs.y(),
             lhs.z() * rhs.x() - lhs.x() * rhs.z(),
             lhs.x() * rhs.y() - lhs.y() * rhs.x());
 }
 
-Vector3D operator~(Vector3D vec) {
+const Vector3D operator~(Vector3D vec) {
     // TODO: What about when the vector is (0, 0, 0) ? Shall we return \vec{0} or throw an exception ?
     return vec /= vec.norm();
+}
+
+component Vector3D::tripleProduct( Vector3D const& v, const Vector3D &w) const {
+    return (*this) * (v ^ w);
 }
 
 
@@ -88,14 +92,4 @@ std::ostream& operator<<(std::ostream &os, const Vector3D &d) {
 
 component Vector3D::norm() const { return sqrt(normSquared()); }
 component Vector3D::normSquared() const { return x()*x() + y()*y() + z()*z(); }
-
-
-
 component Vector3D::distanceTo(const Vector3D &other) const { return (*this - other).norm(); }
-
-
-
-component Vector3D::tripleProduct( Vector3D const& v, const Vector3D &w) const {
-    return (*this) * (v ^ w);
-}
-

@@ -53,20 +53,20 @@ private:
 
 // Mathematical operations
 
-Vector3D operator*(component scalar, Vector3D rhs);
-Vector3D operator*(Vector3D lhs, component scalar);
-Vector3D operator/(Vector3D lhs, component scalar);
+const Vector3D operator*(component scalar, Vector3D rhs);
+const Vector3D operator*(Vector3D lhs, component scalar);
+const Vector3D operator/(Vector3D lhs, component scalar);
 Vector3D& operator/=(Vector3D &lhs, component scalar);
 
-Vector3D operator+(Vector3D lhs, const Vector3D &rhs);
-Vector3D operator-(Vector3D lhs, const Vector3D &rhs);
-Vector3D operator-(Vector3D const&);
+const Vector3D operator+(Vector3D lhs, const Vector3D &rhs);
+const Vector3D operator-(Vector3D lhs, const Vector3D &rhs);
+const Vector3D operator-(Vector3D const&);
 
 /**
  * Cross product between two Vector3D
  * @return A Vector orthogonal to both vectors.
  */
-Vector3D operator^(Vector3D const& lhs, Vector3D const& rhs);
+const Vector3D operator^(Vector3D const& lhs, Vector3D const& rhs);
 /**
  * Dot product between two Vector3D
  * @return The area between the two vectors.
@@ -76,7 +76,7 @@ component operator*(Vector3D const&, const Vector3D& rhs);
  * Get a unit vector pointing in the same direction.
  * @return A vector of norm 1
  */
-Vector3D operator~(Vector3D);
+const Vector3D operator~(Vector3D);
 
 bool operator==(const Vector3D&, const Vector3D&);
 bool operator!=(const Vector3D &lhs, const Vector3D &rhs);
