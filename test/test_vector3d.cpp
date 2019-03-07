@@ -43,7 +43,7 @@ int main() {
     cout << a << " * " << a << " = " << a * a << endl;
     cout << "||" << a << "|| = " << a.norm() << endl;
     cout << "||" << b << "||^2 = " << b.normSquared() << endl;
-    cout << "The unit colinear vector of " << b << " is " << b.unit() << endl;
+    cout << "The unit colinear vector of " << b << " is " << ~b << endl;
     cout << "The triple product of " << a << ", " << b << " and " << c << " has value " << a.tripleProduct(b, c) << endl;
     cout << "The triple product of " << b << ", " << a << " and " << c << " has value " << b.tripleProduct(a, c) << endl;
     cout << "The triple product of " << a << ", " << a << " and " << c << " has value " << a.tripleProduct(a, c) << endl;
