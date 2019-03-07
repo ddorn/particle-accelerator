@@ -6,7 +6,8 @@
 #include "../header/Vector3D.h"
 
 component Vector3D::precision(1e-6);
-
+component Vector3D::getPrecision() { return precision; }
+void Vector3D::setPrecision(component newPrecision) { if(newPrecision > 0); precision = newPrecision;}
 
 // Base functions on which other are based
 
@@ -39,9 +40,9 @@ Vector3D& Vector3D::operator*=(const component &scalar) {
 
 
 bool operator==(const Vector3D& lhs, const Vector3D &rhs) {
-    return fabs(lhs.x() - rhs.x()) < Vector3D::precision &&
-           fabs(lhs.y() - rhs.y()) < Vector3D::precision &&
-           fabs(lhs.z() - rhs.z()) < Vector3D::precision;
+    return fabs(lhs.x() - rhs.x()) < Vector3D::getPrecision() &&
+           fabs(lhs.y() - rhs.y()) < Vector3D::getPrecision() &&
+           fabs(lhs.z() - rhs.z()) < Vector3D::getPrecision();
 }
 bool operator!=(const Vector3D &lhs, const Vector3D &rhs) { return !(lhs == rhs); }
 
@@ -70,7 +71,9 @@ const Vector3D operator^(Vector3D const& lhs, const Vector3D & rhs) {
 }
 
 const Vector3D operator~(Vector3D vec) {
-    // TODO: What about when the vector is (0, 0, 0) ? Shall we return \vec{0} or throw an exception ?
+    if(vec == Vector3D()) {
+        throw 38808; // The null vector has no corresponding unit vector.
+    }
     return vec /= vec.norm();
 }
 
