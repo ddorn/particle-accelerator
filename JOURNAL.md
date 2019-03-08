@@ -3,16 +3,15 @@
 ### Semaine 2
 
  - Creation de la structure et des principaux fichiers du projet
- -
- -
+ - Creation de la classe Vector3D et du fichier test_vector3D
 ##### Humeur
 
 
 ### Semaine 3
- -
- -
+ - Amelioration de la classe Vector3D, avec une meilleure implementation des operateurs
+ - Ajout de la methode de rotation d'un vecteur
+ - Debut de familiarisation avec l'environnement graphique
 ##### Humeur
-
 
 
 ### Semaine 4

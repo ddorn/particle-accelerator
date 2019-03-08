@@ -13,7 +13,7 @@ void Vector3D::setPrecision(component newPrecision) { if(newPrecision > 0); prec
 
 
 Vector3D& Vector3D::operator+=(const Vector3D &rhs) {
-    // We define it internally because is is very close to the class and we''l base other
+    // We define it internally because is is very close to the class and we'll base other
     // functions on it (+)
     x_ += rhs.x();
     y_ += rhs.y();
