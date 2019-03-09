@@ -5,3 +5,4 @@ project(ParticleAccelerator)
 set(CMAKE_CXX_STANDARD  17)
 
 add_executable(test_vector3d test/test_vector3d.cpp src/Vector3D.cpp)
+add_executable(test_particle test/test_particle.cpp src/Particle.cpp src/Vector3D.cpp)

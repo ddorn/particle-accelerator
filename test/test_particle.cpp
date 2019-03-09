@@ -2,7 +2,7 @@
 // Created by Gabin on 08.03.2019.
 //
 #include <iostream>
-#include <Particle.h>
+#include "../header/Particle.h"
 
 using namespace std;
 

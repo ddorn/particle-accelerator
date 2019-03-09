@@ -5,10 +5,9 @@
 #ifndef PARTICLE_ACCELERATOR_PARTICLE_H
 #define PARTICLE_ACCELERATOR_PARTICLE_H
 
-#endif //PARTICLE_ACCELERATOR_PARTICLE_H
 
-#include <Vector3D.h>
-#include <constants.h>
+#include "Vector3D.h"
+#include "constants.h"
 
 /**
  * --- Units ---
@@ -72,3 +71,5 @@ private:
 };
 
 std::ostream& operator<<(std::ostream &os, const Particle &partic);
+
+#endif //PARTICLE_ACCELERATOR_PARTICLE_H
