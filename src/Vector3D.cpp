@@ -57,7 +57,7 @@ const Vector3D operator+(Vector3D lhs, const Vector3D &rhs) { return lhs += rhs;
 const Vector3D operator*(component scalar, Vector3D rhs) { return rhs *= scalar; }
 const Vector3D operator*(Vector3D lhs, component scalar) { return lhs *= scalar; }
 
-Vector3D& operator/=(Vector3D &lhs, component scalar) { return lhs *= (1 / scalar); }
+Vector3D& operator/=(Vector3D &lhs, component scalar) { return lhs *= (1.0 / scalar); }
 const Vector3D operator/(Vector3D lhs, component scalar) { return lhs /= scalar; }
 
 component operator*(Vector3D const& lhs, const Vector3D &rhs) {
