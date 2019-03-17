@@ -5,7 +5,6 @@
 #ifndef PARTICLEACCELERATOR_ELEMENT_H
 #define PARTICLEACCELERATOR_ELEMENT_H
 
-#endif //PARTICLEACCELERATOR_ELEMENT_H
 
 #include "Vector3D.h"
 #include "Particle.h"
@@ -22,6 +21,8 @@ public:
     Element(const Vector3D &entree, const Vector3D &exit, const Vector3D &radius, Element *nextElement) : entree_(
             entree), exit_(exit), radius_(radius), nextElement_(nextElement) {}
 
-    bool collideBorder(const Particle& particle) const;
-    bool isOut(const Particle& particle) const;
+    bool collideBorder(const Vector3D& position) const;
+    bool isOut(const Vector3D& position) const;
 };
+
+#endif //PARTICLEACCELERATOR_ELEMENT_H
