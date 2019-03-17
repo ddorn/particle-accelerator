@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-#include "../header/TextSupport.h"
+#include "TextSupport.h"
 
 using namespace std;
 

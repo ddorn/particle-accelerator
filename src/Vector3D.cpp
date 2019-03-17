@@ -3,7 +3,7 @@
 //
 
 #include <cmath>
-#include "../header/Vector3D.h"
+#include "Vector3D.h"
 
 const Vector3D Vector3D::e1(1,0,0);
 const Vector3D Vector3D::e2(0,1,0);

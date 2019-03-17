@@ -22,8 +22,8 @@
 
 #include <vector>
 #include <iostream>
-#include "../header/Particle.h"
-#include "../header/Element.h"
+#include "Particle.h"
+#include "Element.h"
 #include "Content.h"
 #include "Support.h"
 

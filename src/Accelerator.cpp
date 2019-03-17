@@ -2,7 +2,7 @@
 // Created by diego on 3/17/19.
 //
 
-#include "../header/Accelerator.h"
+#include "Accelerator.h"
 
 using namespace std;
 

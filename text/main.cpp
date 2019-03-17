@@ -3,9 +3,9 @@
 //
 
 #include <iostream>
-#include "../header/TextSupport.h"
-#include "../header/Accelerator.h"
-#include "../header/constants.h"
+#include "TextSupport.h"
+#include "Accelerator.h"
+#include "constants.h"
 
 using namespace constants;
 

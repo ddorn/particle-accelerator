@@ -4,7 +4,7 @@
 
 #include <cmath>
 #include <iostream>
-#include "../header/Particle.h"
+#include "Particle.h"
 
 using namespace constants;
 
