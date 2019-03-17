@@ -1,7 +1,22 @@
-//
-// Created by Gabin on 08.03.2019.
-//
-
+/**
+ * This header defines the Particle class.
+ *
+ * The main purpose of this class is to represent
+ * anything that will move inside the accelerator
+ * and has a mass, charge, position and momentum.
+ *
+ * Use the methods addMagneticForce and evolve to
+ * actualize the force acting on the particle and
+ * move it.
+ *
+ * --- Units ---
+ * length : c * s
+ * mass : GeV / c²
+ * electric charge : e
+ * energy : GeV
+ * speed : c
+ * momentum : GeV / c
+ */
 #ifndef PARTICLE_ACCELERATOR_PARTICLE_H
 #define PARTICLE_ACCELERATOR_PARTICLE_H
 
@@ -10,20 +25,8 @@
 #include "Vector3D.h"
 #include "constants.h"
 
-/**
- * --- Units ---
- * length : c * s
- * mass : GeV / c²
- * electric charge : e
- * energy : GeV
- * speed : c
- * momentum : GeV / c
- * (it's a first draft, we will see later if it's a good choice)
- */
-
 
 class Particle {
-
 private:
     double mass_;
     double charge_;
@@ -32,29 +35,59 @@ private:
     Vector3D force_;
 
 public:
-    Particle(double mass, double charge, const Vector3D &position, const Vector3D &momentum) : mass_(mass),
-                                                                                                charge_(charge),
-                                                                                                position_(position),
-                                                                                                momentum_(momentum)
-                                                                                                {}
+    /**
+     * Create a new particle.
+     * @param mass Mass in GeV/c²
+     * @param charge Electric charge in eV
+     * @param position Position in c*s
+     * @param momentum Momentum in GeV/c
+     */
+    Particle(double mass, double charge, const Vector3D &position, const Vector3D &momentum)
+        : mass_(mass),
+        charge_(charge),
+        position_(position),
+        momentum_(momentum)
+        {}
 
     double charge() const { return charge_; }
-    void setCharge(double charge) { charge_ = charge; }
-
     double mass() const { return mass_; }
-    void setMass(double mass) { mass_ = mass; }
 
     const Vector3D &momentum() const { return momentum_; }
-    void setMomentum(const Vector3D &momentum) { momentum_ = momentum; }
-
     const Vector3D &position() const { return position_; }
-    void setPosition(const Vector3D &position) { position_ = position; }
 
+    /**
+     * Speed vector of the particle. Unit: c
+     * @return Speed vector
+     */
     const Vector3D speed() const;
+    /**
+     * Velocity of the particle. Unit: c
+     * @return Scalar velocity
+     */
     double velocity() const { return sqrt(velocitySquared()); }
+    /**
+     * Velocity squared of the particle. Unit: c²
+     * @return The scalar velocity of the particle but squared
+     */
     double velocitySquared() const;
 
+    /**
+     * Add a magnetic force on the particle that is applied
+     * during a given timestep `dt`. This `dt` should be
+     * consistent with the `dt` passed to evolve.
+     *
+     * @param b Magnetic field at the particle's position
+     * @param dt Timestep during which the force applies.
+     */
     void addMagneticForce(const Vector3D &b, double dt);
+    /**
+     * Move the particle according to the forces acting on it
+     * since the last call to evolve.
+     * The `dt` should be the same as the one passed to each
+     * `addMagneticForce`.
+     *
+     * @param dt Time-step for the integrator
+     */
     void evolve(double dt);
 
     double energy() const;
