@@ -12,6 +12,7 @@
 
 /**
  * --- Units ---
+ * length : c * s
  * mass : GeV / c²
  * electric charge : e
  * energy : GeV
