@@ -5,6 +5,7 @@
 #include <cmath>
 #include "../header/Particle.h"
 
+using namespace constants;
 
 double Particle::gamma() const {
     return 1.0 / sqrt(1.0 - velocitySquared() / LIGHT_SPEED_SQUARED);
@@ -19,6 +20,10 @@ double Particle::velocitySquared() const {
 
 const Vector3D Particle::speed() const {
     return LIGHT_SPEED / sqrt(mass() * mass() + momentum().normSquared()) * momentum();
+}
+
+void Particle::evolve(double dt) {
+    force_ = Vector3D();
 }
 
 std::ostream &operator<<(std::ostream &os, const Particle &partic) {

@@ -5,7 +5,7 @@
 #include "../header/Particle.h"
 
 using namespace std;
-
+using namespace constants;
 
 
 int main(){
