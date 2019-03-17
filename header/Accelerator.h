@@ -24,14 +24,16 @@
 #include <iostream>
 #include "../header/Particle.h"
 #include "../header/Element.h"
+#include "Content.h"
+#include "Support.h"
 
-class Accelerator {
+class Accelerator : public Content {
 private:
     std::vector<Element> elements_;
     std::vector<Particle> particles_;
 
 public:
-    Accelerator() = default;
+    explicit Accelerator(Support* s) : Content(s) {}
     Accelerator(const Accelerator &other) = delete;
     void operator=(const Accelerator & other) = delete;
 
@@ -64,6 +66,8 @@ public:
 
     const std::vector<Particle> &Particles() const { return particles_; }
     const std::vector<Element> &Elements() const { return elements_; }
+
+    void draw() override;
 };
 
 std::ostream& operator<<(std::ostream& os, const Accelerator &accelerator);

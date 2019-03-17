@@ -2,7 +2,9 @@
 // Created by Gabin on 17.03.2019.
 //
 
-#include "..\header\Element.h"
+#include <iostream>
+#include "../header/Element.h"
+using namespace std;
 
 bool Element::collideBorder(const Vector3D& position) const {
     Vector3D X(position - exit());
@@ -29,4 +31,9 @@ const Vector3D &Element::radius() const {
 
 Element *Element::nextElement() const {
     return nextElement_;
+}
+
+std::ostream &operator<<(std::ostream &os, const Element &element) {
+    os << "TODO: Affichage d'un element" << endl;
+    return os;
 }

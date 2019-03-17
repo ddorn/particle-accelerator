@@ -35,4 +35,6 @@ public:
 
 };
 
+std::ostream& operator<<(std::ostream& os, const Element &element);
+
 #endif //PARTICLEACCELERATOR_ELEMENT_H

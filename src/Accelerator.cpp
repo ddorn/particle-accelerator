@@ -14,13 +14,22 @@ std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
     }
     os << " Elements:" << endl;
     for (auto e : accelerator.Elements()) {
-//        os << e << endl;
+        os << e << endl;
     }
     return os;
 }
 
 void Accelerator::evolve() {
+    for (auto& p : particles_) {
+        p.evolve(0.01);
+    }
+}
+
+void Accelerator::draw() {
     for (auto p : particles_) {
-        p.evolve(1e-2);
+        support_->draw(p);
+    }
+    for (auto e : elements_) {
+        support_->draw(e);
     }
 }
