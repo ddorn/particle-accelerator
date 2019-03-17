@@ -17,6 +17,9 @@ public:
     component z() const { return z_; }
     static component getPrecision();
     static void setPrecision(component);
+    static const Vector3D e1;
+    static const Vector3D e2;
+    static const Vector3D e3;
 
     /**
      * The norm of a vector.
@@ -92,5 +95,8 @@ bool operator==(const Vector3D&, const Vector3D&);
 bool operator!=(const Vector3D &lhs, const Vector3D &rhs);
 
 std::ostream& operator<<(std::ostream &os, const Vector3D &vec);
+
+
+
 
 #endif //PARTICLE_ACCELERATOR_VECTOR3D_H

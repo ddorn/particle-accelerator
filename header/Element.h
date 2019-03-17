@@ -23,6 +23,16 @@ public:
 
     bool collideBorder(const Vector3D& position) const;
     bool isOut(const Vector3D& position) const;
+
+    const Vector3D &entree() const;
+
+    const Vector3D &exit() const;
+
+    const Vector3D &radius() const;
+
+    Element *nextElement() const;
+
+
 };
 
 #endif //PARTICLEACCELERATOR_ELEMENT_H
