@@ -86,7 +86,7 @@ component Vector3D::tripleProduct( Vector3D const& v, const Vector3D &w) const {
 
 
 std::ostream& operator<<(std::ostream &os, const Vector3D &d) {
-    os << "Vector3D(" << d.x() << ", " << d.y() << ", " << d.z() << ")";
+    os << "(" << d.x() << ", " << d.y() << ", " << d.z() << ")";
     return os;
 }
 
