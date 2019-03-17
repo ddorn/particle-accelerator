@@ -1,6 +1,21 @@
-//
-// Created by diego on 3/17/19.
-//
+/**
+ * This header defines the Accelerator class.
+ *
+ * The main purpose of this class is to simulate
+ * a particle accelerator. It's the glue between
+ * particles that run in the accelerator and the
+ * elements of the accelerator that modify their
+ * trajectories.
+ *
+ * The most important method is `evolve()`, that
+ * simulates the whole system with a given step.
+ *
+ * In order to build a particle accelerator, one
+ * needs to add each element one by one and then
+ * each particle.
+ *
+ * Authors: Diego Dorn & Gabin Kolly
+ */
 
 #ifndef PARTICLEACCELERATOR_ACCELERATOR_H
 #define PARTICLEACCELERATOR_ACCELERATOR_H
