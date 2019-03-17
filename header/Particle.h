@@ -54,7 +54,7 @@ public:
     double velocity() const { return sqrt(velocitySquared()); }
     double velocitySquared() const;
 
-    void applyMagneticForce( const Vector3D &force, double dt);
+    void addMagneticForce(const Vector3D &b, double dt);
     void evolve(double dt);
 
     double energy() const;

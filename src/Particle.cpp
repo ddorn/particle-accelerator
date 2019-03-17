@@ -3,6 +3,7 @@
 //
 
 #include <cmath>
+#include <iostream>
 #include "../header/Particle.h"
 
 using namespace constants;
@@ -23,7 +24,20 @@ const Vector3D Particle::speed() const {
 }
 
 void Particle::evolve(double dt) {
-    force_ = Vector3D();
+    momentum_ += force_ * dt;
+    position_ += speed() * dt;
+    force_ *= 0;  // Reuse the same object instead of creating a new one;
+}
+
+void Particle::addMagneticForce(const Vector3D &b, double dt) {
+    if (dt <= 0) return;
+
+    Vector3D force = charge() * (speed() ^ b);
+//    std::cout << force << std::endl;
+    double correction_angle = asin(dt * force.norm() /
+            (2 * momentum().norm()));
+//    std::cout << correction_angle << std::endl;
+    force_ += force.rotate(speed() ^ force, correction_angle);
 }
 
 std::ostream &operator<<(std::ostream &os, const Particle &partic) {

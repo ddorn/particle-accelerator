@@ -98,12 +98,12 @@ component Vector3D::normSquared() const { return x()*x() + y()*y() + z()*z(); }
 component Vector3D::distanceTo(const Vector3D &other) const { return (*this - other).norm(); }
 
 
-Vector3D Vector3D::rotate(Vector3D axis, double angle) {
-    axis = ~axis;  // make it unit
+Vector3D Vector3D::rotate(const Vector3D &axis, double angle) {
+    Vector3D a = ~axis;  // make it unit
     double c(cos(angle));
     double s(sin(angle));
 
     return c * (*this)
-        + (1 - c) * ((*this) * axis) * axis
-        + s * (axis ^ (*this));
+        + (1 - c) * ((*this) * a) * a
+        + s * (a ^ (*this));
 }
