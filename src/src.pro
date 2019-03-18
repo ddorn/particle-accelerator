@@ -1,5 +1,6 @@
-#QT += core opengl gui widgets
+QT =
 TEMPLATE = lib
+TARGET = src
 
 CONFIG = staticlib c++17
 INCLUDEPATH = ../header

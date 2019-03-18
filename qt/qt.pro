@@ -1,7 +1,7 @@
 CONFIG += c++17
-QT =
+QT = ""
 
-TARGET = text_accelerator
+TARGET = qt_accelerator
 DESTDIR = ../bin
 OBJECTS_DIR = ../obj
 
@@ -9,13 +9,13 @@ INCLUDEPATH = ../header ../bin
 LIBS += -L../src -lsrc
 PRE_TARGETDEPS += ../bin/libsrc.a
 
-SOURCES += \
-    main.cpp \
-    TextSupport.cpp
 
+SOURCES += \
+    qt_main.cpp \
+    QtSupport.cpp
 
 HEADERS += \
-    ../header/TextSupport.h \
+    ../header/QtSupport.h \
     ../header/Support.h \
     ../header/Content.h \
     ../header/Accelerator.h \

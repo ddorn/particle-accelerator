@@ -2,4 +2,5 @@ TEMPLATE = subdirs
 
 SUBDIRS += \
     src \
-    text
+    text \
+    qt
