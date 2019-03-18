@@ -18,7 +18,8 @@ set(TEXT_SOURCES
 
 set(QT_SOURCES
         qt/GlWidget.cpp
-        qt/QtSupport.cpp)
+        qt/QtSupport.cpp
+        qt/GlSphere.cpp)
 
 find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)

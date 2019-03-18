@@ -14,11 +14,13 @@ PRE_TARGETDEPS += ../bin/libsrc.a
 SOURCES += \
     qt_main.cpp \
     QtSupport.cpp \
-    GlWidget.cpp
+    GlWidget.cpp \
+    GlSphere.cpp
 
 HEADERS += \
     ../header/QtSupport.h \
     ../header/GlWidget.h \
+    ../header/GlSphere.h \
     ../header/Support.h \
     ../header/Content.h \
     ../header/Accelerator.h \

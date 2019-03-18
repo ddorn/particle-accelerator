@@ -3,6 +3,8 @@
 //
 
 #include <iostream>
+#include <QtSupport.h>
+
 #include "QtSupport.h"
 #include "vertex_shader.h"
 
@@ -13,7 +15,7 @@ void QtSupport::draw(const Particle &particle) {
     Vector3D pos(particle.position());
     model.translate(pos.x(), pos.y(), pos.z());
     model.scale(0.1);
-    drawCube(model);
+    drawSphere(model);
 }
 
 void QtSupport::drawCube(const QMatrix4x4 &model = QMatrix4x4()) {
@@ -97,6 +99,7 @@ void QtSupport::init() {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
+    sphere.initialize();
     initPosition();
 }
 
@@ -113,4 +116,11 @@ void QtSupport::draw(const Element &element) {
 
 void QtSupport::draw(const Vector3D &d) {
     cout << d << endl;
+}
+
+void QtSupport::drawSphere(const QMatrix4x4 &model) {
+    prog.setUniformValue("view", view);
+    prog.setUniformValue("model", model);
+    prog.setAttributeValue(ColorId, 1, 1, 1);
+    sphere.draw(prog, VertexId);
 }
