@@ -20,7 +20,12 @@ void main()
 //  mat3 m = mat3(model[0][0], model[0][1], model[0][1],
 //          model[1][0], model[1][1], model[1][2],
 //          model[2][0], model[2][2], model[2][2]);
-  normal = vertex;
-//  normal =  m * sommet;
+  if (gl_Normal == vec3(0, 0, 0)) {
+    normal = vertex;  // Case of a sphere
+  } else {
+    normal = gl_Normal;  // Case of something I control
+  }
+
+  //  normal =  m * sommet;
 //  normal = vec3(model * vec4(gl_Normal.xyz, 0.0));
 }

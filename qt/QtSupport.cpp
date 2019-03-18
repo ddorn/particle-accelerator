@@ -14,8 +14,9 @@ void QtSupport::draw(const Particle &particle) {
     QMatrix4x4 model;
     Vector3D pos(particle.position());
     model.translate(pos.x(), pos.y(), pos.z());
-    model.scale(0.1);
+    model.scale(0.03);
     drawSphere(model);
+    cout << particle << endl;
 }
 
 void QtSupport::drawCube(const QMatrix4x4 &model = QMatrix4x4()) {

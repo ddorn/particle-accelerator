@@ -70,22 +70,25 @@ void GLSphere::initialize(GLuint slices, GLuint stacks)
   ibo.release();
 }
 
-void GLSphere::draw(QOpenGLShaderProgram& program, int attributeLocation)
-{
-  bind();
+void GLSphere::draw(QOpenGLShaderProgram& program, int attributeLocation) {
+    // We reset the normal so the shader knows we're drawing a sphere
+    // and in the unit sphere, normal = position and we're very happy
+    glNormal3f(0, 0, 0);
 
-  program.setAttributeBuffer(attributeLocation, GL_FLOAT, 0, 3);
-  program.enableAttributeArray(attributeLocation);
+    bind();
+
+    program.setAttributeBuffer(attributeLocation, GL_FLOAT, 0, 3);
+    program.enableAttributeArray(attributeLocation);
 
 #define BUFFER_OFFSET(a) ((char*)nullptr + (a))
 
-  glDrawElements(GL_TRIANGLE_FAN, ibo_sz[0] / sizeof(GLuint), GL_UNSIGNED_INT, BUFFER_OFFSET( 0                     ));
-  glDrawElements(GL_QUADS       , ibo_sz[1] / sizeof(GLuint), GL_UNSIGNED_INT, BUFFER_OFFSET( ibo_sz[0]             ));
-  glDrawElements(GL_TRIANGLE_FAN, ibo_sz[2] / sizeof(GLuint), GL_UNSIGNED_INT, BUFFER_OFFSET( ibo_sz[0] + ibo_sz[1] ));
+    glDrawElements(GL_TRIANGLE_FAN, ibo_sz[0] / sizeof(GLuint), GL_UNSIGNED_INT, BUFFER_OFFSET(0));
+    glDrawElements(GL_QUADS, ibo_sz[1] / sizeof(GLuint), GL_UNSIGNED_INT, BUFFER_OFFSET(ibo_sz[0]));
+    glDrawElements(GL_TRIANGLE_FAN, ibo_sz[2] / sizeof(GLuint), GL_UNSIGNED_INT, BUFFER_OFFSET(ibo_sz[0] + ibo_sz[1]));
 
-  program.disableAttributeArray(attributeLocation);
+    program.disableAttributeArray(attributeLocation);
 
-  release();
+    release();
 }
 
 void GLSphere::bind()
