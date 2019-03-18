@@ -14,7 +14,7 @@ std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
     }
     os << " Elements:" << endl;
     for (auto e : accelerator.Elements()) {
-//        os << e << endl;
+        os << e << endl;
     }
     return os;
 }

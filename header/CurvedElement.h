@@ -14,17 +14,17 @@ class CurvedElement : public Element
 private:
     double curveture_;
 public:
-    CurvedElement(const Vector3D &entree, const Vector3D &exit, const Vector3D &radius, Element *nextElement,
+    CurvedElement(const Vector3D &entree, const Vector3D &exit, double radius, Element *nextElement,
                   double curveture) : Element(entree, exit, radius, nextElement), curveture_(curveture) {}
 
     Vector3D centerOfCurveture() const;
     bool collideBorder(const Vector3D &position) const;
+    bool isOut(const Vector3D &position) const;
 
     double curveture() const;
 
 
 };
-
-
+std::ostream &operator<<(std::ostream &os, const CurvedElement &elem);
 
 #endif //PARTICLEACCELERATOR_CURVEDELEMENT_H

@@ -2,7 +2,8 @@
 // Created by Gabin on 17.03.2019.
 //
 
-#include "..\header\Element.h"
+#include "../header/Element.h"
+
 
 bool Element::collideBorder(const Vector3D& position) const {
     Vector3D X(position - exit());
@@ -11,8 +12,9 @@ bool Element::collideBorder(const Vector3D& position) const {
 }
 
 bool Element::isOut(const Vector3D& position) const {
-    Vector3D e3(0,0,1);
-    return(e3.tripleProduct(position, exit()) > 0);
+    Vector3D L(exit() - entree());
+    Vector3D X(position - entree());
+    return(X * L > L.normSquared());
 }
 
 const Vector3D &Element::entree() const {
@@ -23,10 +25,18 @@ const Vector3D &Element::exit() const {
     return exit_;
 }
 
-const Vector3D &Element::radius() const {
+const double &Element::radius() const {
     return radius_;
 }
 
 Element *Element::nextElement() const {
     return nextElement_;
+}
+
+std::ostream &operator<<(std::ostream &os, const Element &elem) {
+    os << "Element :" << std::endl
+       << " - entree : " << elem.entree() << std::endl
+       << " - exit : " << elem.exit() << std::endl
+       << " - radius : " << elem.radius() << std::endl;
+    return os;
 }

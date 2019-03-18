@@ -10,8 +10,12 @@
 
 class StraightElement : public Element
 {
-
+public:
+    StraightElement(const Vector3D &entree, const Vector3D &exit, double radius, Element *nextElement)
+            : Element(entree, exit, radius, nextElement) {}
 
 };
+
+std::ostream &operator<<(std::ostream &os, const StraightElement &elem);
 
 #endif //PARTICLEACCELERATOR_STRAIGHTELEMENT_H
