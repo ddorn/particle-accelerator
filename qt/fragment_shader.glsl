@@ -5,7 +5,7 @@ varying vec3 normal;
 void main()
 {
     float ambiant = 0.1;
-    vec3 light_source = vec3(-2, 2, 2);
+    vec3 light_source = vec3(0, 4, 4);
 
 
     vec3 light_dir = normalize(light_source - world_pos);

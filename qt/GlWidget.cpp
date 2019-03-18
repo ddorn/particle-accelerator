@@ -29,7 +29,6 @@ void GlWidget::timerEvent(QTimerEvent *event) {
     Q_UNUSED(event);
 
     double dt = chronometre.restart() / 1000.0;
-    dt *= 0;
     accelerator.evolve(dt);
     update();
 }

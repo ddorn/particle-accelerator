@@ -24,7 +24,7 @@ public:
     GlWidget(QWidget *parent = nullptr)
             : QOpenGLWidget(parent), accelerator(&support) {
         accelerator.add(Particle(M_PROTON, PROTON_CHARGE,
-                Vector3D(), Vector3D(0.8, 0.5, -0.1)));
+                Vector3D(1, 1, 0), Vector3D(0.8, 0, 0)));
     }
 
     virtual ~GlWidget() = default;
