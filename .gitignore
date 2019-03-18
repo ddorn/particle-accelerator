@@ -1,4 +1,19 @@
+# Build files
+bin/
+obj/
+**/Makefile
+.qmake.stash
+
+# Clion IDE files
 cmake-build-debug/
 .idea/
-.bin/
+
+# Qt Creator files
+*.user
+
+# Vim <3
+*.swp
+
+# Documentation (not ready)
 docs/
+
