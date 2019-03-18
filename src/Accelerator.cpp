@@ -19,9 +19,9 @@ std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
     return os;
 }
 
-void Accelerator::evolve() {
+void Accelerator::evolve(double dt) {
     for (auto& p : particles_) {
-        p.evolve(0.01);
+        p.evolve(dt);
     }
 }
 

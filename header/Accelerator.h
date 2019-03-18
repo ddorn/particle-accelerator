@@ -62,7 +62,7 @@ public:
      * One small step for the accelerator, one giant leap for mankind.
      * Small is exactly 0.01 seconds.
      */
-    void evolve();
+    void evolve(double dt = 0.01);
 
     const std::vector<Particle> &Particles() const { return particles_; }
     const std::vector<Element> &Elements() const { return elements_; }

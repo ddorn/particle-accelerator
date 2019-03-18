@@ -34,6 +34,9 @@ Element *Element::nextElement() const {
 }
 
 std::ostream &operator<<(std::ostream &os, const Element &element) {
-    os << "TODO: Affichage d'un element" << endl;
+    os << "Element:" << endl
+        << " - Entree : " << element.entree() << endl
+        << " - Sortie : " << element.exit() << endl
+        << " - Rayon : " << element.radius() << endl;
     return os;
 }

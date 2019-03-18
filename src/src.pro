@@ -5,7 +5,7 @@ TARGET = src
 CONFIG = staticlib c++17
 INCLUDEPATH = ../header
 
-DESTDIR = ../bin
+# DESTDIR = ../bin
 OBJECTS_DIR = ../obj
 
 SOURCES = \

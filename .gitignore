@@ -3,6 +3,8 @@ bin/
 obj/
 **/Makefile
 .qmake.stash
+*.o
+*.a
 
 # Clion IDE files
 cmake-build-debug/
