@@ -10,13 +10,53 @@
 
 using namespace std;
 
+// Initialisation
+
+void QtSupport::init() {
+
+    // We create a almost basic shader that can do a bit of lighting
+    prog.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex_shader.glsl");
+    prog.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/fragment_shader.glsl");
+
+    // And identify the vertex attributes for Qt
+    // The vertex (id=0) is special and sends the new vertex to openGl
+    // Therefore all attributes of the vertex should be sent before
+    prog.bindAttributeLocation("vertex", VertexId);
+    prog.bindAttributeLocation("color", ColorId);
+
+    // Compile the shader
+    if (!prog.link()) throw "Shader failed compilation";
+    // And activate it
+    if (!prog.bind()) throw "Unable to bind the shader";
+
+    // We activate the depth test and backface culling for now, as we
+    // do not want to draw faces that are hidden
+    // This may change if we draw the Elements with transparency
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+
+    sphere.initialize();
+    initPosition();
+}
+void QtSupport::initPosition() {
+    view.setToIdentity();
+    view.translate(0, 0, -4);
+    prog.setUniformValue("view", view);
+    prog.setUniformValue("model", QMatrix4x4());
+}
+
+// Draw methods
+
 void QtSupport::draw(const Particle &particle) {
     QMatrix4x4 model;
     Vector3D pos(particle.position());
     model.translate(pos.x(), pos.y(), pos.z());
     model.scale(0.03);
     drawSphere(model);
-    cout << particle << endl;
+    drawVector(particle.speed(), particle.position());
+}
+void QtSupport::draw(const Element &element) {
+    cout << element << endl;
 }
 
 void QtSupport::drawCube(const QMatrix4x4 &model = QMatrix4x4()) {
@@ -76,52 +116,21 @@ void QtSupport::drawCube(const QMatrix4x4 &model = QMatrix4x4()) {
 
     glEnd();
 }
-
-void QtSupport::init() {
-
-    // We create a almost basic shader that can do a bit of lighting
-    prog.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex_shader.glsl");
-    prog.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/fragment_shader.glsl");
-
-    // And identify the vertex attributes for Qt
-    // The vertex (id=0) is special and sends the new vertex to openGl
-    // Therefore all attributes of the vertex should be sent before
-    prog.bindAttributeLocation("vertex", VertexId);
-    prog.bindAttributeLocation("color", ColorId);
-
-    // Compile the shader
-    if (!prog.link()) throw "Shader failed compilation";
-    // And activate it
-    if (!prog.bind()) throw "Unable to bind the shader";
-
-    // We activate the depth test and backface culling for now, as we
-    // do not want to draw faces that are hidden
-    // This may change if we draw the Elements with transparency
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-
-    sphere.initialize();
-    initPosition();
-}
-
-void QtSupport::initPosition() {
-    view.setToIdentity();
-    view.translate(0, 0, -4);
-    prog.setUniformValue("view", view);
-    prog.setUniformValue("model", QMatrix4x4());
-}
-
-void QtSupport::draw(const Element &element) {
-    cout << element << endl;
-}
-
-void QtSupport::draw(const Vector3D &d) {
-    cout << d << endl;
-}
-
 void QtSupport::drawSphere(const QMatrix4x4 &model) {
     prog.setUniformValue("view", view);
     prog.setUniformValue("model", model);
     prog.setAttributeValue(ColorId, 1, 1, 1);
     sphere.draw(prog, VertexId);
+}
+void QtSupport::drawVector(Vector3D vec, const Vector3D &start) {
+    vec += start;
+
+    QMatrix4x4 model;
+    prog.setUniformValue("model", model);
+    glNormal3f(0, 2, 4);  // This is the lights position
+
+    glBegin(GL_LINES);
+    prog.setAttributeValue(VertexId, start.x(), start.y(), start.z());
+    prog.setAttributeValue(VertexId, vec.x(), vec.y(), vec.z());
+    glEnd();
 }

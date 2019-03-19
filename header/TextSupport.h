@@ -20,7 +20,6 @@ public:
 
     void draw(const Particle &particle) override;
     void draw(const Element &element) override;
-    void draw(const Vector3D &vector) override;
 };
 
 

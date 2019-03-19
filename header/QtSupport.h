@@ -18,16 +18,17 @@ private:
 public:
     // Initialisation
     // TODO: Why not put those two in the constructor ? Isn't it its purpose ?
+    // Answer: because it simply doesn't work... but why ?
     void init();
     void initPosition();
 
     // Draw objects
     void draw(const Particle &particle) override;
     void draw(const Element &element) override;
-    void draw(const Vector3D &d) override;
 
     void drawCube(const QMatrix4x4 &model);
     void drawSphere(const QMatrix4x4 &model);
+    void drawVector(Vector3D vec, const Vector3D &start = Vector3D());
 
     // Set view
     void setProjection(const QMatrix4x4 &projection)

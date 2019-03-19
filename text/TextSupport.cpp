@@ -14,7 +14,3 @@ void TextSupport::draw(const Particle &particle) {
 void TextSupport::draw(const Element &element) {
     ostream_ << element << endl;
 }
-
-void TextSupport::draw(const Vector3D &vector) {
-    ostream_ << vector << endl;
-}

@@ -17,6 +17,5 @@ public:
     virtual ~Support() = default;;
     virtual void draw(const Particle&) = 0;
     virtual void draw(const Element&) = 0;
-    virtual void draw(const Vector3D&) = 0;
 };
 #endif //PARTICLEACCELERATOR_SUPPORT_H
