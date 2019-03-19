@@ -27,7 +27,7 @@ public:
         std::mt19937 rng(42);
         std::normal_distribution<double> normal_distribution(0, 1);
 
-        for (int i = 0; i < 69; ++i) {
+        for (int i = 0; i < 4200; ++i) {
             accelerator.add(Particle(M_PROTON, PROTON_CHARGE,
                                      Vector3D(normal_distribution(rng),
                                               normal_distribution(rng),
@@ -47,7 +47,7 @@ private:
     void paintGL() override;
 
     // Events
-//    void keyPressEvent(QKeyEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
     void timerEvent(QTimerEvent *event) override;
 
     // Timer

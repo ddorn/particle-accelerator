@@ -22,8 +22,10 @@ std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
 void Accelerator::evolve(double dt) {
     for (auto& p : particles_) {
         // This is just a placeholder to see nice things
-        float dist = p.position().norm();
-        Vector3D champ = Vector3D::e3  / dist;
+//        float dist = p.position().norm();
+        Vector3D champ = Vector3D(-1, 0, 0) ;
+        double scale = champ * p.position();
+        if (abs(scale) > 1e-4) champ /= scale;
 
         p.addMagneticForce(champ, dt);
         p.evolve(dt);

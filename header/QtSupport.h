@@ -35,6 +35,9 @@ public:
     void setProjection(const QMatrix4x4 &projection)
     { prog.setUniformValue("projection", projection); }
 
+    void translate(double x, double y, double z);
+
+    void rotate(double angle, double dir_x, double dir_y, double dir_z);
 };
 
 
