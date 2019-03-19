@@ -6,6 +6,7 @@
 #define PARTICLEACCELERATOR_GLWIDGET_H
 
 
+#include <random>
 #include <QOpenGLWidget>     // Classe pour faire une fenêtre OpenGL
 #include <QTime>             // Classe pour gérer le temps
 #include "QtSupport.h"
@@ -23,8 +24,18 @@ private:
 public:
     GlWidget(QWidget *parent = nullptr)
             : QOpenGLWidget(parent), accelerator(&support) {
-        accelerator.add(Particle(M_PROTON, PROTON_CHARGE,
-                Vector3D(1, 1, 0), Vector3D(0.8, 0, 0)));
+        std::mt19937 rng(42);
+        std::normal_distribution<double> normal_distribution(0, 1);
+
+        for (int i = 0; i < 20; ++i) {
+            accelerator.add(Particle(M_PROTON, PROTON_CHARGE,
+                                     Vector3D(normal_distribution(rng),
+                                              normal_distribution(rng),
+                                              0),
+                                     Vector3D(0.8, 0, 0).rotate(Vector3D::e3, normal_distribution(rng))
+            ));
+        }
+
     }
 
     virtual ~GlWidget() = default;
