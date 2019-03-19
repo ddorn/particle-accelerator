@@ -27,7 +27,8 @@ public:
     void draw(const Element &element) override;
 
     void drawCube(const QMatrix4x4 &model);
-    void drawSphere(const QMatrix4x4 &model);
+    void drawSphere(const QMatrix4x4 &model, double r = 1, double g = 1, double b = 1);
+    void drawSphere(const QMatrix4x4 &model, const Vector3D &color);
     void drawVector(Vector3D vec, const Vector3D &start = Vector3D());
 
     // Set view

@@ -52,7 +52,7 @@ public:
      * @param angle in radians
      * @return The rotated vector
      */
-    Vector3D rotate(const Vector3D &axis, double angle);
+    Vector3D rotate(const Vector3D &axis, double angle) const;
     Vector3D& operator+=(const Vector3D& rhs);
 
 

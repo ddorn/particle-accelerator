@@ -27,7 +27,7 @@ public:
         std::mt19937 rng(42);
         std::normal_distribution<double> normal_distribution(0, 1);
 
-        for (int i = 0; i < 20; ++i) {
+        for (int i = 0; i < 69; ++i) {
             accelerator.add(Particle(M_PROTON, PROTON_CHARGE,
                                      Vector3D(normal_distribution(rng),
                                               normal_distribution(rng),

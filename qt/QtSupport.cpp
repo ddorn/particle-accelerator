@@ -51,8 +51,8 @@ void QtSupport::draw(const Particle &particle) {
     QMatrix4x4 model;
     Vector3D pos(particle.position());
     model.translate(pos.x(), pos.y(), pos.z());
-    model.scale(0.03);
-    drawSphere(model);
+    model.scale(0.06);
+    drawSphere(model, ~particle.speed());
     drawVector(particle.speed(), particle.position());
 }
 void QtSupport::draw(const Element &element) {
@@ -116,12 +116,17 @@ void QtSupport::drawCube(const QMatrix4x4 &model = QMatrix4x4()) {
 
     glEnd();
 }
-void QtSupport::drawSphere(const QMatrix4x4 &model) {
+void QtSupport::drawSphere(const QMatrix4x4 &model, double r, double g, double b) {
     prog.setUniformValue("view", view);
     prog.setUniformValue("model", model);
-    prog.setAttributeValue(ColorId, 1, 1, 1);
+    prog.setAttributeValue(ColorId, r, g, b);
     sphere.draw(prog, VertexId);
 }
+
+void QtSupport::drawSphere(const QMatrix4x4 &model, const Vector3D &color) {
+    drawSphere(model, color.x(), color.y(), color.z());
+}
+
 void QtSupport::drawVector(Vector3D vec, const Vector3D &start) {
     vec += start;
 
@@ -134,3 +139,4 @@ void QtSupport::drawVector(Vector3D vec, const Vector3D &start) {
     prog.setAttributeValue(VertexId, vec.x(), vec.y(), vec.z());
     glEnd();
 }
+
