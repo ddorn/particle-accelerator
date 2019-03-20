@@ -6,7 +6,6 @@
 #define PARTICLEACCELERATOR_GLWIDGET_H
 
 
-#include <random>
 #include <QOpenGLWidget>     // Classe pour faire une fenêtre OpenGL
 #include <QTime>             // Classe pour gérer le temps
 #include "QtSupport.h"
