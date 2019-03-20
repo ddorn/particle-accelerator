@@ -112,10 +112,14 @@ GlWidget::GlWidget(QWidget *parent)
         // That specify first the position then the color
         std::cin >> x >> y >> z;
         std::cin >> vx >> vy >> vz;
+
+        Vector3D momentum = Vector3D(x, y, z);
+        if (!momentum.isZero()) momentum = ~momentum;
+
         // We randomize the charge + and -
         Particle p(M_PROTON, PROTON_CHARGE,
                    Vector3D(x, y, z),
-                   ~Vector3D(x, y, z) * 0.8,  // Speed is towards the center, why not ?
+                   momentum,  // Speed is towards the center, why not ?
                    Vector3D(vx, vy, vz));
         accelerator.add(p);
     }
