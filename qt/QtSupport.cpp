@@ -40,7 +40,7 @@ void QtSupport::init() {
 }
 void QtSupport::initPosition() {
     view.setToIdentity();
-    view.translate(-15, 0, -15);
+    view.translate(0, 0, -10);
     prog.setUniformValue("view", view);
     prog.setUniformValue("model", QMatrix4x4());
 }
@@ -51,9 +51,9 @@ void QtSupport::draw(const Particle &particle) {
     QMatrix4x4 model;
     Vector3D pos(particle.position());
     model.translate(pos.x(), pos.y(), pos.z());
-    model.scale(0.06);
-    drawSphere(model, ~particle.speed());
-    drawVector(particle.speed(), particle.position());
+    model.scale(0.03);
+    drawSphere(model, particle.color());
+//    drawVector(particle.speed(), particle.position());
 }
 void QtSupport::draw(const Element &element) {
     cout << element << endl;

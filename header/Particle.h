@@ -33,7 +33,7 @@ private:
     Vector3D position_;
     Vector3D momentum_;
     Vector3D force_;
-
+    Vector3D color_;
 public:
     /**
      * Create a new particle.
@@ -41,12 +41,15 @@ public:
      * @param charge Electric charge in eV
      * @param position Position in c*s
      * @param momentum Momentum in GeV/c
+     * @param color The color of the particle
      */
-    Particle(double mass, double charge, const Vector3D &position, const Vector3D &momentum)
+    Particle(double mass, double charge, const Vector3D &position,
+            const Vector3D &momentum, const Vector3D &color = Vector3D(1, 0, 0))
         : mass_(mass),
         charge_(charge),
         position_(position),
-        momentum_(momentum)
+        momentum_(momentum),
+        color_(color)
         {}
 
     double charge() const { return charge_; }
@@ -54,6 +57,7 @@ public:
 
     const Vector3D &momentum() const { return momentum_; }
     const Vector3D &position() const { return position_; }
+    const Vector3D &color() const { return color_; }
 
     /**
      * Speed vector of the particle. Unit: c
@@ -80,6 +84,7 @@ public:
      * @param dt Timestep during which the force applies.
      */
     void addMagneticForce(const Vector3D &b, double dt);
+    void addForce(const Vector3D &b) { force_ += b; }  // TODO: REMOVE THIS
     /**
      * Move the particle according to the forces acting on it
      * since the last call to evolve.
