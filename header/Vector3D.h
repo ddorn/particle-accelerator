@@ -2,32 +2,38 @@
 #ifndef PARTICLE_ACCELERATOR_VECTOR3D_H
 #define PARTICLE_ACCELERATOR_VECTOR3D_H
 
-#include <ostream>
+#include <iostream>
 
 typedef double component;
 
 class Vector3D {
 public:
-    Vector3D() : x_(0), y_(0), z_(0) {}
-
-    Vector3D(component x, component y, component z) : x_(x), y_(y), z_(z) {}
-    component x() const { return x_; }
-
-    component y() const { return y_; }
-    component z() const { return z_; }
-    static component getPrecision();
-    static void setPrecision(component);
     static const Vector3D e1;
     static const Vector3D e2;
     static const Vector3D e3;
 
+    Vector3D() : x_(0), y_(0), z_(0) {}
+    Vector3D(component x, component y, component z) : x_(x), y_(y), z_(z) {}
+
+    component x() const { return x_; }
+    component y() const { return y_; }
+    component z() const { return z_; }
+
+    static component getPrecision();
+    static void setPrecision(component);
+
+    /**
+     * Convenient way to check if a vector is the null vector.
+     * This returns true for very small vectors.
+     * @return Whether the vector is 0.
+     */
+    bool isZero();
     /**
      * The norm of a vector.
      * @related normSquared
      * @return The length of the vector.
      */
     component norm() const;
-
     /**
      * The squared norm of a vector, which is faster than norm as it doesn't use a sqrt.
      * @return The length of the vector, squared
@@ -53,11 +59,11 @@ public:
      * @return The rotated vector
      */
     Vector3D rotate(const Vector3D &axis, double angle) const;
+
     Vector3D& operator+=(const Vector3D& rhs);
-
-
     Vector3D& operator-=(const Vector3D& rhs);
     Vector3D& operator*=(const component& scalar);
+
 private:
 
     static component precision;
@@ -95,8 +101,6 @@ bool operator==(const Vector3D&, const Vector3D&);
 bool operator!=(const Vector3D &lhs, const Vector3D &rhs);
 
 std::ostream& operator<<(std::ostream &os, const Vector3D &vec);
-
-
 
 
 #endif //PARTICLE_ACCELERATOR_VECTOR3D_H
