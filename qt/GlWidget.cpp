@@ -100,4 +100,29 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
   update(); // redessine
 }
 
+GlWidget::GlWidget(QWidget *parent)
+        : QOpenGLWidget(parent), accelerator(&support) {
+
+    std::mt19937 rng(42);  // allays the same number are generated
+    std::uniform_int_distribution<int> normal_distribution(0, 1);
+
+    int nb;
+    double x, y, z, vx, vy, vz;
+    std::cin >> nb;
+
+    for (int j = 0; j < nb; ++j) {
+        // We read particle description from a file
+        // That specify first the position then the color
+        std::cin >> x >> y >> z;
+        std::cin >> vx >> vy >> vz;
+        // We randomize the charge + and -
+        double sign(normal_distribution(rng) * 2 - 1);
+        Particle p(M_PROTON, sign * PROTON_CHARGE,
+                   Vector3D(x, y, z),
+                   -~Vector3D(x, y, z) * 0.8,  // Speed is towards the center, why not ?
+                   Vector3D(sign == -1, sign == 1, 0));
+        accelerator.add(p);
+    }
+}
+
 
