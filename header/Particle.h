@@ -33,6 +33,7 @@ private:
     Vector3D position_;
     Vector3D momentum_;
     Vector3D force_;
+    Element* element_;
 
 public:
     /**
@@ -42,11 +43,13 @@ public:
      * @param position Position in c*s
      * @param momentum Momentum in GeV/c
      */
-    Particle(double mass, double charge, const Vector3D &position, const Vector3D &momentum)
+    Particle(double mass, double charge, 
+    const Vector3D &position, const Vector3D &momentum, Element* element)
         : mass_(mass),
         charge_(charge),
         position_(position),
-        momentum_(momentum)
+        momentum_(momentum),
+        element_(element)
         {}
 
     double charge() const { return charge_; }
@@ -54,6 +57,7 @@ public:
 
     const Vector3D &momentum() const { return momentum_; }
     const Vector3D &position() const { return position_; }
+    const Element& element() const { return *element_; }
 
     /**
      * Speed vector of the particle. Unit: c
