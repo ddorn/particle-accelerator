@@ -9,7 +9,7 @@ using namespace constants;
 
 int main() {
     Accelerator a;
-    a.add(Particle(M_PROTON, PROTON_CHARGE, Vector3D(), Vector3D(0.8, 0, 0)));
+    a.add(Particle(M_PROTON, PROTON_CHARGE, Vector3D(), Vector3D(0.8, 0, 0), nullptr));
     cout << a;
     auto p = a.Particles().front();
     p.evolve(1);

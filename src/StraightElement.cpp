@@ -2,7 +2,7 @@
 // Created by Gabin on 18.03.2019.
 //
 
-#include "..\header\StraightElement.h"
+#include "StraightElement.h"
 
 std::ostream &operator<<(std::ostream &os, const StraightElement &elem) {
     os << "Straight element :" << std::endl

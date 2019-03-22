@@ -25,6 +25,7 @@
 #include "Vector3D.h"
 #include "constants.h"
 
+class Element;
 
 class Particle {
 private:

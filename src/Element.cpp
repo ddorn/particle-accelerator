@@ -2,7 +2,7 @@
 // Created by Gabin on 17.03.2019.
 //
 
-#include "../header/Element.h"
+#include "Element.h"
 
 
 bool Element::collideBorder(const Vector3D& position) const {

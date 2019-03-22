@@ -9,7 +9,7 @@
 #include "Vector3D.h"
 #include "Particle.h"
 
-
+class Particle;
 
 class Element{
 private:
