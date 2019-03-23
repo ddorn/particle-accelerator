@@ -7,12 +7,12 @@ set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -Wextra -Werror")
 include_directories(header)
 
 set(SOURCE_FILES
-        src/Accelerator.cpp
-        src/CurvedElement.cpp
-        src/Element.cpp
-        src/Particle.cpp
-	src/StraightElement.cpp
-        src/Vector3D.cpp)
+		src/Vector3D.cpp
+		src/Particle.cpp
+		src/Element.cpp
+		src/CurvedElement.cpp
+		src/StraightElement.cpp
+		src/Accelerator.cpp)
 
 set(TEXT_SOURCES
         text/TextSupport.cpp)
@@ -22,15 +22,17 @@ set(QT_SOURCES
         qt/QtSupport.cpp
         qt/GlSphere.cpp)
 
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Gui REQUIRED)
-find_package(Qt5OpenGL REQUIRED)
 
 add_executable(test_vector3d test/test_vector3d.cpp ${SOURCE_FILES})
 add_executable(test_particle test/test_particle.cpp ${SOURCE_FILES})
 add_executable(text_accelerator text/main.cpp ${SOURCE_FILES} ${TEXT_SOURCES})
 
+# This doesn't compile as I don't know how to add files like
+# shaders with cmake. It's sole purpose it to make clion functional.
 add_executable(qt_accelerator qt/qt_main.cpp ${SOURCE_FILES} ${QT_SOURCES})
+find_package(Qt5Core REQUIRED)
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5Gui REQUIRED)
+find_package(Qt5OpenGL REQUIRED)
 target_link_libraries(qt_accelerator Qt5::Widgets)
 target_link_libraries(qt_accelerator Qt5::OpenGL)

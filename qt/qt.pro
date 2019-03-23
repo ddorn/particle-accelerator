@@ -23,10 +23,13 @@ HEADERS += \
     ../header/GlSphere.h \
     ../header/Support.h \
     ../header/Content.h \
+    ../header/constants.h \
     ../header/Accelerator.h \
     ../header/Vector3D.h \
     ../header/Element.h \
     ../header/Particle.h \
-    ../header/constants.h
+	../header/CurvedElement.h \
+	../header/StraightElement.h
+
 
 RESOURCES += resources.qrc

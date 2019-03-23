@@ -12,11 +12,15 @@ SOURCES = \
     Accelerator.cpp \
     Particle.cpp \
     Vector3D.cpp \
-    Element.cpp
+    Element.cpp \
+    CurvedElement.cpp \
+    StraightElement.cpp
 
 HEADERS += \
+    ../header/constants.h \
     ../header/Accelerator.h \
     ../header/Vector3D.h \
-    ../header/Element.h \
     ../header/Particle.h \
-    ../header/constants.h
+    ../header/Element.h \
+    ../header/CurvedElement.cpp \
+	../header/StraightElement.h
