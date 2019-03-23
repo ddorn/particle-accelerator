@@ -45,7 +45,7 @@ public:
      * @param momentum Momentum in GeV/c
      */
     Particle(double mass, double charge, 
-    const Vector3D &position, const Vector3D &momentum, Element* element)
+    const Vector3D &position, const Vector3D &momentum, Element* element = nullptr)
         : mass_(mass),
         charge_(charge),
         position_(position),
