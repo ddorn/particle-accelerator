@@ -2,7 +2,7 @@
 // Created by Gabin on 17.03.2019.
 //
 
-#include "../header/CurvedElement.h"
+#include "CurvedElement.h"
 #include <cmath>
 
 Vector3D CurvedElement::centerOfCurveture() const {

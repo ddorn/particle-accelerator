@@ -2,8 +2,9 @@
 // Created by Gabin on 17.03.2019.
 //
 
+#include <iostream>
 #include "Element.h"
-
+using namespace std;
 
 bool Element::collideBorder(const Vector3D& position) const {
     Vector3D X(position - exit());

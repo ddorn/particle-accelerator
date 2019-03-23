@@ -35,7 +35,7 @@ private:
     Vector3D momentum_;
     Vector3D force_;
     Element* element_;
-
+    Vector3D color_;
 public:
     /**
      * Create a new particle.
@@ -43,14 +43,17 @@ public:
      * @param charge Electric charge in eV
      * @param position Position in c*s
      * @param momentum Momentum in GeV/c
+     * @param color The color of the particle
      */
-    Particle(double mass, double charge, 
-    const Vector3D &position, const Vector3D &momentum, Element* element = nullptr)
+    Particle(double mass, double charge, const Vector3D &position,
+            const Vector3D &momentum, const Vector3D &color = Vector3D(1, 0, 0),
+	        Element* element = nullptr)
         : mass_(mass),
         charge_(charge),
         position_(position),
         momentum_(momentum),
-        element_(element)
+        element_(element),
+        color_(color)
         {}
 
     double charge() const { return charge_; }
@@ -58,7 +61,8 @@ public:
 
     const Vector3D &momentum() const { return momentum_; }
     const Vector3D &position() const { return position_; }
-    const Element& element() const { return *element_; }
+    const Vector3D &color() const { return color_; }
+    const Element &element() const { return *element_; }
 
     /**
      * Speed vector of the particle. Unit: c

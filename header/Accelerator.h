@@ -24,14 +24,16 @@
 #include <iostream>
 #include "Particle.h"
 #include "Element.h"
+#include "Content.h"
+#include "Support.h"
 
-class Accelerator {
+class Accelerator : public Content {
 private:
     std::vector<Element> elements_;
     std::vector<Particle> particles_;
 
 public:
-    Accelerator() = default;
+    explicit Accelerator(Support* s) : Content(s) {}
     Accelerator(const Accelerator &other) = delete;
     void operator=(const Accelerator & other) = delete;
 
@@ -60,10 +62,12 @@ public:
      * One small step for the accelerator, one giant leap for mankind.
      * Small is exactly 0.01 seconds.
      */
-    void evolve();
+    void evolve(double dt = 0.01);
 
     const std::vector<Particle> &Particles() const { return particles_; }
     const std::vector<Element> &Elements() const { return elements_; }
+
+    void draw() override;
 };
 
 std::ostream& operator<<(std::ostream& os, const Accelerator &accelerator);

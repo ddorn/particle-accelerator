@@ -4,7 +4,7 @@
 
 #include <cmath>
 #include <iostream>
-#include "../header/Particle.h"
+#include "Particle.h"
 
 using namespace constants;
 
@@ -24,6 +24,9 @@ const Vector3D Particle::speed() const {
 }
 
 void Particle::evolve(double dt) {
+    if (dt <= 0) return;
+
+    // Euler-Cramer integrator
     momentum_ += force_ * dt;
     position_ += speed() * dt;
     force_ *= 0;  // Reuse the same object instead of creating a new one;
@@ -33,11 +36,14 @@ void Particle::addMagneticForce(const Vector3D &b, double dt) {
     if (dt <= 0) return;
 
     Vector3D force = charge() * (speed() ^ b);
-//    std::cout << force << std::endl;
+    if (force.isZero()) return;
+
     double correction_angle = asin(dt * force.norm() /
             (2 * momentum().norm()));
-//    std::cout << correction_angle << std::endl;
-    force_ += force.rotate(speed() ^ force, correction_angle);
+
+    Vector3D correction(speed() ^ force);
+    if (correction.isZero()) return;
+    force_ += force.rotate(correction, correction_angle);
 }
 
 std::ostream &operator<<(std::ostream &os, const Particle &partic) {

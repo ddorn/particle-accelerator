@@ -3,14 +3,15 @@
 //
 
 #include <cmath>
-#include "../header/Vector3D.h"
+#include <iostream>
+#include "Vector3D.h"
 
 const Vector3D Vector3D::e1(1,0,0);
 const Vector3D Vector3D::e2(0,1,0);
 const Vector3D Vector3D::e3(0,0,1);
 
 
-component Vector3D::precision(1e-6);
+component Vector3D::precision(1e-10);
 component Vector3D::getPrecision() { return precision; }
 void Vector3D::setPrecision(component newPrecision) { if(newPrecision > 0) precision = newPrecision;}
 
@@ -62,7 +63,18 @@ const Vector3D operator+(Vector3D lhs, const Vector3D &rhs) { return lhs += rhs;
 const Vector3D operator*(component scalar, Vector3D rhs) { return rhs *= scalar; }
 const Vector3D operator*(Vector3D lhs, component scalar) { return lhs *= scalar; }
 
-Vector3D& operator/=(Vector3D &lhs, component scalar) { return lhs *= (1.0 / scalar); }
+Vector3D& operator/=(Vector3D &lhs, component scalar) {
+    if (scalar == 0) {  // should we check if it's very small instead ?
+        // This should never occur. If it does, there is a flow
+        // in our code, a check that isn't done, therefore we
+        // print the problem and abort the program. If this happens,
+        // Run gdb to see where it comes from and fix it.
+        // Physicians do horrible things, but no division by zero.
+        std::cout << "DIVISION By ZERO !" << std::endl;
+        throw "Division by zero";
+    }
+    return lhs *= (1.0 / scalar);
+}
 const Vector3D operator/(Vector3D lhs, component scalar) { return lhs /= scalar; }
 
 component operator*(Vector3D const& lhs, const Vector3D &rhs) {
@@ -76,8 +88,14 @@ const Vector3D operator^(Vector3D const& lhs, const Vector3D & rhs) {
 }
 
 const Vector3D operator~(Vector3D vec) {
-    if(vec == Vector3D()) {
-        throw 38808; // The null vector has no corresponding unit vector.
+    if(vec.isZero()) {
+        // This should never occur. If it does, there is a flow
+        // in our code, a check that isn't done, therefore we
+        // print the problem and abort the program. If this happens,
+        // Run gdb to see where it comes from and fix it.
+        // Physicians do horrible things, but no division by zero.
+        std::cout << "Normalization of null vector" << std::endl;
+        throw "Cannot normalize null vector";
     }
     return vec /= vec.norm();
 }
@@ -103,12 +121,18 @@ component Vector3D::normSquared() const { return x()*x() + y()*y() + z()*z(); }
 component Vector3D::distanceTo(const Vector3D &other) const { return (*this - other).norm(); }
 
 
-Vector3D Vector3D::rotate(const Vector3D &axis, double angle) {
-    Vector3D a = ~axis;  // make it unit
+Vector3D Vector3D::rotate(const Vector3D &axis, double angle) const {
+    Vector3D a = ~axis;  // make it unit, zero check is performed in operator~
     double c(cos(angle));
     double s(sin(angle));
 
     return c * (*this)
         + (1 - c) * ((*this) * a) * a
         + s * (a ^ (*this));
+}
+
+bool Vector3D::isZero() {
+    return fabs(x()) < getPrecision()
+           && fabs(y()) < getPrecision()
+           && fabs(z()) < getPrecision();
 }
