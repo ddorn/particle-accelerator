@@ -3,6 +3,8 @@
 //
 
 #include <iostream>
+#include <Element.h>
+
 #include "Element.h"
 using namespace std;
 
@@ -26,13 +28,14 @@ const Vector3D &Element::exit() const {
     return exit_;
 }
 
-const double &Element::radius() const {
+double Element::radius() const {
     return radius_;
 }
 
-Element *Element::nextElement() const {
-    return nextElement_;
+const Element &Element::nextElement() const {
+    return *nextElement_;
 }
+
 
 std::ostream &operator<<(std::ostream &os, const Element &elem) {
     os << "Element :" << std::endl

@@ -20,6 +20,10 @@ std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
 }
 
 void Accelerator::evolve(double dt) {
+
+    for (auto& p : particles_) {
+        p.addMagneticForce(p.element().magneticForceAt(p.position()))
+    }
     // We add all the forces first
     for (auto& p : particles_) {
         // This is just a placeholder to see nice things

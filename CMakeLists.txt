@@ -12,7 +12,8 @@ set(SOURCE_FILES
 		src/Element.cpp
 		src/CurvedElement.cpp
 		src/StraightElement.cpp
-		src/Accelerator.cpp)
+		src/Accelerator.cpp
+		src/Dipole.cpp)
 
 set(TEXT_SOURCES
         text/TextSupport.cpp)

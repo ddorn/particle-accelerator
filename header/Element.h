@@ -21,16 +21,15 @@ public:
     Element(const Vector3D &entree, const Vector3D &exit, double radius, Element *nextElement) : entree_(
             entree), exit_(exit), radius_(radius), nextElement_(nextElement) {}
 
+    virtual const Vector3D magneticForceAt(const Vector3D &position) const = 0;
     bool collideBorder(const Vector3D& position) const;
     bool isOut(const Vector3D& position) const;
 
+    double radius() const;
     const Vector3D &entree() const;
-
     const Vector3D &exit() const;
 
-    const double &radius() const;
-
-    Element *nextElement() const;
+    const Element &nextElement() const;
 
 
 };

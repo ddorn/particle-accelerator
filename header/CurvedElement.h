@@ -12,16 +12,16 @@
 class CurvedElement : public Element
 {
 private:
-    double curveture_;
+    double curvature_;
 public:
     CurvedElement(const Vector3D &entree, const Vector3D &exit, double radius, Element *nextElement,
-                  double curveture) : Element(entree, exit, radius, nextElement), curveture_(curveture) {}
+                  double curvature) : Element(entree, exit, radius, nextElement), curvature_(curvature) {}
 
-    Vector3D centerOfCurveture() const;
+    Vector3D centerOfCurvature() const;
     bool collideBorder(const Vector3D &position) const;
     bool isOut(const Vector3D &position) const;
 
-    double curveture() const;
+    double curvature() const;
 
 
 };

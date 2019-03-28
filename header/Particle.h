@@ -95,7 +95,7 @@ public:
      * The `dt` should be the same as the one passed to each
      * `addMagneticForce`.
      *
-     * @param dt Time-step for the integrator
+     * @param dt Timestep for the integrator
      */
     void evolve(double dt);
 
