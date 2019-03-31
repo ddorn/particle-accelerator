@@ -1,3 +1,5 @@
+#include <memory>
+
 /**
  * This header defines the Accelerator class.
  *
@@ -22,15 +24,19 @@
 
 #include <vector>
 #include <iostream>
+#include <memory>
 #include "Particle.h"
 #include "Element.h"
 #include "Content.h"
 #include "Support.h"
 
+typedef std::vector<std::unique_ptr<Element>> ElementVector;
+typedef std::vector<std::unique_ptr<Particle>> ParticleVector;
+
 class Accelerator : public Content {
 private:
-    std::vector<Element> elements_;
-    std::vector<Particle> particles_;
+    ElementVector elements_;
+    ParticleVector particles_;
 
 public:
     explicit Accelerator(Support* s) : Content(s) {}
@@ -41,12 +47,12 @@ public:
      * Add a new particle in the accelerator.
      * @param particle Particle to add.
      */
-    void add(const Particle &particle) { particles_.push_back(particle); }
+    void add(Particle* particle) { particles_.push_back(std::unique_ptr<Particle>(particle)); }
     /**
      * Add a new Element at the end of the accelerator.
      * @param element Element to add.
      */
-    void add(const Element &element) { elements_.push_back(element); }
+    void add(Element* element) { elements_.push_back(std::unique_ptr<Element>(element)); }
 
     /**
      * Cleanup the dust in the Accelerator and remove all particles.
@@ -64,8 +70,8 @@ public:
      */
     void evolve(double dt = 0.01);
 
-    const std::vector<Particle> &Particles() const { return particles_; }
-    const std::vector<Element> &Elements() const { return elements_; }
+    const ParticleVector &particles() const { return particles_; }
+    const ElementVector &elements() const { return elements_; }
 
     void draw() override;
 };

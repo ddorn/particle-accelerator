@@ -13,7 +13,7 @@ int main() {
     TextSupport support(std::cout);
     Accelerator accelerator(&support);
 
-    accelerator.add(Particle(M_PROTON, PROTON_CHARGE, Vector3D(), Vector3D(1, 0, 0)));
+    accelerator.add(new Particle(M_PROTON, PROTON_CHARGE, Vector3D(), Vector3D(1, 0, 0)));
 
     accelerator.evolve();
     accelerator.draw();
