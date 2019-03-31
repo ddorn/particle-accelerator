@@ -11,7 +11,7 @@ const Vector3D Vector3D::e2(0,1,0);
 const Vector3D Vector3D::e3(0,0,1);
 
 
-component Vector3D::precision(1e-10);
+component Vector3D::precision(1e-18);
 component Vector3D::getPrecision() { return precision; }
 void Vector3D::setPrecision(component newPrecision) { if(newPrecision > 0) precision = newPrecision;}
 

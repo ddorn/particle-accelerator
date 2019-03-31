@@ -15,7 +15,8 @@ SOURCES = \
     Element.cpp \
     CurvedElement.cpp \
     StraightElement.cpp \
-	Segment.cpp
+	Segment.cpp \
+	Quadrupole.cpp
 
 HEADERS += \
     ../header/constants.h \
@@ -25,4 +26,5 @@ HEADERS += \
     ../header/Element.h \
     ../header/CurvedElement.cpp \
 	../header/StraightElement.h \
-	../header/Segment.h
+	../header/Segment.h \
+	../header/Quadrupole.h

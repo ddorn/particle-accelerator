@@ -10,7 +10,7 @@ LIBS += -L../bin -lsrc
 # PRE_TARGETDEPS += ../bin/libsrc.a
 
 SOURCES += \
-    main.cpp \
+    p10.cpp \
     TextSupport.cpp
 
 
@@ -25,4 +25,5 @@ HEADERS += \
     ../header/Element.h \
 	../header/CurvedElement.h \
 	../header/StraightElement.h \
-	../header/Segment.h
+	../header/Segment.h \
+	../header/Quadrupole.h

@@ -31,8 +31,18 @@ void GlWidget::paintGL() {
 void GlWidget::timerEvent(QTimerEvent *event) {
     Q_UNUSED(event);
 
-    double dt = chronometre.restart() / 1000.0;
-    accelerator.evolve(dt);
+    counter += 1;
+
+    if (counter % 4 == 2)
+        accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0));
+//    double dt = chronometre.restart() / 1000.0;
+    chronometre.restart();
+
+    for (int i = 0; i < 100; ++i) {
+        accelerator.evolve(0.001);
+    }
+
+
     update();
 }
 
@@ -96,54 +106,34 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
   case Qt::Key_Home:
     support.initPosition();
     break;
-  case Qt::Key_Plus:
-      accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0));
-      accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, -0.2, 0));
-      accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, 0.2, 0));
   };
 
   update(); // redessine
 }
 
 GlWidget::GlWidget(QWidget *parent)
-        : QOpenGLWidget(parent), accelerator(&support) {
+        : QOpenGLWidget(parent), counter(0), accelerator(&support, Vector3D(0, 3, 0)) {
 
-    Vector3D a1(-1, 0, 0);
-    Vector3D a2(0, 1, 0);
-    Vector3D a3(1, 0, 0);
-    Vector3D a4(0, -1, 0);
-    double radius(0.2);
-    auto d4 = new Dipole(a4, a1, radius, nullptr, 1, 1);
-    auto d3 = new Dipole(a3, a4, radius, d4, 1, 1);
-    auto d2 = new Dipole(a2, a3, radius, d3, 1, 1);
-    auto d1 = new Dipole(a1, a2, radius, d2, 1, 1);
-    d4->setNextElement(d1);
-    accelerator.add(d2);
-    accelerator.add(d3);
-    accelerator.add(d4);
-    accelerator.add(d1);
+    double radius(0.1);
+    Vector3D pqf(1, 3, 0);
+    Vector3D pd1(2, 3, 0);
+    Vector3D pd(3, 2, 0);
+    Vector3D pqd(3, 1, 0);
+    Vector3D pd2(3, 0, 0);
 
-//
-//    int nb;
-//    double x, y, z, vx, vy, vz;
-//    std::cin >> nb;
-//
-//    for (int j = 0; j < nb; ++j) {
-//        // We read particle description from a file
-//        // That specify first the position then the color
-//        std::cin >> x >> y >> z;
-//        std::cin >> vx >> vy >> vz;
-//
-//        Vector3D momentum = Vector3D(x, y, z);
-//        if (!momentum.isZero()) momentum = ~momentum;
-//
-//        // We randomize the charge + and -
-//        Particle *p = new Particle(M_PROTON, PROTON_CHARGE,
-//                                   Vector3D(x, y, z),
-//                                   momentum,  // Speed is towards the center, why not ?
-//                                   Vector3D(vx, vy, vz));
-//        accelerator.add(p);
-//    }
+    for (int i = 0; i < 4; ++i) {
+        accelerator.addQuadrupole(pqf, radius, -1.2);
+        accelerator.addSegment(pd1, radius);
+        accelerator.addDipole(pd, radius, 1, 1);  // 5.89158);
+        accelerator.addQuadrupole(pqd, radius, 1.2);
+        accelerator.addSegment(pd2, radius);
+
+        pqf = pqf ^ Vector3D::e3;
+        pd1 = pd1 ^ Vector3D::e3;
+        pd = pd ^ Vector3D::e3;
+        pqd = pqd ^ Vector3D::e3;
+        pd2 = pd2 ^ Vector3D::e3;
+    }
 }
 
 

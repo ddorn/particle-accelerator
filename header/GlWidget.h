@@ -18,6 +18,7 @@ using namespace constants;
 
 class GlWidget : public QOpenGLWidget {
 private:
+    int counter;
     Accelerator accelerator;
     QtSupport support;
 public:

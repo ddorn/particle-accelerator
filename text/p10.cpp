@@ -20,16 +20,16 @@ int main() {
     Vector3D pd2(3, 0, 0);
 
     for (int i = 0; i < 4; ++i) {
-        bobLEponge.addQuadruple(pqf, radius, -1.2);
+        bobLEponge.addQuadrupole(pqf, radius, -1.2);
         bobLEponge.addSegment(pd1, radius);
         bobLEponge.addDipole(pd, radius, 1, 5.89158);
-        bobLEponge.addQuadruple(pqd, radius, 1.2);
+        bobLEponge.addQuadrupole(pqd, radius, 1.2);
         bobLEponge.addSegment(pd2, radius);
 
         pqf = pqf ^ Vector3D::e3;
         pd1 = pd1 ^ Vector3D::e3;
         pd = pd ^ Vector3D::e3;
-        pqf = pqd ^ Vector3D::e3;
+        pqd = pqd ^ Vector3D::e3;
         pd2 = pd2 ^ Vector3D::e3;
     }
     bobLEponge.draw();
