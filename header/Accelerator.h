@@ -14,8 +14,12 @@
  *
  * In order to build a particle accelerator, one
  * needs to add each element one by one and then
- * each particle.
- *
+ * each particle. Each element is automatically
+ * linked to the precedent, and if the last element
+ * ends where the first element begins, the link
+ * will be set automatically too. If the accelerator
+ * is closed (the last element is linked to the first),
+ * it is impossible to add a new element.
  * Authors: Diego Dorn & Gabin Kolly
  */
 
@@ -74,8 +78,20 @@ public:
      * @param element Element to add.
      */
     void add(Element* element) { elements_.push_back(std::unique_ptr<Element>(element)); }
+    /**
+     * Add a segment. It begins where the last added element ends.
+     * @return false if it cannot add this element.
+     */
     bool addSegment(const Vector3D& exit, double radius);
+    /**
+     * Add a dipole. It begins where the last added element ends.
+     * @return false if it cannot add this element.
+     */
     bool addDipole(const Vector3D& exit, double radius, double curveture, double magneticFieldIntensity);
+    /**
+     * Add a quadrupole. It begins where the last added element ends.
+     * @return false if it cannot add this element.
+     */
     bool addQuadrupole(const Vector3D& exit, double radius, double magneticFieldIntensity);
 
     bool addParticle(double mass, double charge, const Vector3D &momentum, const Vector3D &color = Vector3D(0, 0, 1));
@@ -87,8 +103,20 @@ private:
      */
     void add(Particle* particle) { particles_.push_back(std::unique_ptr<Particle>(particle)); }
     Vector3D start_;
+    /**
+     * Link the two last elements
+     * and control if the last element
+     * must be linked to the first.
+     */
     void linkElements();
+    /**
+     * @return if the last element ends where the first element begins.
+     */
     bool isClosed() const;
+    /**
+     * @return if the element can be added to the accelerator, i.e.
+     * if the exit is not the entree and if the radius is strictly positive.
+     */
     bool acceptableNextElement(const Vector3D& exit, double radius) const;
 
 };
