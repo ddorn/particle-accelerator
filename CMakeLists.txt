@@ -27,14 +27,16 @@ set(QT_SOURCES
 
 add_executable(test_vector3d test/test_vector3d.cpp ${SOURCE_FILES})
 add_executable(test_particle test/test_particle.cpp ${SOURCE_FILES})
-add_executable(text_accelerator text/main.cpp ${SOURCE_FILES} ${TEXT_SOURCES})
+add_executable(text_accelerator text/text_accelerator.cpp ${SOURCE_FILES} ${TEXT_SOURCES})
 
-# This doesn't compile as I don't know how to add files like
-# shaders with cmake. It's sole purpose it to make clion functional.
-add_executable(qt_accelerator qt/qt_main.cpp ${SOURCE_FILES} ${QT_SOURCES})
-find_package(Qt5Core REQUIRED)
-find_package(Qt5Widgets REQUIRED)
-find_package(Qt5Gui REQUIRED)
-find_package(Qt5OpenGL REQUIRED)
-target_link_libraries(qt_accelerator Qt5::Widgets)
-target_link_libraries(qt_accelerator Qt5::OpenGL)
+if (NOT WIN32)
+	# This doesn't compile as I don't know how to add files like
+	# shaders with cmake. It's sole purpose it to make clion functional.
+	add_executable(qt_accelerator qt/qt_main.cpp ${SOURCE_FILES} ${QT_SOURCES})
+	find_package(Qt5Core REQUIRED)
+	find_package(Qt5Widgets REQUIRED)
+	find_package(Qt5Gui REQUIRED)
+	find_package(Qt5OpenGL REQUIRED)
+	target_link_libraries(qt_accelerator Qt5::Widgets)
+	target_link_libraries(qt_accelerator Qt5::OpenGL)
+endif()
