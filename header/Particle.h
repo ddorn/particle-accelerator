@@ -62,7 +62,7 @@ public:
     const Vector3D &momentum() const { return momentum_; }
     const Vector3D &position() const { return position_; }
     const Vector3D &color() const { return color_; }
-    const Element &element() const { return *element_; }
+    const Element* element() const { return element_; }
 
     /**
      * Speed vector of the particle. Unit: c

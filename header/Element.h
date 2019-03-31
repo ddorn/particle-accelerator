@@ -21,7 +21,7 @@ public:
     Element(const Vector3D &entree, const Vector3D &exit, double radius, Element *nextElement) : entree_(
             entree), exit_(exit), radius_(radius), nextElement_(nextElement) {}
 
-    virtual const Vector3D magneticForceAt(const Vector3D &position) const = 0;
+    virtual const Vector3D magneticForceAt(const Vector3D & /*position*/) const { return Vector3D(); }
     bool collideBorder(const Vector3D& position) const;
     bool isOut(const Vector3D& position) const;
 
@@ -30,8 +30,6 @@ public:
     const Vector3D &exit() const;
 
     const Element &nextElement() const;
-
-
 };
 
 std::ostream& operator<<(std::ostream &os, const Element &elem);
