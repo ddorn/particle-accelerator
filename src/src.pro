@@ -18,13 +18,4 @@ SOURCES = \
 	Segment.cpp \
 	Quadrupole.cpp
 
-HEADERS += \
-    ../header/constants.h \
-    ../header/Accelerator.h \
-    ../header/Vector3D.h \
-    ../header/Particle.h \
-    ../header/Element.h \
-    ../header/CurvedElement.cpp \
-	../header/StraightElement.h \
-	../header/Segment.h \
-	../header/Quadrupole.h
+HEADERS += all.h

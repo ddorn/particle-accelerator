@@ -56,6 +56,8 @@ public:
      *      but one should just use << as usual to write and element.
      */
     virtual std::ostream& print(std::ostream &os) const;
+
+    void draw(Support &support) const override { support.draw(*this); }
 };
 
 std::ostream& operator<<(std::ostream &os, const Element &elem);

@@ -24,7 +24,7 @@ public:
     double curvature() const;
 
     std::ostream &print(std::ostream &os) const override;
-    void draw(Support &support) override { support.draw(*this); }
+    void draw(Support &support) const override { support.draw(*this); }
 
 };
 

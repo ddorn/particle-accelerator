@@ -66,7 +66,7 @@ public:
     Vector3D& operator-=(const Vector3D& rhs);
     Vector3D& operator*=(const component& scalar);
 
-    void draw(Support &support) override { support.draw(*this); }
+    void draw(Support &support) const override { support.draw(*this); }
 
 private:
 

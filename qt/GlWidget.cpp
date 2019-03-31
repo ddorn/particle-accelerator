@@ -25,7 +25,7 @@ void GlWidget::paintGL() {
     // Clear the screen
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // And then draw the accelerator
-    accelerator.draw();
+    accelerator.draw(support);
 }
 
 void GlWidget::timerEvent(QTimerEvent *event) {
@@ -112,7 +112,7 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
 }
 
 GlWidget::GlWidget(QWidget *parent)
-        : QOpenGLWidget(parent), counter(0), accelerator(&support, Vector3D(0, 3, 0)) {
+        : QOpenGLWidget(parent), counter(0), accelerator(Vector3D(0, 3, 0)) {
 
     double radius(0.1);
     Vector3D pqf(1, 3, 0);

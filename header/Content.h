@@ -22,7 +22,7 @@ class Support;
 class Content {
 public:
     virtual ~Content() = default;
-    virtual void draw(Support &support) = 0;
+    virtual void draw(Support &support) const = 0;
 };
 
 

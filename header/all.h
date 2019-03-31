@@ -4,9 +4,13 @@
 #ifndef PARTICLEACCELERATOR_ALL_H
 #define PARTICLEACCELERATOR_ALL_H
 
+#include "Content.h"
+#include "Support.h"
+
+#include "constants.h"
+
 #include "Accelerator.h"
 #include "CurvedElement.h"
-#include "Content.h"
 #include "Dipole.h"
 #include "Element.h"
 #include "Particle.h"

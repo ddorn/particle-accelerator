@@ -32,7 +32,7 @@ public:
         return os;
     }
 
-    void draw(Support &support) override { support.draw(*this); }
+    void draw(Support &support) const override { support.draw(*this); }
 };
 
 

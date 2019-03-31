@@ -3,8 +3,8 @@
 //
 
 #include <iostream>
-#include <QtSupport.h>
 
+#include "all.h"
 #include "QtSupport.h"
 #include "vertex_shader.h"
 
@@ -143,11 +143,9 @@ void QtSupport::drawSphere(const QMatrix4x4 &model, double r, double g, double b
 
     sphere.draw(prog, VertexId);
 }
-
 void QtSupport::drawSphere(const QMatrix4x4 &model, const Vector3D &color) {
     drawSphere(model, color.x(), color.y(), color.z());
 }
-
 void QtSupport::drawVector(Vector3D vec, const Vector3D &start) {
     vec += start;
 
@@ -171,12 +169,40 @@ void QtSupport::translate(double x, double y, double z) {
   view = translation_supplementaire * view;
   prog.setUniformValue("view", view);
 }
-
 void QtSupport::rotate(double angle, double dir_x, double dir_y, double dir_z) {
   // Multiplie la matrice de vue par LA GAUCHE
   QMatrix4x4 rotation_supplementaire;
   rotation_supplementaire.rotate(angle, dir_x, dir_y, dir_z);
   view = rotation_supplementaire * view;
   prog.setUniformValue("view", view);
+}
+
+void QtSupport::draw(const Accelerator &accelerator) {
+    for (const auto& p : accelerator.particles()) {
+        p->draw(*this);
+    }
+    for (const auto &e : accelerator.elements()) {
+        e->draw(*this);
+    }
+}
+
+void QtSupport::draw(const CurvedElement &element) {
+    element.Element::draw(*this);
+}
+
+void QtSupport::draw(const Quadrupole &quadrupole) {
+    quadrupole.Element::draw(*this);
+}
+
+void QtSupport::draw(const StraightElement &element) {
+    element.Element::draw(*this);
+}
+
+void QtSupport::draw(const Vector3D &d) {
+    drawVector(d);
+}
+
+void QtSupport::draw(const Dipole &dipole) {
+    dipole.Element::draw(*this);
 }
 

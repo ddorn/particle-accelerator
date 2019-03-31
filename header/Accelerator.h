@@ -66,7 +66,7 @@ public:
     const ParticleVector &particles() const { return particles_; }
     const ElementVector &elements() const { return elements_; }
 
-    void draw(Support &support) override { support.draw(*this); }
+    void draw(Support &support) const override { support.draw(*this); }
 
     /**
      * Add a new Element at the end of the accelerator.
