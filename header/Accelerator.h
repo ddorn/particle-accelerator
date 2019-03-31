@@ -44,17 +44,6 @@ public:
     void operator=(const Accelerator & other) = delete;
 
     /**
-     * Add a new particle in the accelerator.
-     * @param particle Particle to add.
-     */
-    void add(Particle* particle) { particles_.push_back(std::unique_ptr<Particle>(particle)); }
-    /**
-     * Add a new Element at the end of the accelerator.
-     * @param element Element to add.
-     */
-    void add(Element* element) { elements_.push_back(std::unique_ptr<Element>(element)); }
-
-    /**
      * Cleanup the dust in the Accelerator and remove all particles.
      */
     void cleanParticles() { particles_.clear(); }
@@ -74,6 +63,27 @@ public:
     const ElementVector &elements() const { return elements_; }
 
     void draw() override;
+
+    /**
+     * Add a new Element at the end of the accelerator.
+     *
+     * Elements should be on the horizontal plane z=0,
+     * and start at the end of the last element.
+     * No checks are performed.
+     *
+     * @param element Element to add.
+     */
+    void add(Element* element) { elements_.push_back(std::unique_ptr<Element>(element)); }
+
+    bool addParticle(double mass, double charge, const Vector3D &momentum, const Vector3D &color = Vector3D(0, 0, 1));
+
+private:
+    /**
+     * Add a new particle in the accelerator.
+     * @param particle Particle to add.
+     */
+    void add(Particle* particle) { particles_.push_back(std::unique_ptr<Particle>(particle)); }
+
 };
 
 std::ostream& operator<<(std::ostream& os, const Accelerator &accelerator);

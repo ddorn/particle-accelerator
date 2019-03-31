@@ -48,7 +48,7 @@ public:
     Particle(double mass, double charge, const Vector3D &position,
             const Vector3D &momentum, const Vector3D &color = Vector3D(1, 0, 0),
 	        Element* element = nullptr)
-        : mass_(mass),
+        : mass_(mass),  // TODO : check if mass is negative ?
         charge_(charge),
         position_(position),
         momentum_(momentum),

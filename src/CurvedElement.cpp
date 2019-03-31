@@ -14,8 +14,13 @@ Vector3D CurvedElement::centerOfCurvature() const {
 
 bool CurvedElement::collideBorder(const Vector3D &position) const {
     Vector3D X(position - centerOfCurvature());
-    Vector3D u(~(X - X.z() * Vector3D::e3));
-    return (X - u / fabs(curvature())).normSquared() > radius() * radius();
+    Vector3D dir(X.x(), X.y(), 0);
+
+    // A particle shouln't be on the center of curvature
+    // (or the element is too fat)
+    if (dir.isZero()) return false;
+
+    return (X - ~dir / fabs(curvature())).normSquared() > radius() * radius();
 }
 
 bool CurvedElement::isOut(const Vector3D& position) const {
