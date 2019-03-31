@@ -54,7 +54,7 @@ profonde, et si l'on fait une copie de surface, toutes les particules et
 ### Question P8.1
 > En termes de POO, quelle est donc la nature de la méthode heurte_bord() ?
 
-C'est une méthode virtual pure.
+C'est une méthode virtual pure publique.
 
 
 ### Question P8.2
@@ -62,3 +62,31 @@ C'est une méthode virtual pure.
 
 La classe générale Element est abstraite, on ne peut donc pas créer
 d'instances de cette classe.
+
+
+### Question P9.1
+> En termes de POO, quelle est donc la nature de la méthode dessine() ?
+
+C'est un cas de double dispatch.
+
+
+
+### Question P9.2
+> Quelle est la bonne façon de le faire dans un cadre de programmation orientée-objet ?
+
+(en ce qui concerne les collections de particules et d'éléments de l'accélérateur)
+Pour garder les spécificités, il faut créer une collection hétérogène. On va mettre en place
+un vector de unique_ptr, afin de garder le polymorphisme.
+
+
+
+### Question P9.3
+> A quoi faut-il faire attention pour les classes contenant des pointeurs ? Quelles solutions peut-on envisager ?
+
+Il faut faire attention à ce que les zones mémoire allouées soient
+bien libérées après utilisation. Comme nous utilisons des unique_ptr,
+cela se fait automatiquement. Il faut également faire attention lors de la
+création des instances à ne pas créer des instances locales, puis à les ajouter
+à une classe abstraite, car les zones mémoire seraient alors désallouées, mais
+les pointeurs ne seraient pas supprimés. La solution est alors d'allouer dynamiquement
+les zones mémoires, en faisant new Class(...).
