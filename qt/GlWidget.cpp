@@ -108,7 +108,7 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
 GlWidget::GlWidget(QWidget *parent)
         : QOpenGLWidget(parent), accelerator(&support) {
 
-    accelerator.add(new Dipole(Vector3D(), Vector3D(1, 0, 0), 0.2, nullptr, 0.3, Vector3D(0, 0, 0.1)));
+    accelerator.add(new Dipole(Vector3D(), Vector3D(1, 0, 0), 0.2, nullptr, 0.3, 0.1));
     accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0));
 
 //
