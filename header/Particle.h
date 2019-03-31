@@ -104,8 +104,13 @@ public:
      * and returns true.
      */
     bool updateElement();
-
+    /**
+     * Energy of the particle. Unit : GeV
+     */
     double energy() const;
+    /**
+     * Gamma of the particle. No unit.
+     */
     double gamma() const;
 };
 
