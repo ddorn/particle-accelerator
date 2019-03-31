@@ -14,7 +14,8 @@ set(SOURCE_FILES
 		src/StraightElement.cpp
 		src/Accelerator.cpp
 		src/Dipole.cpp
-		src/Segment.cpp)
+		src/Segment.cpp
+		src/Quadrupole.cpp)
 
 set(TEXT_SOURCES
         text/TextSupport.cpp)

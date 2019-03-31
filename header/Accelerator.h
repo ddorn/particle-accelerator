@@ -76,7 +76,7 @@ public:
     void add(Element* element) { elements_.push_back(std::unique_ptr<Element>(element)); }
     bool addSegment(const Vector3D& exit, double radius);
     bool addDipole(const Vector3D& exit, double radius, double curveture, double magneticFieldIntensity);
-    bool addQuadruple(const Vector3D& exit, double radius, double magneticFieldIntensity);
+    bool addQuadrupole(const Vector3D& exit, double radius, double magneticFieldIntensity);
 
     bool addParticle(double mass, double charge, const Vector3D &momentum, const Vector3D &color = Vector3D(0, 0, 1));
 
@@ -87,6 +87,7 @@ private:
      */
     void add(Particle* particle) { particles_.push_back(std::unique_ptr<Particle>(particle)); }
     Vector3D start_;
+    void linkElements();
 
 };
 

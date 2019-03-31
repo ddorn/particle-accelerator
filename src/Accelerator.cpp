@@ -3,6 +3,11 @@
 //
 
 #include "Accelerator.h"
+#include "Segment.h"
+#include "Dipole.h"
+#include "Quadrupole.h"
+
+#include "Accelerator.h"
 
 using namespace std;
 
@@ -80,4 +85,41 @@ bool Accelerator::addParticle(double mass, double charge, const Vector3D &moment
     ));
 
     return true;
+}
+
+bool Accelerator::addSegment(const Vector3D &exit, double radius) {
+    if(elements().empty()){
+        elements_.push_back(std::make_unique<Segment>(start_, exit, radius, nullptr));
+    } else{
+        elements_.push_back(std::make_unique<Segment>(elements().back()->exit(), exit, radius, nullptr));
+        linkElements();
+    }
+    return true;
+}
+
+bool Accelerator::addDipole(const Vector3D &exit, double radius, double curvature, double magneticFieldIntensity) {
+    if(elements().empty()){
+        elements_.push_back(std::make_unique<Dipole>(start_, exit, radius, nullptr, curvature, magneticFieldIntensity));
+    } else{
+        elements_.push_back(std::make_unique<Dipole>(elements().back()->exit(), exit, radius, nullptr, curvature, magneticFieldIntensity));
+        linkElements();
+    }
+    return true;
+}
+
+bool Accelerator::addQuadrupole(const Vector3D &exit, double radius, double magneticFieldIntensity) {
+    if(elements().empty()){
+        elements_.push_back(std::make_unique<Quadrupole>(start_, exit, radius, nullptr, magneticFieldIntensity));
+    } else{
+        elements_.push_back(std::make_unique<Quadrupole>(elements().back()->exit(), exit, radius, nullptr, magneticFieldIntensity));
+        linkElements();
+    }
+    return true;
+}
+
+void Accelerator::linkElements() {
+    elements_[elements().size() - 2]->setNextElement(elements().back().get());
+    if(elements().back()->exit() == start_){
+        elements_.back()->setNextElement(elements_.front().get());
+    }
 }
