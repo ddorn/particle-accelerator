@@ -5,6 +5,7 @@
 #include <QKeyEvent>
 
 #include "GlWidget.h"
+#include "Dipole.h"
 
 // Methods needed by QOpenGLWidget
 void GlWidget::initializeGL() {
@@ -95,6 +96,10 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
   case Qt::Key_Home:
     support.initPosition();
     break;
+  case Qt::Key_Plus:
+      accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0));
+      accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, -0.2, 0));
+      accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, 0.2, 0));
   };
 
   update(); // redessine
@@ -103,26 +108,30 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
 GlWidget::GlWidget(QWidget *parent)
         : QOpenGLWidget(parent), accelerator(&support) {
 
-    int nb;
-    double x, y, z, vx, vy, vz;
-    std::cin >> nb;
+    accelerator.add(new Dipole(Vector3D(), Vector3D(1, 0, 0), 0.2, nullptr, 0.3, Vector3D(0, 0, 0.1)));
+    accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0));
 
-    for (int j = 0; j < nb; ++j) {
-        // We read particle description from a file
-        // That specify first the position then the color
-        std::cin >> x >> y >> z;
-        std::cin >> vx >> vy >> vz;
-
-        Vector3D momentum = Vector3D(x, y, z);
-        if (!momentum.isZero()) momentum = ~momentum;
-
-        // We randomize the charge + and -
-        Particle *p = new Particle(M_PROTON, PROTON_CHARGE,
-                                   Vector3D(x, y, z),
-                                   momentum,  // Speed is towards the center, why not ?
-                                   Vector3D(vx, vy, vz));
-        accelerator.add(p);
-    }
+//
+//    int nb;
+//    double x, y, z, vx, vy, vz;
+//    std::cin >> nb;
+//
+//    for (int j = 0; j < nb; ++j) {
+//        // We read particle description from a file
+//        // That specify first the position then the color
+//        std::cin >> x >> y >> z;
+//        std::cin >> vx >> vy >> vz;
+//
+//        Vector3D momentum = Vector3D(x, y, z);
+//        if (!momentum.isZero()) momentum = ~momentum;
+//
+//        // We randomize the charge + and -
+//        Particle *p = new Particle(M_PROTON, PROTON_CHARGE,
+//                                   Vector3D(x, y, z),
+//                                   momentum,  // Speed is towards the center, why not ?
+//                                   Vector3D(vx, vy, vz));
+//        accelerator.add(p);
+//    }
 }
 
 

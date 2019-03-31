@@ -56,7 +56,25 @@ void QtSupport::draw(const Particle &particle) {
 //    drawVector(particle.speed(), particle.position());
 }
 void QtSupport::draw(const Element &element) {
-    cout << element << endl;
+    QMatrix4x4 model;
+
+    Vector3D pos(element.entree());
+    model.translate(pos.x(), pos.y(), pos.z());
+    model.scale(0.03);
+    drawCube(model);
+
+    drawVector(Vector3D(0, element.radius(), 0), element.entree());
+    drawVector(Vector3D(0, -element.radius(), 0), element.entree());
+
+    drawVector(Vector3D(0, element.radius(), 0), element.exit());
+    drawVector(Vector3D(0, -element.radius(), 0), element.exit());
+
+    model.setToIdentity();
+    pos = element.exit();
+    model.translate(pos.x(), pos.y(), pos.z());
+    model.scale(0.03);
+    drawCube(model);
+
 }
 
 void QtSupport::drawCube(const QMatrix4x4 &model = QMatrix4x4()) {
