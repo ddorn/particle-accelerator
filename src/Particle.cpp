@@ -47,14 +47,14 @@ void Particle::addMagneticForce(const Vector3D &b, double dt) {
     force_ += force.rotate(correction, correction_angle);
 }
 
-bool Particle::updateElement(){
-    if(element_->collideBorder(position())){
+bool Particle::updateElement() {
+    if (element_->collideBorder(position())) {
         return false;
     }
-    if(element_->isOut(position())){
-        if(element_->nextElement() == nullptr){
+    if (element_->isOut(position())) {
+        if (element_->nextElement() == nullptr) {
             return false;
-        } else{
+        } else {
             element_ = element_->nextElement();
         }
     }

@@ -33,8 +33,6 @@ void Accelerator::evolve(double dt) {
             // The order of particles doesn't matter,
             // so we put the particle we need to delete at the end
             // and then remove it
-//            cout << "BYE BYE" << endl
-//                <<*particles_[i] << endl;
             swap(particles_[i], particles_.back());
             particles_.pop_back();
         } else {

@@ -24,8 +24,7 @@ bool CurvedElement::collideBorder(const Vector3D &position) const {
 }
 
 bool CurvedElement::isOut(const Vector3D& position) const {
-    Vector3D e3(0,0,1);
-    return(e3.tripleProduct(position, exit()) > 0);
+    return Vector3D::e3.tripleProduct(position - centerOfCurvature(), exit() - centerOfCurvature()) > 0;
 }
 
 double CurvedElement::curvature() const {
