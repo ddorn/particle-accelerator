@@ -10,7 +10,7 @@ using namespace std;
 
 int main() {
     TextSupport s(cout);
-    Accelerator bobLEponge(&s, Vector3D(0, 3, 0));
+    Accelerator bobLEponge(Vector3D(0, 3, 0));
 
     double radius(0.1);
     Vector3D pqf(1, 3, 0);
@@ -32,10 +32,10 @@ int main() {
         pqd = pqd ^ Vector3D::e3;
         pd2 = pd2 ^ Vector3D::e3;
     }
-    bobLEponge.draw();
+    bobLEponge.draw(s);
     for (int j = 0; j < 10; ++j) {
         bobLEponge.evolve();
-        bobLEponge.draw();
+        bobLEponge.draw(s);
     }
     return 0;
 }

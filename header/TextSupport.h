@@ -6,10 +6,7 @@
 #define PARTICLEACCELERATOR_TEXTSUPPORT_H
 
 #include <iostream>
-#include "Support.h"
-#include "Particle.h"
-#include "Element.h"
-#include "Vector3D.h"
+#include "all.h"
 
 class TextSupport : public Support {
 private:
@@ -20,6 +17,12 @@ public:
 
     void draw(const Particle &particle) override;
     void draw(const Element &element) override;
+    void draw(const Vector3D &d) override;
+    void draw(const Dipole &dipole) override;
+    void draw(const Accelerator &accelerator) override;
+    void draw(const CurvedElement &element) override;
+    void draw(const Quadrupole &quadrupole) override;
+    void draw(const StraightElement &element) override;
 };
 
 

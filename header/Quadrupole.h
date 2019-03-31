@@ -19,12 +19,10 @@ public:
      */
     const Vector3D magneticForceAt(const Vector3D& position) const override;
 
+    void draw(Support &support) override { support.draw(*this); }
+
 private:
     double intensity_;
-
-
-
-
 };
 
 #endif //PARTICLEACCELERATOR_QUADRUPOLE_H

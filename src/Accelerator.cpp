@@ -65,15 +65,6 @@ void Accelerator::evolve(double dt) {
     }
 }
 
-void Accelerator::draw() {
-    for (const auto &p : particles_) {
-        support_->draw(*p);
-    }
-    for (const auto &e : elements_) {
-        support_->draw(*e);
-    }
-}
-
 bool Accelerator::addParticle(double mass, double charge, const Vector3D &momentum, const Vector3D &color) {
     if (elements().empty()) return false;
     if (mass < 0) return false;

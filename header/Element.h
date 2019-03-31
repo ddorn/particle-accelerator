@@ -7,10 +7,11 @@
 
 
 #include "Vector3D.h"
+#include "Content.h"
 
 class Particle;
 
-class Element{
+class Element : public Content {
 private:
     Vector3D entree_;
     Vector3D exit_;

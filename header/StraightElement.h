@@ -16,6 +16,7 @@ public:
 
     bool collideBorder(const Vector3D& position) const override;
     bool isOut(const Vector3D& position) const override;
+    void draw(Support &support) override { support.draw(*this); }
 };
 
 

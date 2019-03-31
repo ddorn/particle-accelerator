@@ -3,10 +3,12 @@
 #define PARTICLE_ACCELERATOR_VECTOR3D_H
 
 #include <iostream>
+#include "Content.h"
+#include "Support.h"
 
 typedef double component;
 
-class Vector3D {
+class Vector3D : Content {
 public:
     static const Vector3D e1;
     static const Vector3D e2;
@@ -63,6 +65,8 @@ public:
     Vector3D& operator+=(const Vector3D& rhs);
     Vector3D& operator-=(const Vector3D& rhs);
     Vector3D& operator*=(const component& scalar);
+
+    void draw(Support &support) override { support.draw(*this); }
 
 private:
 

@@ -25,6 +25,9 @@ public:
     // Draw objects
     void draw(const Particle &particle) override;
     void draw(const Element &element) override;
+    void draw(const Dipole &) {
+        std::cout << "dis, paul ?" << std::endl;
+    };
 
     void drawCube(const QMatrix4x4 &model);
     void drawSphere(const QMatrix4x4 &model, double r = 1, double g = 1, double b = 1);

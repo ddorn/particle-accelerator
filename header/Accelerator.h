@@ -43,7 +43,7 @@ private:
     ParticleVector particles_;
 
 public:
-    explicit Accelerator(Support* s, const Vector3D& start = Vector3D()) : Content(s), start_(start) {}
+    explicit Accelerator(const Vector3D& start = Vector3D()) : start_(start) {}
     Accelerator(const Accelerator &other) = delete;
     void operator=(const Accelerator & other) = delete;
 
@@ -66,7 +66,7 @@ public:
     const ParticleVector &particles() const { return particles_; }
     const ElementVector &elements() const { return elements_; }
 
-    void draw() override;
+    void draw(Support &support) override { support.draw(*this); }
 
     /**
      * Add a new Element at the end of the accelerator.

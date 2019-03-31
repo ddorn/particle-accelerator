@@ -14,3 +14,30 @@ void TextSupport::draw(const Particle &particle) {
 void TextSupport::draw(const Element &element) {
     ostream_ << element << endl;
 }
+
+void TextSupport::draw(const Vector3D &d) {
+    ostream_ << d << endl;
+}
+
+void TextSupport::draw(const Dipole &dipole) {
+    ostream_ << dipole << endl;
+}
+
+void TextSupport::draw(const Accelerator &accelerator) {
+    ostream_ << accelerator << endl;
+}
+
+void TextSupport::draw(const CurvedElement &element) {
+    ostream_ << element << endl;
+
+}
+
+void TextSupport::draw(const Quadrupole &quadrupole) {
+    ostream_ << quadrupole << endl;
+
+}
+
+void TextSupport::draw(const StraightElement &element) {
+    ostream_ << element << endl;
+}
+

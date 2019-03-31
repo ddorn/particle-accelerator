@@ -24,10 +24,12 @@
 
 #include "Vector3D.h"
 #include "constants.h"
+#include "Content.h"
+#include "Support.h"
 
 class Element;
 
-class Particle {
+class Particle : public Content {
 private:
     double mass_;
     double charge_;
@@ -112,6 +114,8 @@ public:
      * Gamma of the particle. No unit.
      */
     double gamma() const;
+
+    void draw(Support &support) override { support.draw(*this); }
 };
 
 

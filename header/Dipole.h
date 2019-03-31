@@ -7,7 +7,7 @@
 
 #include "CurvedElement.h"
 
-class Dipole : public CurvedElement{
+class Dipole : public CurvedElement {
 private:
     Vector3D magneticField_;
 
@@ -18,10 +18,9 @@ public:
      * So the constructor asks a double, not a vector, to assure that.
      */
     Dipole(const Vector3D &entree, const Vector3D &exit, double radius, Element *nextElement,
-                  double curvature, double magneticFieldIntensity) :
-                  CurvedElement(entree, exit, radius, nextElement, curvature),
-                  magneticField_(Vector3D(0,0,magneticFieldIntensity))
-                  {}
+           double curvature, double magneticFieldIntensity) :
+            CurvedElement(entree, exit, radius, nextElement, curvature),
+            magneticField_(Vector3D(0, 0, magneticFieldIntensity)) {}
 
     const Vector3D magneticForceAt(const Vector3D &) const override {
         return magneticField_;
@@ -32,6 +31,8 @@ public:
         os << " - Magnetic field : " << magneticField_ << std::endl;
         return os;
     }
+
+    void draw(Support &support) override { support.draw(*this); }
 };
 
 
