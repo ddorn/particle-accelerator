@@ -48,10 +48,10 @@ void Particle::addMagneticForce(const Vector3D &b, double dt) {
 }
 
 bool Particle::updateElement(){
-    if(element_->collideBorder((*this).position())){
+    if(element_->collideBorder(position())){
         return false;
     }
-    if(element_->isOut((*this).position())){
+    if(element_->isOut(position())){
         if(element_->nextElement() == nullptr){
             return false;
         } else{
