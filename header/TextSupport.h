@@ -23,6 +23,8 @@ public:
     void draw(const CurvedElement &element) override;
     void draw(const Quadrupole &quadrupole) override;
     void draw(const StraightElement &element) override;
+
+    void draw(const Segment &segment) override;
 };
 
 

@@ -27,8 +27,13 @@ public:
 
 
     void drawCube(const QMatrix4x4 &model);
+    void drawCube(const Vector3D &position, double scale);
     void drawSphere(const QMatrix4x4 &model, double r = 1, double g = 1, double b = 1);
     void drawSphere(const QMatrix4x4 &model, const Vector3D &color);
+    void drawSphere(const Vector3D& position, double scale, const Vector3D &color);
+    void drawSphere(const Vector3D& position, double scale, double r = 1, double g = 1, double b = 1);
+    void drawCircle(const QMatrix4x4 &model, double r=1, double g=1, double b=1, size_t points=30);
+    void drawCircle(const Vector3D &position, double radius, const Vector3D &dir, const Vector3D &color);
     void drawVector(Vector3D vec, const Vector3D &start = Vector3D());
 
     void draw(const Accelerator &accelerator) override;
@@ -47,6 +52,11 @@ public:
     void translate(double x, double y, double z);
 
     void rotate(double angle, double dir_x, double dir_y, double dir_z);
+
+    void draw(const Segment &segment) override;
+
+private:
+    QMatrix4x4 posToModel(const Vector3D &position, double scale);
 };
 
 

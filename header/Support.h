@@ -17,6 +17,7 @@ class Accelerator;
 class Quadrupole;
 class CurvedElement;
 class StraightElement;
+class Segment;
 
 
 class Content;
@@ -30,8 +31,10 @@ public:
     virtual void draw(const Element&) = 0;
     virtual void draw(const Particle&) = 0;
     virtual void draw(const Quadrupole&) = 0;
+    virtual void draw(const Segment&) = 0;
     virtual void draw(const StraightElement&) = 0;
     virtual void draw(const Vector3D&) = 0;
+
 
 };
 #endif //PARTICLEACCELERATOR_SUPPORT_H
