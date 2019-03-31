@@ -88,6 +88,8 @@ private:
     void add(Particle* particle) { particles_.push_back(std::unique_ptr<Particle>(particle)); }
     Vector3D start_;
     void linkElements();
+    bool isClosed() const;
+    bool acceptableNextElement(const Vector3D& exit, double radius) const;
 
 };
 

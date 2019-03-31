@@ -2,6 +2,8 @@
 // Created by diego on 3/17/19.
 //
 
+#include <Accelerator.h>
+
 #include "Accelerator.h"
 #include "Segment.h"
 #include "Dipole.h"
@@ -88,6 +90,7 @@ bool Accelerator::addParticle(double mass, double charge, const Vector3D &moment
 }
 
 bool Accelerator::addSegment(const Vector3D &exit, double radius) {
+    if(not(acceptableNextElement(exit, radius))){return false;}
     if(elements().empty()){
         elements_.push_back(std::make_unique<Segment>(start_, exit, radius, nullptr));
     } else{
@@ -98,6 +101,7 @@ bool Accelerator::addSegment(const Vector3D &exit, double radius) {
 }
 
 bool Accelerator::addDipole(const Vector3D &exit, double radius, double curvature, double magneticFieldIntensity) {
+    if(not(acceptableNextElement(exit, radius)) or fabs(curvature) < Vector3D::getPrecision()){return false;}
     if(elements().empty()){
         elements_.push_back(std::make_unique<Dipole>(start_, exit, radius, nullptr, curvature, magneticFieldIntensity));
     } else{
@@ -108,6 +112,7 @@ bool Accelerator::addDipole(const Vector3D &exit, double radius, double curvatur
 }
 
 bool Accelerator::addQuadrupole(const Vector3D &exit, double radius, double magneticFieldIntensity) {
+    if(not(acceptableNextElement(exit, radius))){return false;}
     if(elements().empty()){
         elements_.push_back(std::make_unique<Quadrupole>(start_, exit, radius, nullptr, magneticFieldIntensity));
     } else{
@@ -119,7 +124,18 @@ bool Accelerator::addQuadrupole(const Vector3D &exit, double radius, double magn
 
 void Accelerator::linkElements() {
     elements_[elements().size() - 2]->setNextElement(elements().back().get());
-    if(elements().back()->exit() == start_){
+    if(isClosed()){
         elements_.back()->setNextElement(elements_.front().get());
     }
+}
+
+bool Accelerator::isClosed() const {
+    return not(elements().empty()) and elements().back()->exit() == start_;
+}
+
+bool Accelerator::acceptableNextElement(const Vector3D &exit, double radius) const {
+    if(elements().empty()){
+        return radius <= 0;
+    }
+    return not(isClosed() or radius <= 0 or exit == elements().back()->exit());
 }
