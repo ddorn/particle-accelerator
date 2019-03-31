@@ -46,15 +46,15 @@ Et clairement, ici, c'est de la magie.
 
 
 ### Semaine 5
- -
+ - Semaine de vide
  -
 ##### Humeur
 
 
 
 ### Semaine 6
- -
- -
+On implémente différentes classes d'éléments, ainsi que le polymorphisme.
+Le projet prend de plus en plus forme, ce qui est motivant.
 ##### Humeur
 
 

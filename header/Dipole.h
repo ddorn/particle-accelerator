@@ -12,10 +12,15 @@ private:
     Vector3D magneticField_;
 
 public:
+    /**
+     * Because the elements are all in the x-y plane,
+     * the dipoles can only apply a vertical magnetic field.
+     * So the constructor asks a double, not a vector, to assure that.
+     */
     Dipole(const Vector3D &entree, const Vector3D &exit, double radius, Element *nextElement,
-                  double curvature, const Vector3D &magneticField) :
+                  double curvature, double magneticFieldIntensity) :
                   CurvedElement(entree, exit, radius, nextElement, curvature),
-                  magneticField_(magneticField)
+                  magneticField_(Vector3D(0,0,magneticFieldIntensity))
                   {}
 
     const Vector3D magneticForceAt(const Vector3D &) const override {

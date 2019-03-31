@@ -49,3 +49,16 @@ faiscaux, `Element`s. Ainsi on ne veut pas qu'il puisse être copié,
 car cela ferait une copie de beaucoup d'objects si l'on faisait une copie 
 profonde, et si l'on fait une copie de surface, toutes les particules et
 éléments seront partagés entre les copies.
+
+
+### Question P8.1
+> En termes de POO, quelle est donc la nature de la méthode heurte_bord() ?
+
+C'est une méthode virtual pure.
+
+
+### Question P8.2
+> Qu'est-ce que cela implique sur la classe générale Element ?
+
+La classe générale Element est abstraite, on ne peut donc pas créer
+d'instances de cette classe.
