@@ -17,28 +17,43 @@ private:
     double radius_;
     Element* nextElement_;
 public:
-    Element(const Vector3D &entree, const Vector3D &exit, double radius, Element *nextElement) : entree_(
-            entree), exit_(exit), radius_(radius), nextElement_(nextElement) {}
+    Element(const Vector3D &entree, const Vector3D &exit, double radius, Element *nextElement)
+    : entree_(entree), exit_(exit), radius_(radius), nextElement_(nextElement) {}
 
-    virtual const Vector3D magneticForceAt(const Vector3D & /*position*/) const { return Vector3D(); }
+    /**
+     * Get the magnetic fields at a given point in space.
+     * @param position A point in absolute space coordinate.
+     * @return The magnetic field.
+     */
+    virtual const Vector3D magneticForceAt(const Vector3D & position) const = 0;
     /**
      * Test whether or not the particle collided
      * with the border
      * @param position of the particle
      */
-    bool collideBorder(const Vector3D& position) const;
+    virtual bool collideBorder(const Vector3D& position) const;
     /**
      * Test whether or not the particle is in
      * the next element.
      * @param position of the particle
      */
-    bool isOut(const Vector3D& position) const;
+    virtual bool isOut(const Vector3D& position) const;
 
     double radius() const;
     const Vector3D &entree() const;
     const Vector3D &exit() const;
 
+    // TODO: Isn't it bad to expose pointers ?
     Element* nextElement() const;
+
+    /**
+     * Print info of the element on the stream.
+     * @param os The stream to write the element to
+     * @return the same stream.
+     * @note we add the to allow for polymorphic printing of elements,
+     *      but one should just use << as usual to write and element.
+     */
+    virtual std::ostream& print(std::ostream &os) const;
 };
 
 std::ostream& operator<<(std::ostream &os, const Element &elem);

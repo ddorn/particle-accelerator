@@ -16,6 +16,5 @@ public:
 
 };
 
-std::ostream &operator<<(std::ostream &os, const StraightElement &elem);
 
 #endif //PARTICLEACCELERATOR_STRAIGHTELEMENT_H

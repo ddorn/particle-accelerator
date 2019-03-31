@@ -21,6 +21,12 @@ public:
     const Vector3D magneticForceAt(const Vector3D &) const override {
         return magneticField_;
     }
+
+    std::ostream &print(std::ostream &os) const override {
+        CurvedElement::print(os);
+        os << " - Magnetic field : " << magneticField_ << std::endl;
+        return os;
+    }
 };
 
 

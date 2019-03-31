@@ -114,6 +114,7 @@ public:
     double gamma() const;
 };
 
+
 std::ostream& operator<<(std::ostream &os, const Particle &partic);
 
 #endif //PARTICLE_ACCELERATOR_PARTICLE_H

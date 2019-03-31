@@ -18,13 +18,12 @@ public:
                   double curvature) : Element(entree, exit, radius, nextElement), curvature_(curvature) {}
 
     Vector3D centerOfCurvature() const;
-    bool collideBorder(const Vector3D &position) const;
-    bool isOut(const Vector3D &position) const;
+    bool collideBorder(const Vector3D &position) const override;
+    bool isOut(const Vector3D &position) const override;
 
     double curvature() const;
 
-
+    std::ostream &print(std::ostream &os) const override;
 };
-std::ostream &operator<<(std::ostream &os, const CurvedElement &elem);
 
 #endif //PARTICLEACCELERATOR_CURVEDELEMENT_H

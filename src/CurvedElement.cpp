@@ -27,12 +27,9 @@ double CurvedElement::curvature() const {
     return curvature_;
 }
 
-std::ostream &operator<<(std::ostream &os, const CurvedElement &elem) {
-    os << "Curved element :" << std::endl
-        << " - entree : " << elem.entree() << std::endl
-        << " - exit : " << elem.exit() << std::endl
-        << " - radius : " << elem.radius() << std::endl
-        << " - curvature : " << elem.curvature() << std::endl
-        << " - center of curvature : " << elem.centerOfCurvature() << std::endl;
+std::ostream &CurvedElement::print(std::ostream &os) const {
+    Element::print(os);
+    os << " - curvature : " << curvature() << std::endl
+       << " - center of curvature : " << centerOfCurvature() << std::endl;
     return os;
 }
