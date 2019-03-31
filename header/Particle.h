@@ -98,6 +98,11 @@ public:
      * @param dt Timestep for the integrator
      */
     void evolve(double dt);
+    /**
+     * If it collided or is out, it returns false.
+     * Otherwise tt updates the element where the particle is
+     * and returns true.
+     */
     bool updateElement();
 
     double energy() const;

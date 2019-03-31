@@ -22,7 +22,17 @@ public:
             entree), exit_(exit), radius_(radius), nextElement_(nextElement) {}
 
     virtual const Vector3D magneticForceAt(const Vector3D & /*position*/) const { return Vector3D(); }
+    /**
+     * Test whether or not the particle collided
+     * with the border
+     * @param position of the particle
+     */
     bool collideBorder(const Vector3D& position) const;
+    /**
+     * Test whether or not the particle is in
+     * the next element.
+     * @param position of the particle
+     */
     bool isOut(const Vector3D& position) const;
 
     double radius() const;
