@@ -39,7 +39,7 @@ private:
     ParticleVector particles_;
 
 public:
-    explicit Accelerator(Support* s) : Content(s) {}
+    explicit Accelerator(Support* s, const Vector3D& start = Vector3D()) : Content(s), start_(start) {}
     Accelerator(const Accelerator &other) = delete;
     void operator=(const Accelerator & other) = delete;
 
@@ -74,6 +74,9 @@ public:
      * @param element Element to add.
      */
     void add(Element* element) { elements_.push_back(std::unique_ptr<Element>(element)); }
+    void addSegment(const Vector3D& exit, double radius);
+    void addDipole(const Vector3D& exit, double radius, double curveture, double magneticFieldIntensity);
+    void addQuadruple(const Vector3D& exit, double radius, double magneticFieldIntensity);
 
     bool addParticle(double mass, double charge, const Vector3D &momentum, const Vector3D &color = Vector3D(0, 0, 1));
 
@@ -83,6 +86,7 @@ private:
      * @param particle Particle to add.
      */
     void add(Particle* particle) { particles_.push_back(std::unique_ptr<Particle>(particle)); }
+    Vector3D start_;
 
 };
 
