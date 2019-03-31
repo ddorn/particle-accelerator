@@ -31,13 +31,13 @@ public:
      * with the border
      * @param position of the particle
      */
-    virtual bool collideBorder(const Vector3D& position) const;
+    virtual bool collideBorder(const Vector3D& position) const = 0;
     /**
      * Test whether or not the particle is in
      * the next element.
      * @param position of the particle
      */
-    virtual bool isOut(const Vector3D& position) const;
+    virtual bool isOut(const Vector3D& position) const = 0;
 
     double radius() const;
     const Vector3D &entree() const;

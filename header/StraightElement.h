@@ -14,6 +14,8 @@ public:
     StraightElement(const Vector3D &entree, const Vector3D &exit, double radius, Element *nextElement)
             : Element(entree, exit, radius, nextElement) {}
 
+    bool collideBorder(const Vector3D& position) const override;
+    bool isOut(const Vector3D& position) const override;
 };
 
 
