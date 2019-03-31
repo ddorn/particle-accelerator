@@ -3,9 +3,8 @@
 //
 
 #include <iostream>
-#include <Element.h>
-
 #include "Element.h"
+
 using namespace std;
 
 bool Element::collideBorder(const Vector3D& position) const {
