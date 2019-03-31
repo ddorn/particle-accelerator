@@ -29,7 +29,7 @@ public:
     const Vector3D &entree() const;
     const Vector3D &exit() const;
 
-    const Element &nextElement() const;
+    Element* nextElement() const;
 };
 
 std::ostream& operator<<(std::ostream &os, const Element &elem);

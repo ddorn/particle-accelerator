@@ -5,6 +5,7 @@
 #include <cmath>
 #include <iostream>
 #include "Particle.h"
+#include "Element.h"
 
 using namespace constants;
 
@@ -44,6 +45,20 @@ void Particle::addMagneticForce(const Vector3D &b, double dt) {
     Vector3D correction(speed() ^ force);
     if (correction.isZero()) return;
     force_ += force.rotate(correction, correction_angle);
+}
+
+bool Particle::updateElement(){
+    if(element_->collideBorder((*this).position())){
+        return false;
+    }
+    if(element_->isOut((*this).position())){
+        if(element_->nextElement() == nullptr){
+            return false;
+        } else{
+            element_ = element_->nextElement();
+        }
+    }
+    return true;
 }
 
 std::ostream &operator<<(std::ostream &os, const Particle &partic) {

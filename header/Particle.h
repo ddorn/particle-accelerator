@@ -98,6 +98,7 @@ public:
      * @param dt Timestep for the integrator
      */
     void evolve(double dt);
+    bool updateElement();
 
     double energy() const;
     double gamma() const;

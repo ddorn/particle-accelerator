@@ -32,8 +32,8 @@ double Element::radius() const {
     return radius_;
 }
 
-const Element &Element::nextElement() const {
-    return *nextElement_;
+Element* Element::nextElement() const {
+    return nextElement_;
 }
 
 
