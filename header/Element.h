@@ -45,6 +45,7 @@ public:
 
     // TODO: Isn't it bad to expose pointers ?
     Element* nextElement() const;
+    void setNextElement(Element* e) { nextElement_ = e; }
 
     /**
      * Print info of the element on the stream.

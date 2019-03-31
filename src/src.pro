@@ -14,7 +14,8 @@ SOURCES = \
     Vector3D.cpp \
     Element.cpp \
     CurvedElement.cpp \
-    StraightElement.cpp
+    StraightElement.cpp \
+	Segment.cpp
 
 HEADERS += \
     ../header/constants.h \
@@ -23,4 +24,5 @@ HEADERS += \
     ../header/Particle.h \
     ../header/Element.h \
     ../header/CurvedElement.cpp \
-	../header/StraightElement.h
+	../header/StraightElement.h \
+	../header/Segment.h

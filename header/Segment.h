@@ -5,7 +5,6 @@
 #ifndef PARTICLEACCELERATOR_SEGMENT_H
 #define PARTICLEACCELERATOR_SEGMENT_H
 
-#endif //PARTICLEACCELERATOR_SEGMENT_H
 
 #include "Vector3D.h"
 #include "Particle.h"
@@ -24,3 +23,6 @@ public:
     const Vector3D magneticForceAt(const Vector3D & /*position*/) const override { return Vector3D(); }
     std::ostream& print(std::ostream &os) const override;
 };
+
+
+#endif //PARTICLEACCELERATOR_SEGMENT_H

@@ -3,7 +3,7 @@
 //
 
 #include <QKeyEvent>
-
+#include "Segment.h"
 #include "GlWidget.h"
 #include "Dipole.h"
 
@@ -108,8 +108,20 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
 GlWidget::GlWidget(QWidget *parent)
         : QOpenGLWidget(parent), accelerator(&support) {
 
-    accelerator.add(new Dipole(Vector3D(), Vector3D(1, 0, 0), 0.2, nullptr, 0.3, 0.1));
-    accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0));
+    Vector3D a1(-1, 0, 0);
+    Vector3D a2(0, 1, 0);
+    Vector3D a3(1, 0, 0);
+    Vector3D a4(0, -1, 0);
+    double radius(0.2);
+    auto d4 = new Dipole(a4, a1, radius, nullptr, 1, 1);
+    auto d3 = new Dipole(a3, a4, radius, d4, 1, 1);
+    auto d2 = new Dipole(a2, a3, radius, d3, 1, 1);
+    auto d1 = new Dipole(a1, a2, radius, d2, 1, 1);
+    d4->setNextElement(d1);
+    accelerator.add(d2);
+    accelerator.add(d3);
+    accelerator.add(d4);
+    accelerator.add(d1);
 
 //
 //    int nb;

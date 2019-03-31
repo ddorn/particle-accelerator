@@ -24,4 +24,5 @@ HEADERS += \
     ../header/Particle.h \
     ../header/Element.h \
 	../header/CurvedElement.h \
-	../header/StraightElement.h
+	../header/StraightElement.h \
+	../header/Segment.h

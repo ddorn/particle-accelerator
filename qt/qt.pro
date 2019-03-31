@@ -29,7 +29,8 @@ HEADERS += \
     ../header/Element.h \
     ../header/Particle.h \
 	../header/CurvedElement.h \
-	../header/StraightElement.h
+	../header/StraightElement.h \
+	../header/Segment.h
 
 
 RESOURCES += resources.qrc
