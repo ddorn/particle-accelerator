@@ -117,10 +117,10 @@ GlWidget::GlWidget(QWidget *parent)
         if (!momentum.isZero()) momentum = ~momentum;
 
         // We randomize the charge + and -
-        Particle p(M_PROTON, PROTON_CHARGE,
-                   Vector3D(x, y, z),
-                   momentum,  // Speed is towards the center, why not ?
-                   Vector3D(vx, vy, vz));
+        Particle *p = new Particle(M_PROTON, PROTON_CHARGE,
+                                   Vector3D(x, y, z),
+                                   momentum,  // Speed is towards the center, why not ?
+                                   Vector3D(vx, vy, vz));
         accelerator.add(p);
     }
 }
