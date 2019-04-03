@@ -115,7 +115,8 @@ private:
     bool isClosed() const;
     /**
      * @return if the element can be added to the accelerator, i.e.
-     * if the exit is not the entree and if the radius is strictly positive.
+     * if the exit is not the entree, if the radius is strictly positive and
+     * if the element is in the xy plane.
      */
     bool acceptableNextElement(const Vector3D& exit, double radius) const;
 

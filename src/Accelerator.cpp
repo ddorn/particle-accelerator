@@ -126,7 +126,7 @@ bool Accelerator::isClosed() const {
 
 bool Accelerator::acceptableNextElement(const Vector3D &exit, double radius) const {
     if(elements().empty()){
-        return radius > 0;
+        return radius > 0 and exit.z() == 0;
     }
-    return not(isClosed() or radius <= 0 or exit == elements().back()->exit());
+    return not(isClosed() or radius <= 0 or exit == elements().back()->exit() or exit.z() != 0);
 }
