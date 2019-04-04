@@ -1,7 +1,7 @@
 /**
  * This header defines the constants namespace,
  * which has the universal constants useful for
- * or project.
+ * our project.
  */
 
 #ifndef PARTICLE_ACCELERATOR_CONSTANTS_H

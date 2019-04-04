@@ -44,7 +44,6 @@ public:
     const Vector3D &entree() const;
     const Vector3D &exit() const;
 
-    // TODO: Isn't it bad to expose pointers ?
     Element* nextElement() const;
     void setNextElement(Element* e) { nextElement_ = e; }
 

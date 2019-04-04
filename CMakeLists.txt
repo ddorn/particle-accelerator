@@ -23,12 +23,12 @@ set(TEXT_SOURCES
 set(QT_SOURCES
         qt/GlWidget.cpp
         qt/QtSupport.cpp
-        qt/GlSphere.cpp)
+        qt/GlSphere.cpp header/Beam.h)
 
 
 add_executable(test_vector3d test/test_vector3d.cpp ${SOURCE_FILES})
 add_executable(test_particle test/test_particle.cpp ${SOURCE_FILES})
-add_executable(text_accelerator text/text_accelerator.cpp ${SOURCE_FILES} ${TEXT_SOURCES})
+add_executable(text_accelerator text/text_accelerator.cpp ${SOURCE_FILES} ${TEXT_SOURCES} src/Beam.cpp)
 add_executable(p10 text/p10.cpp ${SOURCE_FILES} ${TEXT_SOURCES})
 
 if (NOT WIN32)  # So Gabin can use cmake without problems with qt
