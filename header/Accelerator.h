@@ -29,6 +29,7 @@
 #include <vector>
 #include <iostream>
 #include <memory>
+#include <random>
 #include "Particle.h"
 #include "Element.h"
 #include "Content.h"
@@ -42,9 +43,11 @@ class Accelerator : public Content {
 private:
     ElementVector elements_;
     ParticleVector particles_;
+    std::mt19937 rng;
+    std::uniform_real_distribution<double> distribution;
 
 public:
-    explicit Accelerator(const Vector3D& start = Vector3D()) : start_(start) {}
+    explicit Accelerator(const Vector3D& start = Vector3D()) : rng(42), distribution(-0.03, 0.03), start_(start){}
     Accelerator(const Accelerator &other) = delete;
     void operator=(const Accelerator & other) = delete;
 

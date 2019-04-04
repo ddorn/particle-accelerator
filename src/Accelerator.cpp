@@ -69,9 +69,12 @@ bool Accelerator::addParticle(double mass, double charge, const Vector3D &moment
     if (elements().empty()) return false;
     if (mass < 0) return false;
 
+
     particles_.push_back(std::make_unique<Particle>(mass,
                                                     charge,
-                                                    elements_.front()->entree(),
+                                                    elements_.front()->entree() +
+                                                        Vector3D(0, distribution(rng), distribution(rng)),
+//                                                    elements_.front()->entree() + Vector3D(0, 0, 0),
                                                     momentum,
                                                     color,
                                                     elements_.front().get()
@@ -81,10 +84,10 @@ bool Accelerator::addParticle(double mass, double charge, const Vector3D &moment
 }
 
 bool Accelerator::addSegment(const Vector3D &exit, double radius) {
-    if(not(acceptableNextElement(exit, radius))){return false;}
-    if(elements().empty()){
+    if (not(acceptableNextElement(exit, radius))) { return false; }
+    if (elements().empty()) {
         elements_.push_back(std::make_unique<Segment>(start_, exit, radius, nullptr));
-    } else{
+    } else {
         elements_.push_back(std::make_unique<Segment>(elements().back()->exit(), exit, radius, nullptr));
         linkElements();
     }
@@ -92,11 +95,12 @@ bool Accelerator::addSegment(const Vector3D &exit, double radius) {
 }
 
 bool Accelerator::addDipole(const Vector3D &exit, double radius, double curvature, double magneticFieldIntensity) {
-    if(not(acceptableNextElement(exit, radius)) or fabs(curvature) < Vector3D::getPrecision()){return false;}
-    if(elements().empty()){
+    if (not(acceptableNextElement(exit, radius)) or fabs(curvature) < Vector3D::getPrecision()) { return false; }
+    if (elements().empty()) {
         elements_.push_back(std::make_unique<Dipole>(start_, exit, radius, nullptr, curvature, magneticFieldIntensity));
-    } else{
-        elements_.push_back(std::make_unique<Dipole>(elements().back()->exit(), exit, radius, nullptr, curvature, magneticFieldIntensity));
+    } else {
+        elements_.push_back(std::make_unique<Dipole>(elements().back()->exit(), exit, radius, nullptr, curvature,
+                                                     magneticFieldIntensity));
         linkElements();
     }
     return true;

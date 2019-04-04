@@ -204,7 +204,7 @@ void QtSupport::draw(const Vector3D &d) {
     drawVector(d);
 }
 void QtSupport::draw(const Particle &particle) {
-    drawSphere(particle.position(), 0.03, 1, 1, 0);
+    drawSphere(particle.position(), 0.03, particle.color());
 }
 void QtSupport::draw(const Accelerator &accelerator) {
     for (const auto& p : accelerator.particles()) {
@@ -227,13 +227,16 @@ void QtSupport::draw(const StraightElement &element) {
         drawCircle(pos, element.radius(), axis, Vector3D(0.2, 0.6, 1));
     }
 }
-void QtSupport::draw(const Quadrupole &quadrupole) {
-    quadrupole.StraightElement::draw(*this);
-}
+void QtSupport::draw(const Quadrupole &element  ) {
+    Vector3D axis(element.exit() - element.entree());
+    constexpr double NB_CIRCLES(10);
+    for (int i = 0; i < NB_CIRCLES; ++i) {
+        Vector3D pos(element.exit() * (i / NB_CIRCLES) + element.entree() * (1 - i / NB_CIRCLES));
+        drawCircle(pos, element.radius(), axis, Vector3D(1, 0.7, 0));
+    }}
 void QtSupport::draw(const Segment &segment) {
     segment.StraightElement::draw(*this);
 }
-
 void QtSupport::draw(const CurvedElement &element) {
     Vector3D cc(element.centerOfCurvature());
     Vector3D relEntree(element.entree() - cc);

@@ -19,6 +19,8 @@ using namespace constants;
 class GlWidget : public QOpenGLWidget {
 private:
     int counter;
+    bool stream = false;
+    double intensity = 0.35;
     Accelerator accelerator;
     QtSupport support;
 public:
@@ -27,6 +29,7 @@ public:
     virtual ~GlWidget() = default;
 
 private:
+    void build(double quadrupole_intensity = 1.2);
     // The 3 key methods of QOpenGLWidget to reimplement
     void initializeGL() override;
     void resizeGL(int width, int height) override;
