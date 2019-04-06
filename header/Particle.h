@@ -76,15 +76,21 @@ public:
      * @return Scalar velocity
      */
     double velocity() const { return sqrt(velocitySquared()); }
-
-    double radialVelocitySqrd() const;
-    double radialDistanceSqrd() const;
     /**
      * Velocity squared of the particle. Unit: c²
      * @return The scalar velocity of the particle but squared
      */
     double velocitySquared() const;
-
+    /**
+     * Return the norm squared of the component of the speed radial
+     * relative to the ideal trajectory. Unit : c
+     */
+    double radialVelocitySqrd() const;
+    /**
+     * Return the norm squared of the radial distance of the particle
+     * relative to the ideal trajectory. Unit : c * s
+     */
+    double radialDistanceSqrd() const;
     /**
      * Add a magnetic force on the particle that is applied
      * during a given timestep `dt`. This `dt` should be

@@ -39,7 +39,15 @@ public:
      * @param position of the particle
      */
     virtual bool isOut(const Vector3D& position) const = 0;
+    /**
+     * Return the norm squared of the radial distance of the particle
+     * relative to the ideal trajectory. Unit : c * s
+     */
     virtual double radialDistanceSqrd(const Vector3D& position) const = 0;
+    /**
+     * Return the norm squared of the component of the speed radial
+     * relative to the ideal trajectory. Unit : c
+     */
     virtual double radialVelocitySqrd(const Vector3D& position, const Vector3D& speed) const = 0;
 
     double radius() const;
