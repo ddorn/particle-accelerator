@@ -76,6 +76,9 @@ public:
      * @return Scalar velocity
      */
     double velocity() const { return sqrt(velocitySquared()); }
+
+    double radialVelocitySqrd() const;
+    double radialDistanceSqrd() const;
     /**
      * Velocity squared of the particle. Unit: c²
      * @return The scalar velocity of the particle but squared

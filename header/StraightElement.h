@@ -16,6 +16,8 @@ public:
 
     bool collideBorder(const Vector3D& position) const override;
     bool isOut(const Vector3D& position) const override;
+    double radialDistanceSqrd(const Vector3D &position) const override;
+    double radialVelocitySqrd(const Vector3D &position, const Vector3D &speed) const override;
     void draw(Support &support) const override { support.draw(*this); }
 };
 

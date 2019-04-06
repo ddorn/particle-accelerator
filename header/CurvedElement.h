@@ -13,7 +13,6 @@ class CurvedElement : public Element
 {
 private:
     double curvature_;
-    double radialDistanceSqrd(const Vector3D &position) const;
     double radiusCircle() const;
 public:
     CurvedElement(const Vector3D &entree, const Vector3D &exit, double radius, Element *nextElement,
@@ -22,6 +21,8 @@ public:
     Vector3D centerOfCurvature() const;
     bool collideBorder(const Vector3D &position) const override;
     bool isOut(const Vector3D &position) const override;
+    double radialDistanceSqrd(const Vector3D &position) const override;
+    double radialVelocitySqrd(const Vector3D &position, const Vector3D &speed) const override;
 
     double curvature() const;
 

@@ -39,6 +39,8 @@ public:
      * @param position of the particle
      */
     virtual bool isOut(const Vector3D& position) const = 0;
+    virtual double radialDistanceSqrd(const Vector3D& position) const = 0;
+    virtual double radialVelocitySqrd(const Vector3D& position, const Vector3D& speed) const = 0;
 
     double radius() const;
     const Vector3D &entree() const;

@@ -34,6 +34,9 @@ public:
      * @return emittance. Unit : c * s
      */
     double emittance() const;
+    double A11() const;
+    double A12() const;
+    double A22() const;
     /**
      * @return the ratio between the real particles and the macroparticles
      */
@@ -49,6 +52,9 @@ private:
      * One macroparticle simulates lambda real particles
      */
     ParticleVector macroParticles_;
+    double meanDistancesSqrd() const;
+    double meanVelocitiesSqrd() const;
+    double meanDistancesVelocities() const;
 
 };
 

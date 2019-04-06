@@ -4,6 +4,8 @@
 
 #include "CurvedElement.h"
 #include <cmath>
+#include <CurvedElement.h>
+
 
 Vector3D CurvedElement::centerOfCurvature() const {
     Vector3D L(exit() - entree());
@@ -22,6 +24,17 @@ double CurvedElement::radialDistanceSqrd(const Vector3D &position) const{
     double transversalDistance(radiusCircle() - dir.norm());
     return transversalDistance * transversalDistance + X.z() * X.z();
 }
+
+double CurvedElement::radialVelocitySqrd(const Vector3D &position, const Vector3D &speed) const {
+    Vector3D X(position - centerOfCurvature());
+    if(X.x() == 0 and X.y() == 0){
+        return 0;
+    }
+    Vector3D dir(~Vector3D(X.x(), X.y(),0));
+    double transversalVelocity(speed * dir);
+    return transversalVelocity * transversalVelocity + speed.z() * speed.z();
+}
+
 
 bool CurvedElement::collideBorder(const Vector3D &position) const {
     /**

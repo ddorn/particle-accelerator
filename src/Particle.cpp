@@ -4,6 +4,8 @@
 
 #include <cmath>
 #include <iostream>
+#include <Particle.h>
+
 #include "Particle.h"
 #include "Element.h"
 
@@ -59,6 +61,14 @@ bool Particle::updateElement() {
         }
     }
     return true;
+}
+
+double Particle::radialDistanceSqrd() const {
+    return element()->radialDistanceSqrd(position());
+}
+
+double Particle::radialVelocitySqrd() const {
+    return element()->radialVelocitySqrd(position(), speed());
 }
 
 std::ostream &operator<<(std::ostream &os, const Particle &partic) {
