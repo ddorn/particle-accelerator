@@ -13,6 +13,8 @@ class CurvedElement : public Element
 {
 private:
     double curvature_;
+    double radialDistanceSqrd(const Vector3D &position) const;
+    double radiusCircle() const;
 public:
     CurvedElement(const Vector3D &entree, const Vector3D &exit, double radius, Element *nextElement,
                   double curvature) : Element(entree, exit, radius, nextElement), curvature_(curvature) {}

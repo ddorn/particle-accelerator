@@ -17,5 +17,5 @@ double Beam::meanEnergy() const {
 
 double Beam::emittance() const {
     double assEaters(0);
-    return sqrt(assEaters); // TODO : I didn't understand what Chappi means.
+    return sqrt(assEaters); // TODO : I begin to understand what to do.
 }
