@@ -25,19 +25,14 @@ std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
 }
 
 void Accelerator::evolve(double dt) {
-
-    // Update forces from the elements of the accelerator
-    for (auto &p : beams()) {
-        p->addMagneticForce(p->element()->magneticForceAt(p->position()), dt);
+    for (auto& mrBeam : beams_) {
+        mrBeam->evolve(dt);
     }
 
-    // Move particles between elements and remove them if needed
+    // Remove beams with no particles
     size_t i(0);
     while (i < beams_.size()) {
-        if (!beams_[i]->updateElement()) {
-            // The order of particles doesn't matter,
-            // so we put the particle we need to delete at the end
-            // and then remove it
+        if (beams_[i]->nbrParticles() == 0) {
             swap(beams_[i], beams_.back());
             beams_.pop_back();
         } else {
@@ -45,28 +40,6 @@ void Accelerator::evolve(double dt) {
         }
     }
 
-    // And then compute the new position, speed and everything
-    for (auto& p : beams_) {
-        p->evolve(dt);
-    }
-}
-
-bool Accelerator::addParticle(double mass, double charge, const Vector3D &momentum, const Vector3D &color) {
-    if (elements().empty()) return false;
-    if (mass < 0) return false;
-
-
-    beams_.push_back(std::make_unique<Particle>(mass,
-                                                    charge,
-                                                    elements_.front()->entree() +
-                                                        Vector3D(0, distribution(rng), distribution(rng)),
-//                                                    elements_.front()->entree() + Vector3D(0, 0, 0),
-                                                    momentum,
-                                                    color,
-                                                    elements_.front().get()
-    ));
-
-    return true;
 }
 
 bool Accelerator::addSegment(const Vector3D &exit, double radius) {
