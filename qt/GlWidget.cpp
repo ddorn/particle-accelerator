@@ -143,7 +143,7 @@ void GlWidget::build(double quadrupole_intensity) {
     Vector3D pd1(2, 3, 0);
     Vector3D pd(3, 2, 0);
 
-    accelerator.cleanParticles();
+    accelerator.cleanBeam();
     accelerator.cleanElements();
     for (int i = 0; i < 4; ++i) {
         accelerator.addQuadrupole(pqd, radius, quadrupole_intensity);

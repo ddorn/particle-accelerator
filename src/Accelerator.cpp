@@ -2,21 +2,19 @@
 // Created by diego on 3/17/19.
 //
 
-#include <Accelerator.h>
 
 #include "Accelerator.h"
 #include "Segment.h"
 #include "Dipole.h"
 #include "Quadrupole.h"
-
-#include "Accelerator.h"
+#include "circularBeam.h"
 
 using namespace std;
 
 std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
     os << "Accelerator:" << endl
         << " Particles:" << endl;
-    for (const auto &p : accelerator.particles()) {
+    for (const auto &p : accelerator.beams()) {
         os << *p << endl;
     }
     os << " Elements:" << endl;
@@ -29,38 +27,26 @@ std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
 void Accelerator::evolve(double dt) {
 
     // Update forces from the elements of the accelerator
-    for (auto &p : particles()) {
+    for (auto &p : beams()) {
         p->addMagneticForce(p->element()->magneticForceAt(p->position()), dt);
     }
 
     // Move particles between elements and remove them if needed
     size_t i(0);
-    while (i < particles_.size()) {
-        if (!particles_[i]->updateElement()) {
+    while (i < beams_.size()) {
+        if (!beams_[i]->updateElement()) {
             // The order of particles doesn't matter,
             // so we put the particle we need to delete at the end
             // and then remove it
-            swap(particles_[i], particles_.back());
-            particles_.pop_back();
+            swap(beams_[i], beams_.back());
+            beams_.pop_back();
         } else {
             ++i;
         }
     }
 
-//
-//    // We add all the forces first
-//    for (auto& p : particles_) {
-//        // This is just a placeholder to see nice things
-//        Vector3D champ = Vector3D(0, 0, 1) ;
-//        double scale = (champ * p->position());
-////        double scale = p.position().norm();
-//        if (abs(scale) > 1e-4) champ /= scale;
-//
-//        p->addMagneticForce(champ, dt);
-//    }
-
     // And then compute the new position, speed and everything
-    for (auto& p : particles_) {
+    for (auto& p : beams_) {
         p->evolve(dt);
     }
 }
@@ -70,7 +56,7 @@ bool Accelerator::addParticle(double mass, double charge, const Vector3D &moment
     if (mass < 0) return false;
 
 
-    particles_.push_back(std::make_unique<Particle>(mass,
+    beams_.push_back(std::make_unique<Particle>(mass,
                                                     charge,
                                                     elements_.front()->entree() +
                                                         Vector3D(0, distribution(rng), distribution(rng)),
@@ -133,4 +119,14 @@ bool Accelerator::acceptableNextElement(const Vector3D &exit, double radius) con
         return radius > 0 and exit.z() == 0;
     }
     return not(isClosed() or radius <= 0 or exit == elements().back()->exit() or exit.z() != 0);
+}
+
+bool Accelerator::addCircularBeam(double mass, double charge, const Vector3D &momentum, size_t lambda,
+                                  size_t nbrMacroParticle, const Vector3D &color) {
+    if (elements().empty()) return false;
+    if (mass < 0) return false;
+    if (lambda < 1) return false;
+
+    Particle reference(mass, charge, elements().front()->entree(), momentum, color, elements().front().get());
+    beams_.push_back(std::make_unique<CircularBeam>(reference, lambda, nbrMacroParticle));
 }

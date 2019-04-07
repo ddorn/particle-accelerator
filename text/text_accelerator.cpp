@@ -24,7 +24,7 @@ int main() {
     accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0));
 
     accelerator.draw();
-    while (!accelerator.particles().empty()) {
+    while (!accelerator.beams().empty()) {
         accelerator.evolve();
         std::cout << "================" << std::endl;
         accelerator.draw();

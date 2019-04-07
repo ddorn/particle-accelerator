@@ -207,7 +207,7 @@ void QtSupport::draw(const Particle &particle) {
     drawSphere(particle.position(), 0.03, particle.color());
 }
 void QtSupport::draw(const Accelerator &accelerator) {
-    for (const auto& p : accelerator.particles()) {
+    for (const auto& p : accelerator.beams()) {
         p->draw(*this);
     }
     for (const auto &e : accelerator.elements()) {
