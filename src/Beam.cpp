@@ -12,7 +12,7 @@ double Beam::meanEnergy() const {
     for(const auto& particle : macroParticles_){
         sum += particle->energy();
     }
-    return sum / nbrParticles_;
+    return sum / nbrParticles();
 }
 
 double Beam::meanDistancesSqrd() const {
@@ -91,7 +91,7 @@ void Beam::evolve(double dt) {
 }
 
 void Beam::removeMacroParticle(size_t i) {
-    nbrParticles_ -= lambda(); // TODO : what do we do if lambda isn't an intenger ?
+    nbrMacroParticles_ -= 1;
     // The order of particles doesn't matter,
     // so we put the particle we need to delete at the end
     // and then remove it
