@@ -49,7 +49,10 @@ public:
      * relative to the ideal trajectory. Unit : c
      */
     virtual double radialVelocitySqrd(const Vector3D& position, const Vector3D& speed) const = 0;
-
+    virtual Vector3D radialPosition(const Vector3D& position) const = 0;
+    virtual Vector3D radialSpeed(const Vector3D& position, const Vector3D& speed) const = 0;
+    virtual Vector3D radialPositionToAbsolute(double s, double r, double z) const = 0;
+    virtual Vector3D radialSpeedToAbsolute(double s, double r, double z) const = 0; // TODO : good luck my friend
     double radius() const;
     const Vector3D &entree() const;
     const Vector3D &exit() const;
