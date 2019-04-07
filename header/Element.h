@@ -8,25 +8,6 @@
 #include "Vector3D.h"
 #include "Content.h"
 
-/**
- * RadialVec3D is a Vector3D used to represent coordinates
- * in the relative space of an element. It is almost a
- * cylindrical frame RSZ, but S is the distance along the
- * axis of the element, Z is the vertical direction and
- * R is the radial direction. R is the distance from the
- * center of curvature in case of a CurvedElement or from
- * the axis, in the XY plane for a StraitElement.
- */
-class RadialVec3D : public Vector3D {
-public:
-    RadialVec3D() : Vector3D() {}
-    RadialVec3D(component r, component s, component z) : Vector3D(r, s, z) {}
-    component r() const { return x(); }
-    component s() const { return y(); }
-private:
-    component x() const override { return Vector3D::x(); };
-    component y() const override { return Vector3D::y(); };
-};
 
 class Particle;
 

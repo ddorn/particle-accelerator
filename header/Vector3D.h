@@ -109,4 +109,29 @@ bool operator!=(const Vector3D &lhs, const Vector3D &rhs);
 std::ostream& operator<<(std::ostream &os, const Vector3D &vec);
 
 
+/**
+ * RadialVec3D is a simpler Vector3D used to represent coordinates
+ * in the relative space of an element. It is almost a
+ * cylindrical frame RSZ, but S is the distance along the
+ * axis of the element, Z is the vertical direction and
+ * R is the radial direction. R is the distance from the
+ * center of curvature in case of a CurvedElement or from
+ * the axis, in the XY plane for a StraitElement.
+ *
+ * Note that it is not a vector space with the same operation of
+ * the Vector3D so it make no sense to inherit Vector3D, and we
+ * have no need for the operations (+, *, ...) in our code
+ */
+class RadialVec3D {
+public:
+    RadialVec3D() : r_(0), s_(0), z_(0) {}
+    RadialVec3D(component r, component s, component z) : r_(r), s_(s), z_(z) {}
+    component r() const { return r_; }
+    component s() const { return s_; }
+    component z() const { return z_; }
+private:
+    component r_;
+    component s_;
+    component z_;
+};
 #endif //PARTICLE_ACCELERATOR_VECTOR3D_H
