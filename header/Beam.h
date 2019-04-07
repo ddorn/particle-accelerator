@@ -24,6 +24,9 @@ typedef std::vector<std::unique_ptr<Particle>> ParticleVector;
 
 class Beam{
 public:
+    Beam(const Particle &refParticle_, double lambda_, size_t nbrMacroParticles) : lambda_(lambda_),
+    nbrMacroParticles_(nbrMacroParticles), refParticle_(refParticle_) {}
+
     /**
      * @return the mean energy between the real particles. Unit : GeV
      */
@@ -46,20 +49,15 @@ public:
      * @return the ratio between the real particles and the macroparticles,
      * ie. the number of real particles in a macroparticle.
      */
-    double lambda() const { return double(nbrParticles_) / macroParticles_.size(); };
-
+    double lambda() const { return lambda_; };
+    int nbrParticles() const { return int(ceil(lambda() * macroParticles_.size())); }
     void evolve(double dt = 0.01);
 
 private:
-    Particle refParticle_;
     /**
-     * The number of real particles
+     * The number of real particles in a macroparticle
      */
-    int nbrParticles_;
-    /**
-     * One macroparticle simulates lambda real particles
-     */
-    ParticleVector macroParticles_;
+    double lambda_;
     /**
      * @return mean radial distance of the particles
      */
@@ -75,7 +73,13 @@ private:
     double meanDistancesVelocities() const;
 
     void removeMacroParticle(size_t i);
-
+protected:
+    size_t nbrMacroParticles_;
+    /**
+     * One macroparticle simulates lambda real particles
+     */
+    ParticleVector macroParticles_;
+    Particle refParticle_;
 };
 
 

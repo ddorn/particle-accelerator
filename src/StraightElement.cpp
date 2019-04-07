@@ -23,7 +23,7 @@ double StraightElement::radialDistanceSqrd(const Vector3D &position) const {
     return (X - (X * direction) * direction).normSquared();
 }
 
-double StraightElement::radialVelocitySqrd(const Vector3D &position, const Vector3D &speed) const {
+double StraightElement::radialVelocitySqrd(const Vector3D &, const Vector3D &speed) const {
     Vector3D direction(~(exit() - entree()));
     return (speed - (speed * direction) * direction).normSquared();
 }
