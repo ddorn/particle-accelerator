@@ -1,5 +1,3 @@
-#include <memory>
-
 /**
  * This header defines the Accelerator class.
  *
@@ -29,6 +27,7 @@
 #include <vector>
 #include <iostream>
 #include <memory>
+#include <random>
 #include "Particle.h"
 #include "Element.h"
 #include "Content.h"
@@ -36,22 +35,24 @@
 #include "CircularBeam.h"
 
 typedef std::vector<std::unique_ptr<Element>> ElementVector;
-typedef std::vector<std::unique_ptr<Particle>> ParticleVector;
+typedef std::vector<std::unique_ptr<Beam>> BeamVector;
 
 class Accelerator : public Content {
 private:
     ElementVector elements_;
-    ParticleVector particles_;
+    BeamVector beams_;
+    std::mt19937 rng;
+    std::uniform_real_distribution<double> distribution;
 
 public:
-    explicit Accelerator(const Vector3D& start = Vector3D()) : start_(start) {}
+    explicit Accelerator(const Vector3D& start = Vector3D()) : rng(42), distribution(-0.03, 0.03), start_(start){}
     Accelerator(const Accelerator &other) = delete;
     void operator=(const Accelerator & other) = delete;
 
     /**
      * Cleanup the dust in the Accelerator and remove all particles.
      */
-    void cleanParticles() { particles_.clear(); }
+    void cleanBeam() { beams_.clear(); }
     /**
      * Remove all the elements of the accelerator.
      * Warning: don't forget to recycle all this metal otherwise students will have good reasons to demonstrate
@@ -64,21 +65,11 @@ public:
      */
     void evolve(double dt = 0.01);
 
-    const ParticleVector &particles() const { return particles_; }
+    const BeamVector &beams() const { return beams_; }
     const ElementVector &elements() const { return elements_; }
 
     void draw(Support &support) const override { support.draw(*this); }
 
-    /**
-     * Add a new Element at the end of the accelerator.
-     *
-     * Elements should be on the horizontal plane z=0,
-     * and start at the end of the last element.
-     * No checks are performed.
-     *
-     * @param element Element to add.
-     */
-    void add(Element* element) { elements_.push_back(std::unique_ptr<Element>(element)); }
     /**
      * Add a segment. It begins where the last added element ends.
      * @return false if it cannot add this element.
@@ -95,14 +86,14 @@ public:
      */
     bool addQuadrupole(const Vector3D& exit, double radius, double magneticFieldIntensity);
 
-    bool addParticle(double mass, double charge, const Vector3D &momentum, const Vector3D &color = Vector3D(0, 0, 1));
+    bool addCircularBeam(double mass, double charge, const Vector3D &momentum,
+            size_t lambda, size_t nbrMacroParticle, const Vector3D &color = Vector3D(1, 1, 0));
 
 private:
     /**
      * Add a new particle in the accelerator.
      * @param particle Particle to add.
      */
-    void add(Particle* particle) { particles_.push_back(std::unique_ptr<Particle>(particle)); }
     Vector3D start_;
     /**
      * Link the two last elements

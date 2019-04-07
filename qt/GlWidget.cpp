@@ -3,6 +3,8 @@
 //
 
 #include <QKeyEvent>
+#include <GlWidget.h>
+
 #include "Segment.h"
 #include "GlWidget.h"
 #include "Dipole.h"
@@ -33,15 +35,15 @@ void GlWidget::timerEvent(QTimerEvent *event) {
 
     counter += 1;
 
-    if (counter % 4 == 2)
-        accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0));
-//    double dt = chronometre.restart() / 1000.0;
+    if (stream && counter % 2 == 0)
+        accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0), Vector3D(1, 1, 0));
+
+    //    double dt = chronometre.restart() / 1000.0;
     chronometre.restart();
 
-    for (int i = 0; i < 100; ++i) {
-        accelerator.evolve(0.001);
+    for (int i = 0; i < 1000; ++i) {
+        accelerator.evolve(0.0001);
     }
-
 
     update();
 }
@@ -53,80 +55,102 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
 
   switch (event->key()) {
 
-  case Qt::Key_Left:
-    support.rotate(petit_angle, 0.0, -1.0, 0.0);
-    break;
+      case Qt::Key_Left:
+          support.rotate(petit_angle, 0.0, -1.0, 0.0);
+          break;
 
-  case Qt::Key_Right:
-    support.rotate(petit_angle, 0.0, +1.0, 0.0);
-    break;
+      case Qt::Key_Right:
+          support.rotate(petit_angle, 0.0, +1.0, 0.0);
+          break;
 
-  case Qt::Key_Up:
-    support.rotate(petit_angle, -1.0, 0.0, 0.0);
-    break;
+      case Qt::Key_Up:
+          support.rotate(petit_angle, -1.0, 0.0, 0.0);
+          break;
 
-  case Qt::Key_Down:
-    support.rotate(petit_angle, +1.0, 0.0, 0.0);
-    break;
+      case Qt::Key_Down:
+          support.rotate(petit_angle, +1.0, 0.0, 0.0);
+          break;
 
-  case Qt::Key_PageUp:
-  case Qt::Key_W:
-    support.translate(0.0, 0.0,  petit_pas);
-    break;
+      case Qt::Key_PageUp:
+      case Qt::Key_W:
+          support.translate(0.0, 0.0, petit_pas);
+          break;
 
-  case Qt::Key_PageDown:
-  case Qt::Key_S:
-    support.translate(0.0, 0.0, -petit_pas);
-    break;
+      case Qt::Key_PageDown:
+      case Qt::Key_S:
+          support.translate(0.0, 0.0, -petit_pas);
+          break;
 
-  case Qt::Key_A:
-    support.translate( petit_pas, 0.0, 0.0);
-    break;
+      case Qt::Key_A:
+          support.translate(petit_pas, 0.0, 0.0);
+          break;
 
-  case Qt::Key_D:
-    support.translate(-petit_pas, 0.0, 0.0);
-    break;
+      case Qt::Key_D:
+          support.translate(-petit_pas, 0.0, 0.0);
+          break;
 
-  case Qt::Key_R:
-    support.translate(0.0, -petit_pas, 0.0);
-    break;
+      case Qt::Key_R:
+          support.translate(0.0, -petit_pas, 0.0);
+          break;
 
-  case Qt::Key_F:
-    support.translate(0.0,  petit_pas, 0.0);
-    break;
+      case Qt::Key_F:
+          support.translate(0.0, petit_pas, 0.0);
+          break;
 
-  case Qt::Key_Q:
-    support.rotate(petit_angle, 0.0, 0.0, -1.0);
-    break;
+      case Qt::Key_Q:
+          support.rotate(petit_angle, 0.0, 0.0, -1.0);
+          break;
 
-  case Qt::Key_E:
-    support.rotate(petit_angle, 0.0, 0.0, +1.0);
-    break;
+      case Qt::Key_E:
+          support.rotate(petit_angle, 0.0, 0.0, +1.0);
+          break;
 
-  case Qt::Key_Home:
-    support.initPosition();
-    break;
+      case Qt::Key_Home:
+          support.initPosition();
+          break;
+      case Qt::Key_P:
+          accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0), Vector3D(1, 0, 0));
+          break;
+      case Qt::Key_Space:
+          stream = !stream;
+          break;
+      case Qt::Key_Plus:
+          intensity *= 1.05;
+          std::cout << intensity << std::endl;
+          build(intensity);
+          break;
+      case Qt::Key_Minus:
+          intensity /= 1.05;
+          std::cout << intensity << std::endl;
+          build(intensity);
+          break;
   };
 
   update(); // redessine
 }
 
 GlWidget::GlWidget(QWidget *parent)
-        : QOpenGLWidget(parent), counter(0), accelerator(Vector3D(0, 3, 0)) {
+        : QOpenGLWidget(parent), counter(0), accelerator(Vector3D(-2, 3, 0)) {
 
-    double radius(0.1);
+    build(intensity);
+}
+
+void GlWidget::build(double quadrupole_intensity) {
+    double radius(0.2);
+    Vector3D pqd(-1, 3, 0);
+    Vector3D pd2(0, 3, 0);
     Vector3D pqf(1, 3, 0);
     Vector3D pd1(2, 3, 0);
     Vector3D pd(3, 2, 0);
-    Vector3D pqd(3, 1, 0);
-    Vector3D pd2(3, 0, 0);
 
+    accelerator.cleanBeam();
+    accelerator.cleanElements();
     for (int i = 0; i < 4; ++i) {
-        accelerator.addQuadrupole(pqf, radius, -1.2);
+        accelerator.addQuadrupole(pqd, radius, quadrupole_intensity);
+        accelerator.addSegment(pd2, radius);
+        accelerator.addQuadrupole(pqf, radius, -quadrupole_intensity);
         accelerator.addSegment(pd1, radius);
         accelerator.addDipole(pd, radius, 1, 1);  // 5.89158);
-        accelerator.addQuadrupole(pqd, radius, 1.2);
-        accelerator.addSegment(pd2, radius);
 
         pqf = pqf ^ Vector3D::e3;
         pd1 = pd1 ^ Vector3D::e3;
@@ -135,5 +159,7 @@ GlWidget::GlWidget(QWidget *parent)
         pd2 = pd2 ^ Vector3D::e3;
     }
 }
+
+
 
 
