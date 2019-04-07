@@ -91,8 +91,8 @@ public:
      * relative to the ideal trajectory. Unit : c * s
      */
     double radialDistanceSqrd() const;
-    const Vector3D radialPosition() const { return element()->radialPosition(position()); }
-    const Vector3D radialSpeed() const { return element()->radialSpeed(position(), speed()); }
+    const RadialVec3D radialPosition() const { return element()->radialPosition(position()); }
+    const RadialVec3D radialSpeed() const { return element()->radialSpeed(position(), speed()); }
     /**
      * Add a magnetic force on the particle that is applied
      * during a given timestep `dt`. This `dt` should be

@@ -8,8 +8,8 @@
 void CircularBeam::generateParticles() {
     const Element* element(refParticle_.element());
     double s(0);
-    Vector3D radialPosition(refParticle_.radialPosition());
-    Vector3D radialSpeed(refParticle_.radialSpeed());
+    RadialVec3D radialPosition(refParticle_.radialPosition());
+    RadialVec3D radialSpeed(refParticle_.radialSpeed());
     double totalLength(0);
 
     do{
@@ -24,7 +24,7 @@ void CircularBeam::generateParticles() {
             s -= element->length();
             element = element->nextElement();
         }
-        Vector3D position(s, radialPosition.y(), radialPosition.z());
+        RadialVec3D position(s, radialPosition.y(), radialPosition.z());
         addMacroParticle(element->absolutePosition(position), element->absoluteSpeed(position, radialSpeed),
                 element);
         s += ds;
