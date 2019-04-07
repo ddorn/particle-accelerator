@@ -15,7 +15,9 @@ set(SOURCE_FILES
 		src/Accelerator.cpp
 		src/Dipole.cpp
 		src/Segment.cpp
-		src/Quadrupole.cpp)
+		src/Quadrupole.cpp
+		src/circularBeam.cpp
+		src/Beam.cpp)
 
 set(TEXT_SOURCES
         text/TextSupport.cpp)
@@ -28,7 +30,7 @@ set(QT_SOURCES
 
 add_executable(test_vector3d test/test_vector3d.cpp ${SOURCE_FILES})
 add_executable(test_particle test/test_particle.cpp ${SOURCE_FILES})
-add_executable(text_accelerator text/text_accelerator.cpp ${SOURCE_FILES} ${TEXT_SOURCES} src/Beam.cpp)
+add_executable(text_accelerator text/text_accelerator.cpp ${SOURCE_FILES} ${TEXT_SOURCES})
 add_executable(p10 text/p10.cpp ${SOURCE_FILES} ${TEXT_SOURCES})
 
 if (NOT WIN32)  # So Gabin can use cmake without problems with qt
