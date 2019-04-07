@@ -50,10 +50,20 @@ public:
      */
     virtual double length() const = 0;
     virtual double radialVelocitySqrd(const Vector3D& position, const Vector3D& speed) const = 0;
-    virtual Vector3D radialPosition(const Vector3D& position) const = 0;
-    virtual Vector3D radialSpeed(const Vector3D& position, const Vector3D& speed) const = 0;
-    virtual Vector3D radialPositionToAbsolute(double s, double r, double z) const = 0;
-    virtual Vector3D radialSpeedToAbsolute(double s, double l, double r, double z) const = 0; // TODO : good luck my friend
+
+    // Coordinates change
+    
+    /**
+     * Convert a position in the absolute space XYZ to the relative space RSZ of the element
+     * @param absolutePosition Position in the accelerator
+     * @return Radial
+     */
+    virtual const Vector3D radialPosition(const Vector3D& absolutePosition) const = 0;
+    virtual const Vector3D radialSpeed(const Vector3D& absolutePosition, const Vector3D& absoluteSpeed) const = 0;
+    virtual const Vector3D absolutePosition(const Vector3D &radialPos) const = 0;
+    virtual const Vector3D absoluteSpeed(const Vector3D &relativePosition, const Vector3D &relativeSpeed) const = 0;
+    virtual const Vector3D radialPositionFromDistance(double l) const = 0;
+
     double radius() const;
     const Vector3D &entree() const;
     const Vector3D &exit() const;

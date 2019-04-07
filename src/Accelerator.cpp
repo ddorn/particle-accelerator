@@ -7,7 +7,7 @@
 #include "Segment.h"
 #include "Dipole.h"
 #include "Quadrupole.h"
-#include "circularBeam.h"
+#include "CircularBeam.h"
 
 using namespace std;
 
