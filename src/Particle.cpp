@@ -4,7 +4,6 @@
 
 #include <cmath>
 #include <iostream>
-#include <Particle.h>
 
 #include "Particle.h"
 #include "Element.h"

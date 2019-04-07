@@ -5,9 +5,18 @@
 #ifndef PARTICLEACCELERATOR_ELEMENT_H
 #define PARTICLEACCELERATOR_ELEMENT_H
 
-
 #include "Vector3D.h"
 #include "Content.h"
+
+class RadialVec3D : public Vector3D {
+public:
+    RadialVec3D(component r, component s, component z) : Vector3D(r, s, z) {}
+    component r() const { return x(); }
+    component s() const { return y(); }
+private:
+    component x() const override { return Vector3D::x(); };
+    component y() const override { return Vector3D::y(); };
+};
 
 class Particle;
 
@@ -52,17 +61,35 @@ public:
     virtual double radialVelocitySqrd(const Vector3D& position, const Vector3D& speed) const = 0;
 
     // Coordinates change
-    
+
     /**
      * Convert a position in the absolute space XYZ to the relative space RSZ of the element
      * @param absolutePosition Position in the accelerator
      * @return Radial
      */
-    virtual const Vector3D radialPosition(const Vector3D& absolutePosition) const = 0;
-    virtual const Vector3D radialSpeed(const Vector3D& absolutePosition, const Vector3D& absoluteSpeed) const = 0;
-    virtual const Vector3D absolutePosition(const Vector3D &radialPos) const = 0;
-    virtual const Vector3D absoluteSpeed(const Vector3D &relativePosition, const Vector3D &relativeSpeed) const = 0;
-    virtual const Vector3D radialPositionFromDistance(double l) const = 0;
+    virtual const RadialVec3D radialPosition(const Vector3D& absolutePosition) const = 0;
+    /**
+     * Convert a speed expressed in the absolute coordinate space to the relative space RSZ
+     * @param absolutePosition The position where the speed applies in the accelerator
+     * @param absoluteSpeed The speed in XYZ coordinates
+     * @return The speed in the relative space
+     */
+    virtual const RadialVec3D radialSpeed(const Vector3D& absolutePosition, const Vector3D& absoluteSpeed) const = 0;
+    /**
+     * Convert a position in the relative space coordinate RSZ of the element to
+     * the absolute space XYZ of the accelerator
+     * @param radialPos the coordinates in the RSZ vector space
+     * @return The vector in the accelerator's frame
+     */
+    virtual const Vector3D absolutePosition(const RadialVec3D &radialPos) const = 0;
+    /**
+     * Convert a RSZ speed to an absolute one
+     * @param relativePosition Where the speed applies
+     * @param relativeSpeed The RSZ speed
+     * @return A XYZ speed
+     */
+    virtual const Vector3D absoluteSpeed(const RadialVec3D &relativePosition, const RadialVec3D &relativeSpeed) const = 0;
+    virtual const RadialVec3D radialPositionFromDistance(double l) const = 0;
 
     double radius() const;
     const Vector3D &entree() const;

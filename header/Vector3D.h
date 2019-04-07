@@ -17,9 +17,11 @@ public:
     Vector3D() : x_(0), y_(0), z_(0) {}
     Vector3D(component x, component y, component z) : x_(x), y_(y), z_(z) {}
 
-    component x() const { return x_; }
-    component y() const { return y_; }
-    component z() const { return z_; }
+    virtual component x() const { return x_; }
+
+    virtual component y() const { return y_; }
+
+    virtual component z() const { return z_; }
 
     static component getPrecision();
     static void setPrecision(component);
