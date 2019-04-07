@@ -6,6 +6,8 @@
 
 #include "Beam.h"
 
+using namespace std;
+
 
 double Beam::meanEnergy() const {
     double sum(0);
@@ -97,4 +99,13 @@ void Beam::removeMacroParticle(size_t i) {
     // and then remove it
     swap(macroParticles_[i], macroParticles_.back());
     macroParticles_.pop_back();
+}
+
+void Beam::addMacroParticle(const Vector3D &position, const Vector3D &speed, const Element* element) {
+    if (nbrMacroParticles_ > macroParticles_.size()) {
+        macroParticles_.push_back(make_unique<Particle>(refParticle_.charge(), refParticle_.mass(),
+                                                                  position,
+                                                                  momentumFromSpeed(speed, refParticle_.mass()),
+                                                                  Vector3D(), element, refParticle_.color()));
+    }
 }

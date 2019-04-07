@@ -21,7 +21,7 @@
 #define PARTICLE_ACCELERATOR_PARTICLE_H
 
 #include <cmath>
-
+#include "Element.h"
 #include "Vector3D.h"
 #include "constants.h"
 #include "Content.h"
@@ -48,15 +48,15 @@ public:
      * @param color The color of the particle
      */
     Particle(double mass, double charge, const Vector3D &position,
-            const Vector3D &momentum, const Vector3D &color = Vector3D(1, 0, 0),
-	        Element* element = nullptr)
-        : mass_(mass),
-        charge_(charge),
-        position_(position),
-        momentum_(momentum),
-        element_(element),
-        color_(color)
-        {}
+             const Vector3D &momentum, const Vector3D &color = Vector3D(1, 0, 0),
+             Element* element = nullptr)
+            : mass_(mass),
+              charge_(charge),
+              position_(position),
+              momentum_(momentum),
+              element_(element),
+              color_(color)
+    {}
 
     double charge() const { return charge_; }
     double mass() const { return mass_; }
@@ -91,6 +91,8 @@ public:
      * relative to the ideal trajectory. Unit : c * s
      */
     double radialDistanceSqrd() const;
+    const Vector3D radialPosition() const { return element()->radialPosition(position()); }
+    const Vector3D radialSpeed() const { return element()->radialSpeed(position(), speed()); }
     /**
      * Add a magnetic force on the particle that is applied
      * during a given timestep `dt`. This `dt` should be
@@ -129,5 +131,7 @@ public:
 
 
 std::ostream& operator<<(std::ostream &os, const Particle &partic);
+
+const Vector3D momentumFromSpeed(const Vector3D& speed, double mass);
 
 #endif //PARTICLE_ACCELERATOR_PARTICLE_H

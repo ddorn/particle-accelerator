@@ -82,3 +82,7 @@ std::ostream &operator<<(std::ostream &os, const Particle &partic) {
         << " - speed : " << partic.speed() << " c" << std::endl;
     return os;
 }
+
+const Vector3D momentumFromSpeed(const Vector3D &speed, double mass) {
+    return 1/sqrt(1 - speed.normSquared() / LIGHT_SPEED_SQUARED) * mass * speed;
+}

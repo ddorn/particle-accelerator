@@ -80,6 +80,7 @@ protected:
     ParticleVector macroParticles_;
     Particle refParticle_;
     void removeMacroParticle(size_t i);
+    void addMacroParticle(const Vector3D& position, const Vector3D& speed, const Element* element);
     virtual void generateParticles() = 0;
 };
 
