@@ -22,15 +22,9 @@ public:
             CurvedElement(entree, exit, radius, nextElement, curvature),
             magneticField_(Vector3D(0, 0, magneticFieldIntensity)) {}
 
-    const Vector3D magneticForceAt(const Vector3D &) const override {
-        return magneticField_;
-    }
+    const Vector3D magneticForceAt(const Vector3D &) const override { return magneticField_; }
 
-    std::ostream &print(std::ostream &os) const override {
-        CurvedElement::print(os);
-        os << " - Magnetic field : " << magneticField_ << std::endl;
-        return os;
-    }
+    std::ostream &print(std::ostream &os) const override;
 
     void draw(Support &support) const override { support.draw(*this); }
 };
