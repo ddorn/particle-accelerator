@@ -48,6 +48,7 @@ public:
      * Return the norm squared of the component of the speed radial
      * relative to the ideal trajectory. Unit : c
      */
+    virtual double length() const = 0;
     virtual double radialVelocitySqrd(const Vector3D& position, const Vector3D& speed) const = 0;
     virtual Vector3D radialPosition(const Vector3D& position) const = 0;
     virtual Vector3D radialSpeed(const Vector3D& position, const Vector3D& speed) const = 0;
