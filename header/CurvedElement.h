@@ -13,6 +13,9 @@ class CurvedElement : public Element
 {
 private:
     double curvature_;
+    /**
+     * Radius of the circle that the CurvedElement follows.
+     */
     double radiusCircle() const;
 public:
     CurvedElement(const Vector3D &entree, const Vector3D &exit, double radius, Element *nextElement,
@@ -21,8 +24,15 @@ public:
     Vector3D centerOfCurvature() const;
     bool collideBorder(const Vector3D &position) const override;
     bool isOut(const Vector3D &position) const override;
+
+    // TODO: remove both
     double radialDistanceSqrd(const Vector3D &position) const override;
     double radialVelocitySqrd(const Vector3D &position, const Vector3D &speed) const override;
+
+    const RadialVec3D radialPosition(const Vector3D &absolutePosition) const override;
+    const RadialVec3D radialSpeed(const Vector3D &absolutePosition, const Vector3D &absoluteSpeed) const override;
+    const Vector3D absolutePosition(const RadialVec3D &radialPos) const override;
+    const Vector3D absoluteSpeed(const RadialVec3D &relativePosition, const RadialVec3D &relativeSpeed) const override;
 
     double curvature() const;
 

@@ -70,3 +70,30 @@ std::ostream &CurvedElement::print(std::ostream &os) const {
        << " - center of curvature : " << centerOfCurvature() << std::endl;
     return os;
 }
+
+const RadialVec3D CurvedElement::radialPosition(const Vector3D &pos) const {
+    Vector3D X(pos - centerOfCurvature());
+    X -= X.z() * Vector3D::e3;
+    if (X.isZero()) return RadialVec3D(0, 0, pos.z());
+
+    Vector3D dir(~X);
+    Vector3D dirEntree(~(entree() - centerOfCurvature()));
+    // For S, we need to calculate the angle between the dir and the entree,
+    // but because we suppose no Element makes more than a half turn, it is
+    // just the acos of the projection of dir over the entree
+    double angle(acos(dir * dirEntree));
+    return RadialVec3D(pos * dir, radiusCircle() * angle, pos.z());
+}
+
+const RadialVec3D CurvedElement::radialSpeed(const Vector3D &absolutePosition, const Vector3D &absoluteSpeed) const {
+    return RadialVec3D(0, 0, 0);
+}
+
+const Vector3D CurvedElement::absolutePosition(const RadialVec3D &radialPos) const {
+    return Vector3D();
+}
+
+const Vector3D
+CurvedElement::absoluteSpeed(const RadialVec3D &relativePosition, const RadialVec3D &relativeSpeed) const {
+    return Vector3D();
+}

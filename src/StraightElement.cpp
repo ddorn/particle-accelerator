@@ -6,7 +6,7 @@
 
 
 bool StraightElement::collideBorder(const Vector3D& position) const {
-    return(radialPosition(position).x() > radius() * radius());
+    return radialDistanceSqrd(position) > radius() * radius();
 }
 
 bool StraightElement::isOut(const Vector3D& position) const {

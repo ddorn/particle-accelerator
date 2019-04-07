@@ -8,8 +8,18 @@
 #include "Vector3D.h"
 #include "Content.h"
 
+/**
+ * RadialVec3D is a Vector3D used to represent coordinates
+ * in the relative space of an element. It is almost a
+ * cylindrical frame RSZ, but S is the distance along the
+ * axis of the element, Z is the vertical direction and
+ * R is the radial direction. R is the distance from the
+ * center of curvature in case of a CurvedElement or from
+ * the axis, in the XY plane for a StraitElement.
+ */
 class RadialVec3D : public Vector3D {
 public:
+    RadialVec3D() : Vector3D() {}
     RadialVec3D(component r, component s, component z) : Vector3D(r, s, z) {}
     component r() const { return x(); }
     component s() const { return y(); }
@@ -91,6 +101,9 @@ public:
     virtual const Vector3D absoluteSpeed(const RadialVec3D &relativePosition, const RadialVec3D &relativeSpeed) const = 0;
     virtual const RadialVec3D radialPositionFromDistance(double l) const = 0;
 
+    /**
+     * Radius of the tube of the element.
+     */
     double radius() const;
     const Vector3D &entree() const;
     const Vector3D &exit() const;
