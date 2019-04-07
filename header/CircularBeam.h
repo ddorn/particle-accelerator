@@ -7,9 +7,9 @@
 
 #include "Beam.h"
 
-class circularBeam : public Beam{
+class CircularBeam : public Beam{
 public:
-    circularBeam(const Particle &refParticle_, double lambda_, size_t nbrMacroParticles) : Beam(refParticle_, lambda_,
+    CircularBeam(const Particle &refParticle_, double lambda_, size_t nbrMacroParticles) : Beam(refParticle_, lambda_,
             nbrMacroParticles) { generateParticles(); }
 
 private:

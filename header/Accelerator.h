@@ -33,7 +33,7 @@
 #include "Element.h"
 #include "Content.h"
 #include "Support.h"
-#include "circularBeam.h"
+#include "CircularBeam.h"
 
 typedef std::vector<std::unique_ptr<Element>> ElementVector;
 typedef std::vector<std::unique_ptr<Particle>> ParticleVector;
