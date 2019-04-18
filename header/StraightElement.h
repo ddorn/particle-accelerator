@@ -25,7 +25,8 @@ public:
     const RadialVec3D radialSpeed(const Vector3D &absolutePosition, const Vector3D &absoluteSpeed) const override;
     const Vector3D absolutePosition(const RadialVec3D &radialPos) const override;
     const Vector3D absoluteSpeed(const RadialVec3D &relativePosition, const RadialVec3D &relativeSpeed) const override;
-
+	
+	double length() const override;
     void draw(Support &support) const override { support.draw(*this); }
 };
 

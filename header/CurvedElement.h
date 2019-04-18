@@ -35,6 +35,8 @@ public:
     const Vector3D absoluteSpeed(const RadialVec3D &relativePosition, const RadialVec3D &relativeSpeed) const override;
 
     double curvature() const;
+    double angle() const;
+    double length() const override;
 
     std::ostream &print(std::ostream &os) const override;
     void draw(Support &support) const override { support.draw(*this); }

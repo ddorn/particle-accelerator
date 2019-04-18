@@ -55,20 +55,26 @@ Et clairement, ici, c'est de la magie.
 ### Semaine 6
 On implémente différentes classes d'éléments, ainsi que le polymorphisme.
 Le projet prend de plus en plus forme, ce qui est motivant.
+On implémente la classe accelerator, on peut donc tester
+notre premier vrai circuit. On peut le tester graphiquement, c'est
+émouvant.
 ##### Humeur
-
+C'est un peu pénible que les exemples donnés de test n'aient pas
+des unités bien indiquées
 
 
 ### Semaine 7
- -
- -
+Début des faisceaux, ce qui demande de nouvelles méthodes complexes
+pour calculer des positions radiales à partir des positions absolues
+des particules.
 ##### Humeur
-
+La partie sur le calcul de l'émittance est difficile à comprendre,
+c'est assez pénible
 
 
 ### Semaine 8
- -
- -
+Semaine de vide
+
 ##### Humeur
 
 
