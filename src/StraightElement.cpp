@@ -49,6 +49,6 @@ const Vector3D StraightElement::absoluteSpeed(const RadialVec3D &, const RadialV
     return speed.r() * normal + speed.s() * dir + speed.z() * Vector3D::e3;
 }
 
-double length() const{
+double StraightElement::length() const{
 	return (exit() - entree()).norm();
 }

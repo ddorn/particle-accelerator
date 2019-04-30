@@ -10,6 +10,9 @@ OBJECTS_DIR = ../obj
 
 SOURCES = \
     Accelerator.cpp \
+    Beam.cpp \
+    CircularBeam.cpp \
+    Dipole.cpp \
     Particle.cpp \
     Vector3D.cpp \
     Element.cpp \

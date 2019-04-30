@@ -44,3 +44,8 @@ void TextSupport::draw(const StraightElement &element) {
 void TextSupport::draw(const Segment &segment) {
     ostream_ << segment << endl;
 }
+
+void TextSupport::draw(const Beam &beam) {
+    ostream_ << beam << endl;
+}
+

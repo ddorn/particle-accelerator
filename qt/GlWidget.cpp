@@ -35,8 +35,8 @@ void GlWidget::timerEvent(QTimerEvent *event) {
 
     counter += 1;
 
-    if (stream && counter % 2 == 0)
-        accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0), Vector3D(1, 1, 0));
+//    if (stream && counter % 2 == 0)
+//        accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0), Vector3D(1, 1, 0));
 
     //    double dt = chronometre.restart() / 1000.0;
     chronometre.restart();
@@ -109,7 +109,7 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
           support.initPosition();
           break;
       case Qt::Key_P:
-          accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0), Vector3D(1, 0, 0));
+//          accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0), Vector3D(1, 0, 0));
           break;
       case Qt::Key_Space:
           stream = !stream;

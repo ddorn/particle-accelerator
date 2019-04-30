@@ -13,9 +13,9 @@ using namespace std;
 
 std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
     os << "Accelerator:" << endl
-        << " Particles:" << endl;
-    for (const auto &p : accelerator.beams()) {
-        os << *p << endl;
+        << " Beams:" << endl;
+    for (const auto &b : accelerator.beams()) {
+        os << *b << endl;
     }
     os << " Elements:" << endl;
     for (const auto &e : accelerator.elements()) {

@@ -43,7 +43,9 @@ public:
     void draw(const Vector3D &d) override;
     void draw(const Particle &particle) override;
     void draw(const Element &element) override;
-    void draw(const Dipole &) override;;
+    void draw(const Dipole &) override;
+
+    void draw(const Beam &beam) override;
 
     // Set view
     void setProjection(const QMatrix4x4 &projection)

@@ -7,10 +7,10 @@
 
 #include "Beam.h"
 
-class CircularBeam : public Beam{
+class CircularBeam : public Beam {
 public:
     CircularBeam(const Particle &refParticle_, size_t lambda_, size_t nbrMacroParticles) : Beam(refParticle_, lambda_,
-            nbrMacroParticles) { generateParticles(); }
+                                                                                                nbrMacroParticles) { generateParticles(); }
 
 private:
     void generateParticles() override;

@@ -93,18 +93,17 @@ const Vector3D CurvedElement::absolutePosition(const RadialVec3D &radialPos) con
     return Vector3D();
 }
 
-const Vector3D
-CurvedElement::absoluteSpeed(const RadialVec3D &relativePosition, const RadialVec3D &relativeSpeed) const {
+const Vector3D CurvedElement::absoluteSpeed(const RadialVec3D &relativePosition, const RadialVec3D &relativeSpeed) const {
     return Vector3D();
 }
 
-double angle() const {
-	Vector3D center(centerOfCurvature);
+double CurvedElement::angle() const {
+	Vector3D center(centerOfCurvature());
 	Vector3D x(~(entree() - center));
 	Vector3D y(~(exit() - center));
-	return std::arccos(x*y);
+	return std::acos(x*y);
 }
 
-double length() const {
-	angle() * radiusCircle();
+double CurvedElement::length() const {
+	return angle() * radiusCircle();
 }

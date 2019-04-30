@@ -80,7 +80,7 @@ public:
      * @return A XYZ speed
      */
     virtual const Vector3D absoluteSpeed(const RadialVec3D &relativePosition, const RadialVec3D &relativeSpeed) const = 0;
-    virtual const RadialVec3D radialPositionFromDistance(double l) const = 0;
+//    virtual const RadialVec3D radialPositionFromDistance(double l) const = 0;
 
     /**
      * Radius of the tube of the element.

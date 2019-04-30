@@ -18,6 +18,7 @@ class Quadrupole;
 class CurvedElement;
 class StraightElement;
 class Segment;
+class Beam;
 
 
 class Content;
@@ -26,6 +27,7 @@ class Support {
 public:
     virtual ~Support() = default;;
     virtual void draw(const Accelerator&) = 0;
+    virtual void draw(const Beam&) = 0;
     virtual void draw(const CurvedElement&) = 0;
     virtual void draw(const Dipole&) = 0;
     virtual void draw(const Element&) = 0;

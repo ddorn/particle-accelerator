@@ -10,6 +10,8 @@
 #include "constants.h"
 
 #include "Accelerator.h"
+#include "Beam.h"
+#include "CircularBeam.h"
 #include "CurvedElement.h"
 #include "Dipole.h"
 #include "Element.h"

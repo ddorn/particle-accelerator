@@ -259,4 +259,10 @@ QMatrix4x4 QtSupport::posToModel(const Vector3D &position, double scale) {
     return model;
 }
 
+void QtSupport::draw(const Beam &beam) {
+    for (auto const& p : beam.macroParticles()) {
+        draw(*p);
+    }
+}
+
 

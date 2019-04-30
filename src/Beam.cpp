@@ -2,8 +2,6 @@
 // Created by Gabin on 04.04.2019.
 //
 
-#include <Beam.h>
-
 #include "Beam.h"
 
 using namespace std;
@@ -101,11 +99,20 @@ void Beam::removeMacroParticle(size_t i) {
     macroParticles_.pop_back();
 }
 
-void Beam::addMacroParticle(const Vector3D &position, const Vector3D &speed, const Element* element) {
+void Beam::addMacroParticle(const Vector3D &position, const Vector3D &speed, Element* element) {
     if (nbrMacroParticles_ > macroParticles_.size()) {
-        macroParticles_.push_back(make_unique<Particle>(refParticle_.charge(), refParticle_.mass(),
-                                                                  position,
-                                                                  momentumFromSpeed(speed, refParticle_.mass()),
-                                                                  Vector3D(), element, refParticle_.color()));
+        macroParticles_.push_back(make_unique<Particle>(refParticle_.mass(),
+                                                        refParticle_.charge(),
+                                                        position,
+                                                        momentumFromSpeed(speed, refParticle_.mass()),
+                                                        refParticle_.color(),
+                                                        element));
     }
+}
+
+std::ostream &operator<<(std::ostream &os, Beam const &beam) {
+    for (auto const& macro : beam.macroParticles()) {
+        os << *macro << endl;
+    }
+    return os;
 }

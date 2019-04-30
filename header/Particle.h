@@ -49,7 +49,7 @@ public:
      */
     Particle(double mass, double charge, const Vector3D &position,
              const Vector3D &momentum, const Vector3D &color = Vector3D(1, 0, 0),
-             Element* element = nullptr)
+              Element* element = nullptr)
             : mass_(mass),
               charge_(charge),
               position_(position),
@@ -64,7 +64,8 @@ public:
     const Vector3D &momentum() const { return momentum_; }
     const Vector3D &position() const { return position_; }
     const Vector3D &color() const { return color_; }
-    const Element* element() const { return element_; }
+    // TODO: Should it be const ?
+    Element* element() const { return element_; }
 
     /**
      * Speed vector of the particle. Unit: c
