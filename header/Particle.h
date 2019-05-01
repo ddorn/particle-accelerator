@@ -48,7 +48,7 @@ public:
      * @param color The color of the particle
      */
     Particle(double mass, double charge, const Vector3D &position,
-             const Vector3D &momentum, const Vector3D &color = Vector3D(1, 0, 0),
+             const Vector3D &momentum, const Vector3D &color = Vector3D(1, 1, 1),
               Element* element = nullptr)
             : mass_(mass),
               charge_(charge),

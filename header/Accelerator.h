@@ -87,7 +87,7 @@ public:
     bool addQuadrupole(const Vector3D& exit, double radius, double magneticFieldIntensity);
 
     bool addCircularBeam(double mass, double charge, const Vector3D &momentum,
-            size_t lambda, size_t nbrMacroParticle, const Vector3D &color = Vector3D(1, 1, 0));
+            size_t lambda, size_t nbrMacroParticle, const Vector3D &color = Vector3D(1, 1, 1));
 
 private:
     /**

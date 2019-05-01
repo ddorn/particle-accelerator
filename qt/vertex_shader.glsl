@@ -1,11 +1,11 @@
 attribute vec3 vertex;
-attribute vec3 color;
+attribute vec4 color;
 
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
 
-varying vec3 base_color;
+varying vec4 base_color;
 varying vec3 world_pos;
 varying vec3 normal;
 

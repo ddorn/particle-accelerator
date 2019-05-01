@@ -34,8 +34,14 @@ void QtSupport::init() {
     // We activate the depth test and backface culling for now, as we
     // do not want to draw faces that are hidden
     // This may change if we draw the Elements with transparency
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
+//    glEnable(GL_DEPTH_TEST);
+    glDisable(GL_DEPTH_TEST);
+//    glEnable(GL_CULL_FACE);
+    glDisable(GL_CULL_FACE);
+    // Enable blending
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);  // best
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     sphere.initialize();
     initPosition();
@@ -185,6 +191,7 @@ void QtSupport::drawSphere(const Vector3D &position, double scale, const Vector3
 void QtSupport::drawSphere(const Vector3D &position, double scale, double r, double g, double b) {
     drawSphere(posToModel(position, scale), r, g, b);
 }
+// Vector
 void QtSupport::drawVector(Vector3D vec, const Vector3D &start) {
     vec += start;
 
@@ -197,19 +204,44 @@ void QtSupport::drawVector(Vector3D vec, const Vector3D &start) {
     prog.setAttributeValue(VertexId, vec.x(), vec.y(), vec.z());
     glEnd();
 }
+// Tube
+void QtSupport::drawTube(const QMatrix4x4 &model, double radius, const Vector3D &color) {
+    prog.setUniformValue("model", model);
+    prog.setAttributeValue(ColorId, color.x(), color.y(), color.z(), 0.5);
 
-void QtSupport::drawTube(Vector3D start, const Vector3D &end, double radius, const Vector3D& color) {
-    constexpr double NB_CIRCLES(7);
-    Vector3D axis(end - start);
-    axis /= NB_CIRCLES;
+    constexpr int NB_CIRCLES(15);
+    constexpr double ANGLE_STEP(2 * M_PI / NB_CIRCLES);
+    constexpr double X_STEP(1.0 / NB_CIRCLES);
 
-    for (int i = 0; i < NB_CIRCLES; ++i) {
-        drawCircle(start, radius, axis, color);
-        start += axis;
+    glBegin(GL_QUADS);
+    glNormal3f(2, 2, 4);
+    double x(0);
+    for (int i(0); i < NB_CIRCLES; ++i) {
+        double angle(0);
+        for (int j = 0; j < NB_CIRCLES; ++j) {
+            prog.setAttributeValue(VertexId, x, radius * cos(angle), radius * sin(angle));
+            prog.setAttributeValue(VertexId, x, radius * cos(angle + ANGLE_STEP), radius * sin(angle + ANGLE_STEP));
+            prog.setAttributeValue(VertexId, x + X_STEP, radius * cos(angle + ANGLE_STEP), radius * sin(angle + ANGLE_STEP));
+            prog.setAttributeValue(VertexId, x + X_STEP, radius * cos(angle), radius * sin(angle));
+            angle += ANGLE_STEP;
+        }
+        x += X_STEP;
     }
+    glEnd();
+}
+void QtSupport::drawTube(const Vector3D& start, const Vector3D &end, double radius, const Vector3D& color) {
+    QMatrix4x4 model(posToModel(start, 1));
+    Vector3D dir(~(end - start));
+    double angle(acos(dir.x()));
+    if (dir.y() < 0) angle *= -1;
+    model.rotate(angle * 180 / M_PI, 0, 0, 1);
+
+    drawTube(model, radius, color);
 }
 
-// Draw real objects
+
+/********************************** Draw real objects **********************************/
+
 
 void QtSupport::draw(const Vector3D &d) {
     drawVector(d);
@@ -244,7 +276,7 @@ void QtSupport::draw(const CurvedElement &element) {
     Vector3D relEntree(element.entree() - cc);
     Vector3D relExit(element.exit() - cc);
     constexpr double NB_CIRCLES(9);
-    double angle(acos(relExit * relEntree));
+    double angle(acos(relExit * relEntree));  // TODO: This supposes clockwise turn
     for (int i = 0; i < NB_CIRCLES; ++i) {
         Vector3D pos(relEntree.rotate(Vector3D::e3, -angle * i / NB_CIRCLES));
         Vector3D axis(pos ^ Vector3D::e3);
@@ -255,6 +287,11 @@ void QtSupport::draw(const Dipole &dipole) {
     dipole.CurvedElement::draw(*this);
 }
 
+void QtSupport::draw(const Beam &beam) {
+    for (auto const& p : beam.macroParticles()) {
+        draw(*p);
+    }
+}
 QMatrix4x4 QtSupport::posToModel(const Vector3D &position, double scale) {
     QMatrix4x4 model;
     model.translate(position.x(), position.y(), position.z());
@@ -262,8 +299,3 @@ QMatrix4x4 QtSupport::posToModel(const Vector3D &position, double scale) {
     return model;
 }
 
-void QtSupport::draw(const Beam &beam) {
-    for (auto const& p : beam.macroParticles()) {
-        draw(*p);
-    }
-}

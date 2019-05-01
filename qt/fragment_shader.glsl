@@ -1,5 +1,5 @@
 varying vec3 world_pos;
-varying vec3 base_color;
+varying vec4 base_color;
 varying vec3 normal;
 
 void main()
@@ -14,7 +14,7 @@ void main()
     vec3 n = normalize(normal);
     float diff = max(dot(n, light_dir), 0.0);
 
-    gl_FragColor = vec4((ambiant + diff ) * base_color, 1.0);
+    gl_FragColor = (ambiant + diff) * base_color;
 //    gl_FragColor = vec4(world_pos, 1);
 //    gl_FragColor = vec4(ma_couleur, 1.0);
 //    gl_FragColor = vec4(light_dir, 1.0);
