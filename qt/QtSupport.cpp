@@ -199,7 +199,7 @@ void QtSupport::drawVector(Vector3D vec, const Vector3D &start) {
 }
 
 void QtSupport::drawTube(Vector3D start, const Vector3D &end, double radius, const Vector3D& color) {
-    constexpr double NB_CIRCLES(10);
+    constexpr double NB_CIRCLES(7);
     Vector3D axis(end - start);
     axis /= NB_CIRCLES;
 
@@ -243,9 +243,10 @@ void QtSupport::draw(const CurvedElement &element) {
     Vector3D cc(element.centerOfCurvature());
     Vector3D relEntree(element.entree() - cc);
     Vector3D relExit(element.exit() - cc);
+    constexpr double NB_CIRCLES(9);
     double angle(acos(relExit * relEntree));
-    for (int i = 0; i < 10; ++i) {
-        Vector3D pos(relEntree.rotate(Vector3D::e3, -angle * i / 10.0));
+    for (int i = 0; i < NB_CIRCLES; ++i) {
+        Vector3D pos(relEntree.rotate(Vector3D::e3, -angle * i / NB_CIRCLES));
         Vector3D axis(pos ^ Vector3D::e3);
         drawCircle(pos + cc, element.radius(), axis, Vector3D(0.9, 0.2, 0.2));
     }
