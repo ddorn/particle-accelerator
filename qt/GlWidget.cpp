@@ -42,7 +42,7 @@ void GlWidget::timerEvent(QTimerEvent *event) {
     chronometre.restart();
 
     for (int i = 0; i < 1000; ++i) {
-        accelerator.evolve(0.00001);
+        accelerator.evolve(0.00005);
     }
 
     update();
@@ -109,7 +109,7 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
           support.initPosition();
           break;
       case Qt::Key_P:
-          accelerator.addCircularBeam(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0), 1, 100, Vector3D(1, 0.2, 0.8));
+          accelerator.addCircularBeam(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0), 1, 300, Vector3D(1, 0.2, 0.8));
 //          accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0), Vector3D(1, 0, 0));
           break;
       case Qt::Key_Space:
@@ -163,7 +163,7 @@ void GlWidget::build(double quadrupole_intensity) {
         pd2 = pd2 ^ Vector3D::e3;
     }
 
-    accelerator.addCircularBeam(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0), 1, 100, Vector3D(1, 0.2, 0.8));
+    accelerator.addCircularBeam(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0), 1, 300, Vector3D(1, 0.2, 0.8));
 }
 
 

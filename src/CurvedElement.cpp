@@ -91,7 +91,7 @@ const RadialVec3D CurvedElement::radialSpeed(const Vector3D &absolutePosition, c
     Vector3D dir(~(planePosition - centerOfCurvature()));
     double r(absoluteSpeed * dir);
     double s((planeSpeed - r * dir).norm());
-    
+
     return RadialVec3D(r, s, absoluteSpeed.z());
 }
 
@@ -105,11 +105,11 @@ const Vector3D CurvedElement::absolutePosition(const RadialVec3D &radialPos) con
 
 const Vector3D CurvedElement::absoluteSpeed(const RadialVec3D &relativePosition, const RadialVec3D &relativeSpeed) const {
     const Vector3D cc(centerOfCurvature());
-    Vector3D dir((entree() - cc).rotate(Vector3D::e3, relativePosition.s() / radiusCircle()));
+    Vector3D dir(~(entree() - cc).rotate(Vector3D::e3, -relativePosition.s() / radiusCircle()));
 
     Vector3D q = dir.rotate(Vector3D::e3, relativeSpeed.s() / radiusCircle());
-    return ~dir * relativeSpeed.r()
-        + (q - dir)
+    return dir * relativeSpeed.r()
+        + (dir ^ Vector3D::e3) * relativeSpeed.s()
         + Vector3D::e3 * relativeSpeed.z();
 }
 
