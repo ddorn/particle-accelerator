@@ -42,7 +42,7 @@ void QtSupport::init() {
 }
 void QtSupport::initPosition() {
     view.setToIdentity();
-    view.translate(0, 0, -4);
+    view.translate(0, 0, -6);
     prog.setUniformValue("view", view);
     prog.setUniformValue("model", QMatrix4x4());
 }
@@ -198,6 +198,17 @@ void QtSupport::drawVector(Vector3D vec, const Vector3D &start) {
     glEnd();
 }
 
+void QtSupport::drawTube(Vector3D start, const Vector3D &end, double radius, const Vector3D& color) {
+    constexpr double NB_CIRCLES(10);
+    Vector3D axis(end - start);
+    axis /= NB_CIRCLES;
+
+    for (int i = 0; i < NB_CIRCLES; ++i) {
+        drawCircle(start, radius, axis, color);
+        start += axis;
+    }
+}
+
 // Draw real objects
 
 void QtSupport::draw(const Vector3D &d) {
@@ -220,20 +231,11 @@ void QtSupport::draw(const Element &element) {
     drawCube(element.exit(), 0.05);
 }
 void QtSupport::draw(const StraightElement &element) {
-    Vector3D axis(element.exit() - element.entree());
-    constexpr double NB_CIRCLES(10);
-    for (int i = 0; i < NB_CIRCLES; ++i) {
-        Vector3D pos(element.exit() * (i / NB_CIRCLES) + element.entree() * (1 - i / NB_CIRCLES));
-        drawCircle(pos, element.radius(), axis, Vector3D(0.2, 0.6, 1));
-    }
+    drawTube(element.entree(), element.exit(), element.radius(), Vector3D(0.2, 0.6, 1));
 }
 void QtSupport::draw(const Quadrupole &element  ) {
-    Vector3D axis(element.exit() - element.entree());
-    constexpr double NB_CIRCLES(10);
-    for (int i = 0; i < NB_CIRCLES; ++i) {
-        Vector3D pos(element.exit() * (i / NB_CIRCLES) + element.entree() * (1 - i / NB_CIRCLES));
-        drawCircle(pos, element.radius(), axis, Vector3D(1, 0.7, 0));
-    }}
+    drawTube(element.entree(), element.exit(), element.radius(), Vector3D(1, 0.7, 0));
+}
 void QtSupport::draw(const Segment &segment) {
     segment.StraightElement::draw(*this);
 }
@@ -245,7 +247,7 @@ void QtSupport::draw(const CurvedElement &element) {
     for (int i = 0; i < 10; ++i) {
         Vector3D pos(relEntree.rotate(Vector3D::e3, -angle * i / 10.0));
         Vector3D axis(pos ^ Vector3D::e3);
-        drawCircle(pos + cc, element.radius(), axis, Vector3D(0.2, 0.6, 1));
+        drawCircle(pos + cc, element.radius(), axis, Vector3D(0.9, 0.2, 0.2));
     }
 }
 void QtSupport::draw(const Dipole &dipole) {
@@ -264,5 +266,3 @@ void QtSupport::draw(const Beam &beam) {
         draw(*p);
     }
 }
-
-
