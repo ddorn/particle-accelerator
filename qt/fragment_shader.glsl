@@ -9,7 +9,7 @@ void main()
 
 
 //    vec3 light_dir = normalize(light_source - world_pos);
-//     We consider the light source is far enough (~sun) si it's always the same direction
+//     We consider the light source is far enough (~sun) so it's always the same direction
     vec3 light_dir = normalize(light_source);
     vec3 n = normalize(normal);
     float diff = max(dot(n, light_dir), 0.0);
