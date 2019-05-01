@@ -42,7 +42,7 @@ void GlWidget::timerEvent(QTimerEvent *event) {
     chronometre.restart();
 
     for (int i = 0; i < 1000; ++i) {
-        accelerator.evolve(0.0001);
+        accelerator.evolve(0.00001);
     }
 
     update();
@@ -124,6 +124,9 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
           intensity /= 1.05;
           std::cout << intensity << std::endl;
           build(intensity);
+          break;
+      case Qt::Key_Backspace:
+          accelerator.cleanBeam();
           break;
   };
 
