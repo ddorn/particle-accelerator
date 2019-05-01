@@ -102,4 +102,6 @@ bool Accelerator::addCircularBeam(double mass, double charge, const Vector3D &mo
 
     Particle reference(mass, charge, elements().front()->entree(), momentum, color, elements().front().get());
     beams_.push_back(std::make_unique<CircularBeam>(reference, lambda, nbrMacroParticle));
+
+    return true;
 }

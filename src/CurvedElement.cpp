@@ -82,19 +82,40 @@ const RadialVec3D CurvedElement::radialPosition(const Vector3D &pos) const {
     // but because we suppose no Element makes more than a half turn, it is
     // just the acos of the projection of dir over the entree
     double angle(acos(dir * dirEntree));
-    return RadialVec3D(pos * dir, radiusCircle() * angle, pos.z());
+    return RadialVec3D(pos * dir - radiusCircle(), radiusCircle() * angle, pos.z());
 }
 
 const RadialVec3D CurvedElement::radialSpeed(const Vector3D &absolutePosition, const Vector3D &absoluteSpeed) const {
-    return RadialVec3D(0, 0, 0);
+    Vector3D planePosition(absolutePosition.x(), absolutePosition.y(), 0);
+    Vector3D planeSpeed(absoluteSpeed.x(), absoluteSpeed.y(), 0);
+    Vector3D dir(~(planePosition - centerOfCurvature()));
+
+    // We need to calculate the angle between pos and pos + speed
+    double prod(dir * ~(planePosition - centerOfCurvature() + planeSpeed));
+    double s(acos(prod));
+    if (prod < 0) {
+        // particle going the other way
+        s *= -1;
+    }
+    return RadialVec3D(absoluteSpeed * dir, s * radiusCircle(), absoluteSpeed.z());
 }
 
 const Vector3D CurvedElement::absolutePosition(const RadialVec3D &radialPos) const {
-    return Vector3D();
+    const Vector3D cc(centerOfCurvature());
+    Vector3D dir((entree() - cc).rotate(Vector3D::e3, radialPos.s() / radiusCircle()));
+    dir *= 1 + radialPos.r();
+    dir += cc;
+    return Vector3D(dir.x(), dir.z(), radialPos.z());
 }
 
 const Vector3D CurvedElement::absoluteSpeed(const RadialVec3D &relativePosition, const RadialVec3D &relativeSpeed) const {
-    return Vector3D();
+    const Vector3D cc(centerOfCurvature());
+    Vector3D dir((entree() - cc).rotate(Vector3D::e3, relativePosition.s() / radiusCircle()));
+
+    Vector3D q = dir.rotate(Vector3D::e3, relativeSpeed.s() / radiusCircle());
+    return ~dir * relativeSpeed.r()
+        + (q - dir)
+        + Vector3D::e3 * relativeSpeed.z();
 }
 
 double CurvedElement::angle() const {
