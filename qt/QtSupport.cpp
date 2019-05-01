@@ -197,6 +197,8 @@ void QtSupport::drawVector(Vector3D vec, const Vector3D &start) {
 
     QMatrix4x4 model;
     prog.setUniformValue("model", model);
+    prog.setUniformValue("view", view);
+
     glNormal3f(0, 2, 4);  // This is the lights position
 
     glBegin(GL_LINES);
@@ -207,6 +209,8 @@ void QtSupport::drawVector(Vector3D vec, const Vector3D &start) {
 // Tube
 void QtSupport::drawTube(const QMatrix4x4 &model, double radius, const Vector3D &color) {
     prog.setUniformValue("model", model);
+    prog.setUniformValue("view", view);
+
     prog.setAttributeValue(ColorId, color.x(), color.y(), color.z(), 0.5);
 
     constexpr int NB_CIRCLES(15);
@@ -277,13 +281,49 @@ void QtSupport::draw(const CurvedElement &element) {
     Vector3D cc(element.centerOfCurvature());
     Vector3D relEntree(element.entree() - cc);
     Vector3D relExit(element.exit() - cc);
-    constexpr double NB_CIRCLES(9);
-    double angle(acos(relExit * relEntree));  // TODO: This supposes clockwise turn
-    for (int i = 0; i < NB_CIRCLES; ++i) {
-        Vector3D pos(relEntree.rotate(Vector3D::e3, -angle * i / NB_CIRCLES));
-        Vector3D axis(pos ^ Vector3D::e3);
-        drawCircle(pos + cc, element.radius(), axis, Vector3D(0.9, 0.2, 0.2));
+
+    QMatrix4x4 model;
+    model.translate(cc.x(), cc.y());
+    prog.setUniformValue("model", model);
+    prog.setUniformValue("view", view);
+    prog.setAttributeValue(ColorId, 1, 0, 0, 0.5);
+
+    constexpr int NB_CIRCLES(12);
+    constexpr double CIRCLE_ANGLE(2 * M_PI / NB_CIRCLES);
+
+    double a = acos(~relExit * ~relEntree);  // TODO: This supposes clockwise turn definition of accelerator
+    double angle(a / NB_CIRCLES);
+
+
+    glBegin(GL_QUADS);
+    Vector3D center(relEntree);
+    Vector3D axis1(relEntree ^ Vector3D::e3);
+    for (int i = 0; i <= NB_CIRCLES; ++i) {
+        Vector3D next(relEntree.rotate(Vector3D::e3, -angle * i));
+        Vector3D axis2(next ^ Vector3D::e3);
+        Vector3D dir1(Vector3D::e3 * element.radius());
+        Vector3D dir2(Vector3D::e3 * element.radius());
+        for (int j = 0; j < NB_CIRCLES; ++j) {
+            Vector3D nextDir1(dir1.rotate(axis1, CIRCLE_ANGLE));
+            Vector3D nextDir2(dir2.rotate(axis2, CIRCLE_ANGLE));
+
+            Vector3D a1(center + dir1);
+            Vector3D b1(center + nextDir1);
+            Vector3D a2(next + dir2);
+            Vector3D b2(next + nextDir2);
+
+            prog.setAttributeValue(VertexId, a1.x(), a1.y(), a1.z());
+            prog.setAttributeValue(VertexId, b1.x(), b1.y(), b1.z());
+            prog.setAttributeValue(VertexId, b2.x(), b2.y(), b2.z());
+            prog.setAttributeValue(VertexId, a2.x(), a2.y(), a2.z());
+
+            dir1 = nextDir1;
+            dir2 = nextDir2;
+        }
+        center = next;
+        axis1 = axis2;
     }
+    glEnd();
 }
 void QtSupport::draw(const Dipole &dipole) {
     dipole.CurvedElement::draw(*this);
