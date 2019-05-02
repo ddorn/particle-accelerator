@@ -40,8 +40,8 @@ void QtSupport::init() {
     glDisable(GL_CULL_FACE);
     // Enable blending
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE);  // best
-//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//    glBlendFunc(GL_SRC_ALPHA, GL_ONE);  // best
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     sphere.initialize();
     initPosition();
@@ -178,7 +178,7 @@ void QtSupport::drawSphere(const QMatrix4x4 &model, double r, double g, double b
 
     prog.setUniformValue("view", view);
     prog.setUniformValue("model", model);
-    prog.setAttributeValue(ColorId, r, g, b);
+    prog.setAttributeValue(ColorId, r, g, b, 1);
 
     sphere.draw(prog, VertexId);
 }
@@ -213,16 +213,17 @@ void QtSupport::drawTube(const QMatrix4x4 &model, double radius, const Vector3D 
 
     prog.setAttributeValue(ColorId, color.x(), color.y(), color.z(), 0.5);
 
-    constexpr int NB_CIRCLES(15);
-    constexpr double ANGLE_STEP(2 * M_PI / NB_CIRCLES);
+    constexpr int NB_CIRCLES(6);
     constexpr double X_STEP(1.0 / NB_CIRCLES);
+    constexpr int NB_SEGMENTS(12);
+    constexpr double ANGLE_STEP(2 * M_PI / NB_SEGMENTS);
 
     glBegin(GL_QUADS);
     glNormal3f(2, 2, 4);
     double x(0);
     for (int i(0); i < NB_CIRCLES; ++i) {
         double angle(0);
-        for (int j = 0; j < NB_CIRCLES; ++j) {
+        for (int j = 0; j < NB_SEGMENTS; ++j) {
 //            glNormal3f(0, radius * cos(angle), radius * sin(angle));
             prog.setAttributeValue(VertexId, x + X_STEP, radius * cos(angle), radius * sin(angle));
             prog.setAttributeValue(VertexId, x, radius * cos(angle), radius * sin(angle));
@@ -256,11 +257,22 @@ void QtSupport::draw(const Particle &particle) {
     drawSphere(particle.position(), 0.03, particle.color());
 }
 void QtSupport::draw(const Accelerator &accelerator) {
+
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+//    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // passe en mode "fil de fer"
+
+    for (const auto &e : accelerator.elements()) {  
+        e->draw(*this);
+    }
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glDisable(GL_BLEND);
+    glPolygonMode(GL_FRONT, GL_FILL);
     for (const auto& p : accelerator.beams()) {
         p->draw(*this);
-    }
-    for (const auto &e : accelerator.elements()) {
-        e->draw(*this);
     }
 }
 void QtSupport::draw(const Element &element) {
@@ -288,8 +300,9 @@ void QtSupport::draw(const CurvedElement &element) {
     prog.setUniformValue("view", view);
     prog.setAttributeValue(ColorId, 1, 0, 0, 0.5);
 
-    constexpr int NB_CIRCLES(12);
-    constexpr double CIRCLE_ANGLE(2 * M_PI / NB_CIRCLES);
+    constexpr int NB_SEGMENTS(12);
+    constexpr int NB_CIRCLES(6);
+    constexpr double CIRCLE_ANGLE(2 * M_PI / NB_SEGMENTS);
 
     double a = acos(~relExit * ~relEntree);  // TODO: This supposes clockwise turn definition of accelerator
     double angle(a / NB_CIRCLES);
@@ -298,12 +311,12 @@ void QtSupport::draw(const CurvedElement &element) {
     glBegin(GL_QUADS);
     Vector3D center(relEntree);
     Vector3D axis1(relEntree ^ Vector3D::e3);
-    for (int i = 0; i <= NB_CIRCLES; ++i) {
+    for (int i = 0; i <= NB_CIRCLES ; ++i) {
         Vector3D next(relEntree.rotate(Vector3D::e3, -angle * i));
         Vector3D axis2(next ^ Vector3D::e3);
         Vector3D dir1(Vector3D::e3 * element.radius());
         Vector3D dir2(Vector3D::e3 * element.radius());
-        for (int j = 0; j < NB_CIRCLES; ++j) {
+        for (int j = 0; j < NB_SEGMENTS; ++j) {
             Vector3D nextDir1(dir1.rotate(axis1, CIRCLE_ANGLE));
             Vector3D nextDir2(dir2.rotate(axis2, CIRCLE_ANGLE));
 
