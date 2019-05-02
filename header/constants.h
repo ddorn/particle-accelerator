@@ -12,9 +12,10 @@ namespace constants {
     constexpr double LIGHT_SPEED(1.0);
     /// Speed of light squared. Unit: c²
     constexpr double LIGHT_SPEED_SQUARED(LIGHT_SPEED * LIGHT_SPEED);
-
+    constexpr double LIGHT_SPEED_MS(299792458);
     /// Charge of a proton. Unit: eV
     constexpr double PROTON_CHARGE(1.0);
+    constexpr double C_PROTON_COULOMB(1.6020217653e-19);
     /// Mass of a proton. Unit: GeV/c^2
     constexpr double M_PROTON(0.938272);
     /// Mass of an electron. Unit: GeV/c²
