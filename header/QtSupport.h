@@ -11,17 +11,24 @@
 #include "GlSphere.h"
 #include "all.h"
 
+enum ViewMode {
+    FREE,
+    FOLLOW_PARTICLE,
+};
+
 class QtSupport : public Support {
 private:
     QOpenGLShaderProgram prog;
     QMatrix4x4 view; // Camera
     GLSphere sphere;
+    ViewMode viewMode;
 public:
     // Initialisation
     // TODO: Why not put those two in the constructor ? Isn't it its purpose ?
     // Answer: because it simply doesn't work... but why ?
     void init();
     void initPosition();
+    void setViewMode(ViewMode v);
 
     // Draw objects
 

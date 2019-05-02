@@ -3,7 +3,6 @@
 //
 
 #include <QKeyEvent>
-#include <GlWidget.h>
 
 #include "Segment.h"
 #include "GlWidget.h"
@@ -27,7 +26,7 @@ void GlWidget::paintGL() {
     // Clear the screen
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // And then draw the accelerator
-    accelerator.draw(support);
+    support.draw(accelerator);
 }
 
 void GlWidget::timerEvent(QTimerEvent *event) {
@@ -127,6 +126,12 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
           break;
       case Qt::Key_Backspace:
           accelerator.cleanBeam();
+          break;
+      case Qt::Key_Escape:
+          support.setViewMode(FREE);
+          break;
+      case Qt::Key_1:
+          support.setViewMode(FOLLOW_PARTICLE);
           break;
   };
 

@@ -12,6 +12,7 @@
 
 using namespace std;
 
+
 // Initialisation
 
 void QtSupport::init() {
@@ -257,6 +258,31 @@ void QtSupport::draw(const Particle &particle) {
     drawSphere(particle.position(), 0.03, particle.color());
 }
 void QtSupport::draw(const Accelerator &accelerator) {
+    switch (viewMode) {
+        case FREE:
+            break;
+        case FOLLOW_PARTICLE:
+            if (!accelerator.beams().empty()) {
+                const auto& b = accelerator.beams()[0];
+                if (!b->macroParticles().empty()) {
+                    const auto& particle = b->macroParticles()[0];
+                    const Vector3D& pos(particle->position());
+                    Vector3D look = pos + particle->speed();
+                    view.setToIdentity();
+//                    view.translate(particle->position().x(), particle->position().y(), particle->position().z());
+                    view.lookAt(QVector3D(pos.x(), pos.y(), pos.z()),
+                            QVector3D(look.x(), look.y(), look.z()),
+                            QVector3D(0, 0, 1));
+                } else {
+                    initPosition();
+                }
+            } else {
+                initPosition();
+            }
+            break;
+    }
+
+    prog.setUniformValue("view", view);
 
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
@@ -352,5 +378,12 @@ QMatrix4x4 QtSupport::posToModel(const Vector3D &position, double scale) {
     model.translate(position.x(), position.y(), position.z());
     model.scale(scale);
     return model;
+}
+
+void QtSupport::setViewMode(ViewMode v) {
+    viewMode = v;
+    if (viewMode == FREE) {
+        initPosition();
+    }
 }
 
