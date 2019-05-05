@@ -66,6 +66,10 @@ public:
 
     void draw(Support &support) const override { support.draw(*this); }
 
+    void removeMacroParticle(size_t i);
+
+    void addMacroParticle(const Vector3D &position, const Vector3D &speed, Element *element);
+
 private:
     /**
      * The number of real particles in a macroparticle
@@ -96,11 +100,7 @@ protected:
     ParticleVector macroParticles_;
     Particle refParticle_;
 
-    void removeMacroParticle(size_t i);
 
-    void addMacroParticle(const Vector3D &position, const Vector3D &speed, Element *element);
-
-    virtual void generateParticles() = 0;
 };
 
 

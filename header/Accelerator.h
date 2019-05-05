@@ -63,7 +63,7 @@ public:
      * One small step for the accelerator, one giant leap for mankind.
      * Small is exactly 0.01 seconds.
      */
-    void evolve(double dt = 0.01);
+    void evolve(double dt = 1e-11);
 
     const BeamVector &beams() const { return beams_; }
     const ElementVector &elements() const { return elements_; }
@@ -86,9 +86,16 @@ public:
      */
     bool addQuadrupole(const Vector3D& exit, double radius, double magneticFieldIntensity);
 
+    bool addBeam(double mass, double charge, const Vector3D &momentum,
+            size_t lambda, const std::vector<Particle> &macroParticles, const Vector3D &color = Vector3D(1, 1, 1));
+
     bool addCircularBeam(double mass, double charge, const Vector3D &momentum,
             size_t lambda, size_t nbrMacroParticle, const Vector3D &color = Vector3D(1, 1, 1));
 
+    /**
+    * @return if the last element ends where the first element begins.
+    */
+    bool isClosed() const;
 private:
     /**
      * Add a new particle in the accelerator.
@@ -101,10 +108,7 @@ private:
      * must be linked to the first.
      */
     void linkElements();
-    /**
-     * @return if the last element ends where the first element begins.
-     */
-    bool isClosed() const;
+
     /**
      * @return if the element can be added to the accelerator, i.e.
      * if the exit is not the entree, if the radius is strictly positive and

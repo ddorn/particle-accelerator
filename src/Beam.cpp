@@ -2,6 +2,8 @@
 // Created by Gabin on 04.04.2019.
 //
 
+#include <Beam.h>
+
 #include "Beam.h"
 
 using namespace std;
@@ -109,6 +111,8 @@ void Beam::addMacroParticle(const Vector3D &position, const Vector3D &speed, Ele
                                                         element));
     }
 }
+
+
 
 std::ostream &operator<<(std::ostream &os, Beam const &beam) {
     for (auto const& macro : beam.macroParticles()) {

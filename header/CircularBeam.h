@@ -13,7 +13,7 @@ public:
                                                                                                 nbrMacroParticles) { generateParticles(); }
 
 private:
-    void generateParticles() override;
+    void generateParticles();
 };
 
 #endif //PARTICLEACCELERATOR_CIRCULARBEAM_H
