@@ -15,11 +15,16 @@ namespace constants {
     constexpr double LIGHT_SPEED_MS(299792458);
     /// Charge of a proton. Unit: eV
     constexpr double PROTON_CHARGE(1.0);
-    constexpr double C_PROTON_COULOMB(1.6020217653e-19);
+    /// Charge of a proton. Unit: C
+    constexpr double C_PROTON_COULOMB(1.60217653e-19);
     /// Mass of a proton. Unit: GeV/c^2
     constexpr double M_PROTON(0.938272);
     /// Mass of an electron. Unit: GeV/c²
     constexpr double M_ELECTRON(5.10999e-4);
+    /// Kilogram. Unit : GeV / c^2
+    constexpr double KG(5.609588e26);
+    /// Coulomb. Unit : charge of a proton.
+    constexpr double COULOMB(1/C_PROTON_COULOMB);
 }
 
 #endif //PARTICLE_ACCELERATOR_CONSTANTS_H

@@ -30,15 +30,15 @@ void Particle::evolve(double dt) {
 
     // Euler-Cramer integrator
     momentum_ += force_ * dt;
-    position_ += speed() * dt;
+    position_ += speed() * LIGHT_SPEED_MS * dt;
     force_ *= 0;  // Reuse the same object instead of creating a new one;
 }
 
 void Particle::addMagneticForce(const Vector3D &b, double dt) {
     if (dt <= 0) return;
 
-    Vector3D force = charge() * (speed() ^ b);
-    if (force.isZero()) return;
+    Vector3D force = charge() * (speed() ^ (b * KG / COULOMB)); // the magnetic intensity is in tesla, we
+    if (force.isZero()) return;                                 // do the conversion in GeV / c^2 / s / e
 
     double correction_angle = asin(dt * force.norm() /
             (2 * momentum().norm()));
@@ -71,6 +71,9 @@ double Particle::radialVelocitySqrd() const {
 }
 
 std::ostream &operator<<(std::ostream &os, const Particle &partic) {
+    Vector3D force(partic.charge() * (partic.speed() ^
+    (partic.element()->magneticForceAt(partic.position())) * KG / COULOMB));
+    double correctionAngle(asin(1e-11 * force.norm() / 2 / partic.momentum().norm()));
     os << "Particle :" << std::endl
         << " - mass : " << partic.mass() << " GeV / c²" << std::endl
         << " - charge : " << partic.charge() << " eV" << std::endl
@@ -79,7 +82,11 @@ std::ostream &operator<<(std::ostream &os, const Particle &partic) {
         << " - momentum : " << partic.momentum() << " GeV / c" << std::endl
         << " - energy : " << partic.energy() << " GeV" << std::endl
         << " - velocity : " << partic.velocity() << " c" << std::endl
-        << " - speed : " << partic.speed() << " c" << std::endl;
+        << " - speed : " << partic.speed() << " c" << std::endl
+        << " - speed in m/s " << partic.speed() * LIGHT_SPEED_MS << " m/s" << std::endl
+        << " - force : " << force << std::endl
+        << " - force in N : " << partic.charge() * C_PROTON_COULOMB * ((partic.speed() * LIGHT_SPEED_MS) ^ partic.element()->magneticForceAt(partic.position())) << std::endl
+        << " - correction angle : " << correctionAngle << " rad" << std::endl;
     return os;
 }
 

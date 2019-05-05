@@ -19,11 +19,6 @@ std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
     for (const auto &b : accelerator.beams()) {
         os << *b << endl;
     }
-    os << " Elements:" << endl;
-    for (const auto &e : accelerator.elements()) {
-        os << *e << endl;
-    }
-
     return os;
 }
 
@@ -121,4 +116,18 @@ bool Accelerator::addBeam(double mass, double charge, const Vector3D &momentum, 
         beams_.back()->addMacroParticle(p.position(), p.speed(), elements().front().get());
     }
     return true;
+}
+
+ostream& Accelerator::completeDescription(std::ostream &os) const {
+    os << "Accelerator:" << endl
+       << " Beams:" << endl;
+    for (const auto &b : beams()) {
+        os << *b << endl;
+    }
+    os << " Elements:" << endl;
+    for (const auto &e : elements()) {
+        os << *e << endl;
+    }
+
+    return os;
 }

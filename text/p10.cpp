@@ -20,10 +20,11 @@ int main() {
     Vector3D position2(2.99, 0, 0);
     Particle p1(mass, charge, position1, momentum);
     Particle p2(mass, charge, position2, momentum);
-    vector<Particle> particles{p1, p2};
+    vector<Particle> particles{p2};
           //  ---------
 
-
+    double quadrupoleIntensity(1.2);
+    double dipoleIntensity(5.89158);
     TextSupport s(cout);
     Accelerator bobLEponge(Vector3D(3, 0, 0));
 
@@ -35,10 +36,10 @@ int main() {
     Vector3D pd2(0, -3, 0);
 
     for (int i = 0; i < 4; ++i) {
-        bobLEponge.addQuadrupole(pqf, radius, -1.2);
+        bobLEponge.addQuadrupole(pqf, radius, -quadrupoleIntensity);
         bobLEponge.addSegment(pd1, radius);
-        bobLEponge.addDipole(pd, radius, 1, 5.89158);
-        bobLEponge.addQuadrupole(pqd, radius, 1.2);
+        bobLEponge.addDipole(pd, radius, 1, dipoleIntensity);
+        bobLEponge.addQuadrupole(pqd, radius, quadrupoleIntensity);
         bobLEponge.addSegment(pd2, radius);
 
         pqf = pqf ^ Vector3D::e3;
@@ -52,10 +53,10 @@ int main() {
             momentum, 1, particles);
 
     bobLEponge.draw(s);
-    /*
-    for (int j = 0; j < 10; ++j) {
+
+    for (int j = 0; j < 1000; ++j) {
         bobLEponge.evolve();
         bobLEponge.draw(s);
-    } */
+    }
     return 0;
 }

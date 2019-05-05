@@ -9,6 +9,9 @@
 
 class Dipole : public CurvedElement {
 private:
+    /**
+     * magnetic field. Unit : tesla.
+     */
     Vector3D magneticField_;
 
 public:

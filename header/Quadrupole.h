@@ -22,6 +22,9 @@ public:
     void draw(Support &support) const override { support.draw(*this); }
 
 private:
+    /**
+     * Magnetic intensity. Unit : tesla.
+     */
     double intensity_;
 };
 
