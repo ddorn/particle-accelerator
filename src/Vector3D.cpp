@@ -64,7 +64,7 @@ const Vector3D operator*(component scalar, Vector3D rhs) { return rhs *= scalar;
 const Vector3D operator*(Vector3D lhs, component scalar) { return lhs *= scalar; }
 
 Vector3D& operator/=(Vector3D &lhs, component scalar) {
-    if (scalar == 0) {  // should we check if it's very small instead ?
+    if (scalar == 0) {
         // This should never occur. If it does, there is a flow
         // in our code, a check that isn't done, therefore we
         // print the problem and abort the program. If this happens,
@@ -94,7 +94,7 @@ const Vector3D operator~(Vector3D vec) {
         // print the problem and abort the program. If this happens,
         // Run gdb to see where it comes from and fix it.
         // Physicians do horrible things, but no division by zero.
-        std::cout << "Normalization of null vector" << std::endl;
+        std::cerr << "Normalization of null vector" << std::endl;
         throw "Cannot normalize null vector";
     }
     return vec /= vec.norm();
