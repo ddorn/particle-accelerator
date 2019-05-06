@@ -22,7 +22,7 @@ namespace constants {
     /// Mass of an electron. Unit: GeV/c²
     constexpr double M_ELECTRON(5.10999e-4);
     /// Kilogram. Unit : GeV / c^2
-    constexpr double KG(5.609588e26);
+    constexpr double KG(LIGHT_SPEED_MS * LIGHT_SPEED_MS / C_PROTON_COULOMB / 1e9);
     /// Coulomb. Unit : charge of a proton.
     constexpr double COULOMB(1/C_PROTON_COULOMB);
 }
