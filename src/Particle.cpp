@@ -17,13 +17,7 @@ double Particle::energy() const {
     return gamma() * mass();
 }
 double Particle::velocitySquared() const {
-    double momentum_squared = momentum().normSquared();
-    return momentum_squared / (massSI() * massSI() + momentum_squared / LIGHT_SPEED_SQUARED);
-}
-
-const Vector3D Particle::speed() const {
-    return momentum() / (gamma() * massSI());
-//    return LIGHT_SPEED / sqrt(mass() * mass() + momentum().normSquared()) * momentum();
+    return speed().normSquared();
 }
 
 void Particle::evolve(double dt) {
@@ -31,6 +25,7 @@ void Particle::evolve(double dt) {
 
     // Euler-Cramer integrator
     momentum_ += force_ * dt;
+    speed_ += force_ * dt / gamma() / massSI();
     position_ += speed() * dt;
     lastForce_ = force_;
     force_ *= 0;  // Reuse the same object instead of creating a new one;
@@ -78,9 +73,7 @@ std::ostream &operator<<(std::ostream &os, const Particle &partic) {
         << " - charge : " << partic.charge() << " C" << std::endl
         << " - position : " << partic.position() << std::endl
         << " - gamma : " << partic.gamma() << std::endl
-        << " - momentum : " << partic.momentum() << " kg * m / s" << std::endl
         << " - energy : " << partic.energy() << " GeV" << std::endl
-        << " - velocity : " << partic.velocity() << " m/s" << std::endl
         << " - speed : " << partic.speed() << " m/s" << std::endl
         << " - corrected force : " << partic.lastForce() << std::endl
         << " - correction angle : " << partic.correctionAngle() << " rad" << std::endl;
@@ -89,4 +82,8 @@ std::ostream &operator<<(std::ostream &os, const Particle &partic) {
 
 const Vector3D momentumFromSpeed(const Vector3D &speed, double mass) {
     return 1.0 / sqrt(1 - speed.normSquared() / LIGHT_SPEED_SQUARED) * mass / KG * speed;
+}
+
+const Vector3D Particle::speedFromMomentum() const {
+    return momentum() / sqrt(massSI() * massSI() + (momentum() * momentum() / LIGHT_SPEED_SQUARED));
 }

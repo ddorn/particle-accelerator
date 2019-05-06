@@ -41,6 +41,8 @@ private:
     Vector3D lastForce_;
     Element* element_;
     Vector3D color_;
+    Vector3D speed_;
+    const Vector3D speedFromMomentum() const;
 public:
     /**
      * Create a new particle.
@@ -59,7 +61,8 @@ public:
               position_(position),
               momentum_(momentum),
               element_(element),
-              color_(color)
+              color_(color),
+              speed_(speedFromMomentum())
     {}
 
     double charge() const { return charge_; }
@@ -78,7 +81,7 @@ public:
      * Speed vector of the particle. Unit: m/s
      * @return Speed vector
      */
-    const Vector3D speed() const;
+    const Vector3D speed() const { return speed_; }
     /**
      * Velocity of the particle. Unit: m/s
      * @return Scalar velocity
