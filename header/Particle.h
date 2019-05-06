@@ -41,6 +41,12 @@ private:
     Vector3D lastForce_;
     Element* element_;
     Vector3D color_;
+    Vector3D speed_;
+    /**
+     * This method is used at the creation of an instance, to obtain the speed from
+     * the given momentum
+     */
+    const Vector3D speedFromMomentum() const;
 public:
     /**
      * Create a new particle.
@@ -59,13 +65,26 @@ public:
               position_(position),
               momentum_(momentum),
               element_(element),
-              color_(color)
+              color_(color),
+              speed_(speedFromMomentum())
     {}
 
     double charge() const { return charge_; }
+    /**
+     * Give the mass in GeV / c²
+     */
     double mass() const { return mass_; }
+    /**
+     * Give the mass in kg
+     */
     double massSI() const { return mass() / constants::KG; }
+    /**
+     * Force applied during the last step
+     */
     const Vector3D& lastForce() const { return lastForce_; }
+    /**
+     * Correction angle during the last step
+     */
     double correctionAngle() const { return correction_angle_; }
 
     const Vector3D &momentum() const { return momentum_; }
@@ -78,7 +97,7 @@ public:
      * Speed vector of the particle. Unit: m/s
      * @return Speed vector
      */
-    const Vector3D speed() const;
+    const Vector3D speed() const { return speed_; }
     /**
      * Velocity of the particle. Unit: m/s
      * @return Scalar velocity

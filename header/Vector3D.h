@@ -102,7 +102,13 @@ component operator*(Vector3D const&, const Vector3D& rhs);
  * @return A vector of norm 1
  */
 const Vector3D operator~(Vector3D);
-
+/**
+ * Test wether two vectors are equal
+ * If the difference between two components is
+ * less than the precision attribute, it is considered
+ * equal.
+ * @return
+ */
 bool operator==(const Vector3D&, const Vector3D&);
 bool operator!=(const Vector3D &lhs, const Vector3D &rhs);
 
