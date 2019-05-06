@@ -21,7 +21,7 @@ int main() {
     accelerator.add(d);
 
 
-    accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0));
+    accelerator.addParticle(M_PROTON, C_PROTON, Vector3D(1, 0, 0));
 
     accelerator.draw();
     while (!accelerator.beams().empty()) {

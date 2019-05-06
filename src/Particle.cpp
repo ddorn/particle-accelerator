@@ -13,16 +13,17 @@ using namespace constants;
 double Particle::gamma() const {
     return 1.0 / sqrt(1.0 - velocitySquared() / LIGHT_SPEED_SQUARED);
 }
-double Particle::energy() const{
-    return gamma() * mass() * LIGHT_SPEED_SQUARED;
+double Particle::energy() const {
+    return gamma() * mass();
 }
 double Particle::velocitySquared() const {
     double momentum_squared = momentum().normSquared();
-    return momentum_squared / (mass() * mass() + momentum_squared / LIGHT_SPEED_SQUARED);
+    return momentum_squared / (massSI() * massSI() + momentum_squared / LIGHT_SPEED_SQUARED);
 }
 
 const Vector3D Particle::speed() const {
-    return LIGHT_SPEED / sqrt(mass() * mass() + momentum().normSquared()) * momentum();
+    return momentum() / (gamma() * massSI());
+//    return LIGHT_SPEED / sqrt(mass() * mass() + momentum().normSquared()) * momentum();
 }
 
 void Particle::evolve(double dt) {
@@ -30,22 +31,23 @@ void Particle::evolve(double dt) {
 
     // Euler-Cramer integrator
     momentum_ += force_ * dt;
-    position_ += speed() * LIGHT_SPEED_MS * dt;
+    position_ += speed() * dt;
+    lastForce_ = force_;
     force_ *= 0;  // Reuse the same object instead of creating a new one;
 }
 
 void Particle::addMagneticForce(const Vector3D &b, double dt) {
     if (dt <= 0) return;
 
-    Vector3D force = charge() * (speed() ^ (b * KG / COULOMB)); // the magnetic intensity is in tesla, we
-    if (force.isZero()) return;                                 // do the conversion in GeV / c^2 / s / e
+    Vector3D force = charge() * (speed() ^ b);
+    if (force.isZero()) return;
 
-    double correction_angle = asin(dt * force.norm() /
-            (2 * momentum().norm()));
+    correction_angle_ = asin(dt * force.norm() /
+                             (2 * momentum().norm()));
 
     Vector3D correction(speed() ^ force);
     if (correction.isZero()) return;
-    force_ += force.rotate(correction, correction_angle);
+    force_ += force.rotate(correction, correction_angle_);
 }
 
 bool Particle::updateElement() {
@@ -71,34 +73,20 @@ double Particle::radialVelocitySqrd() const {
 }
 
 std::ostream &operator<<(std::ostream &os, const Particle &partic) {
-    Vector3D force(partic.charge() * (partic.speed() ^
-    (partic.element()->magneticForceAt(partic.position())) * KG / COULOMB));
-    double correctionAngle(asin(1e-11 * force.norm() / 2 / partic.momentum().norm()));
-
-    Vector3D forceCorrected(0, 0, 0);
-    Vector3D correction(partic.speed() ^ force);
-    if(not(correction.isZero())){
-        forceCorrected = force.rotate(correction, correctionAngle);
-    }
-    Vector3D forceInN(force * LIGHT_SPEED_MS / KG);
-    Vector3D forceInNCorrected(forceCorrected * LIGHT_SPEED_MS / KG);
     os << "Particle :" << std::endl
         << " - mass : " << partic.mass() << " GeV / c²" << std::endl
-        << " - charge : " << partic.charge() << " eV" << std::endl
+        << " - charge : " << partic.charge() << " C" << std::endl
         << " - position : " << partic.position() << std::endl
         << " - gamma : " << partic.gamma() << std::endl
-        << " - momentum : " << partic.momentum() << " GeV / c" << std::endl
+        << " - momentum : " << partic.momentum() << " kg * m / s" << std::endl
         << " - energy : " << partic.energy() << " GeV" << std::endl
-        << " - velocity : " << partic.velocity() << " c" << std::endl
-        << " - speed : " << partic.speed() << " c" << std::endl
-        << " - speed in m/s " << partic.speed() * LIGHT_SPEED_MS << " m/s" << std::endl
-        << " - force : " << force << std::endl
-        << " - force in N : " << forceInN << std::endl
-        << " - force in N corrected : " << forceInNCorrected << std::endl
-        << " - correction angle : " << correctionAngle << " rad" << std::endl;
+        << " - velocity : " << partic.velocity() << " m/s" << std::endl
+        << " - speed : " << partic.speed() << " m/s" << std::endl
+        << " - corrected force : " << partic.lastForce() << std::endl
+        << " - correction angle : " << partic.correctionAngle() << " rad" << std::endl;
     return os;
 }
 
 const Vector3D momentumFromSpeed(const Vector3D &speed, double mass) {
-    return 1/sqrt(1 - speed.normSquared() / LIGHT_SPEED_SQUARED) * mass * speed;
+    return 1.0 / sqrt(1 - speed.normSquared() / LIGHT_SPEED_SQUARED) * mass / KG * speed;
 }

@@ -35,13 +35,13 @@ void GlWidget::timerEvent(QTimerEvent *event) {
     counter += 1;
 
 //    if (stream && counter % 2 == 0)
-//        accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0), Vector3D(1, 1, 0));
+//        accelerator.addParticle(M_PROTON, C_PROTON, Vector3D(1, 0, 0), Vector3D(1, 1, 0));
 
     //    double dt = chronometre.restart() / 1000.0;
     chronometre.restart();
 
     for (int i = 0; i < 10; ++i) {
-        accelerator.evolve(1e-11);
+        accelerator.evolve(dt);
     }
 
     update();
@@ -109,8 +109,8 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
           break;
       case Qt::Key_P:
           addBeam();
-//          accelerator.addCircularBeam(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0), 1, 100);
-//          accelerator.addParticle(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0), Vector3D(1, 0, 0));
+//          accelerator.addCircularBeam(M_PROTON, C_PROTON, Vector3D(1, 0, 0), 1, 100);
+//          accelerator.addParticle(M_PROTON, C_PROTON, Vector3D(1, 0, 0), Vector3D(1, 0, 0));
           break;
       case Qt::Key_Space:
           stream = !stream;
@@ -134,6 +134,12 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
       case Qt::Key_1:
           support.setViewMode(FOLLOW_PARTICLE);
           break;
+      case Qt::Key_K:
+          dt *= 1.1;
+          break;
+      case Qt::Key_J:
+          dt /= 1.1;
+          break;
   };
 
   update(); // redessine
@@ -146,14 +152,14 @@ GlWidget::GlWidget(QWidget *parent)
 }
 
 void GlWidget::build(double quadrupole_intensity) {
-    double radius(0.1);
+    double radius(0.9);
     Vector3D pqd(-1, 3, 0);
     Vector3D pd2(0, 3, 0);
     Vector3D pqf(1, 3, 0);
     Vector3D pd1(2, 3, 0);
     Vector3D pd(3, 2, 0);
 
-    quadrupole_intensity = 1.2;
+    quadrupole_intensity = -1.2;
 
     accelerator.cleanBeam();
     accelerator.cleanElements();
@@ -171,16 +177,16 @@ void GlWidget::build(double quadrupole_intensity) {
         pd2 = pd2 ^ Vector3D::e3;
     }
 
-//    accelerator.addCircularBeam(M_PROTON, PROTON_CHARGE, Vector3D(1, 0, 0), 1, 100, Vector3D(1, 0.2, 0.8));
+//    accelerator.addCircularBeam(M_PROTON, C_PROTON, Vector3D(1, 0, 0), 1, 100, Vector3D(1, 0.2, 0.8));
     addBeam();
 }
 
 void GlWidget::addBeam() {
-    Vector3D speed(Vector3D(2.64754e08, 0, 0) / constants::LIGHT_SPEED_MS);
+    Vector3D speed(2.64754e08, 0, 0);  // constants::LIGHT_SPEED_MS);
     double gamma(2.13158);
     double mass(constants::M_PROTON);
-    Vector3D momentum(speed * gamma * mass);
-    accelerator.addCircularBeam(M_PROTON, PROTON_CHARGE, momentum, 1, 100);
+    Vector3D momentum(speed * gamma * mass / KG);
+    accelerator.addCircularBeam(M_PROTON, C_PROTON, momentum, 1, 100);
 }
 
 

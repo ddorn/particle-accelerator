@@ -5,10 +5,9 @@
 #include "Quadrupole.h"
 
 const Vector3D Quadrupole::magneticForceAt(const Vector3D & position) const{
-    Vector3D e3(Vector3D::e3);
     Vector3D X(position - entree());
     Vector3D direction(~(exit() - entree()));
     Vector3D y(X - (X * direction) * direction);
-    Vector3D u(e3 ^ direction);
-    return intensity_ * ((y * u) * e3 + X.z() * u);
+    Vector3D u(Vector3D::e3 ^ direction);
+    return intensity_ * ((y * u) * Vector3D::e3 + X.z() * u);
 }

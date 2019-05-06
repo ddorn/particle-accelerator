@@ -11,11 +11,11 @@ using namespace std;
 
 int main() {
     // ---- Parametrisation of the particles ----
-    Vector3D speed(Vector3D(0, -2.64754e08, 0) / constants::LIGHT_SPEED_MS);
+    Vector3D speed(0, -2.64754e08, 0); // constants::LIGHT_SPEED_MS);
     double gamma(2.13158);
     double mass(constants::M_PROTON);
-    double charge(constants::PROTON_CHARGE);
-    Vector3D momentum(speed * gamma * mass);
+    double charge(constants::C_PROTON);
+    Vector3D momentum(speed * gamma * mass / constants::KG);
     Vector3D position1(3.01, 0, 0);
     Vector3D position2(2.99, 0, 0);
     Particle p1(mass, charge, position1, momentum);
@@ -54,7 +54,7 @@ int main() {
 
     bobLEponge.draw(s);
 
-    for (int j = 0; j < 10000; ++j) {
+    for (int j = 0; j < 200; ++j) {
         bobLEponge.evolve();
         bobLEponge.draw(s);
     }

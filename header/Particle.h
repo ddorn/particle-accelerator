@@ -10,13 +10,14 @@
  * move it.
  *
  * --- Units ---
- * length : c * s
+ * length : m
  * mass : GeV / c²
- * electric charge : e
+ * electric charge : C
  * energy : GeV
- * speed : c
- * momentum : GeV / c
+ * speed : m/s
+ * momentum : kg * m / s
  */
+
 #ifndef PARTICLE_ACCELERATOR_PARTICLE_H
 #define PARTICLE_ACCELERATOR_PARTICLE_H
 
@@ -33,18 +34,20 @@ class Particle : public Content {
 private:
     double mass_;
     double charge_;
+    double correction_angle_;
     Vector3D position_;
     Vector3D momentum_;
     Vector3D force_;
+    Vector3D lastForce_;
     Element* element_;
     Vector3D color_;
 public:
     /**
      * Create a new particle.
      * @param mass Mass in GeV/c²
-     * @param charge Electric charge in eV
-     * @param position Position in c*s
-     * @param momentum Momentum in GeV/c
+     * @param charge Electric charge in Coulomb
+     * @param position Position in m
+     * @param momentum Momentum in kg*m/s
      * @param color The color of the particle
      */
     Particle(double mass, double charge, const Vector3D &position,
@@ -52,6 +55,7 @@ public:
               Element* element = nullptr)
             : mass_(mass),
               charge_(charge),
+              correction_angle_(0),
               position_(position),
               momentum_(momentum),
               element_(element),
@@ -60,6 +64,9 @@ public:
 
     double charge() const { return charge_; }
     double mass() const { return mass_; }
+    double massSI() const { return mass() / constants::KG; }
+    const Vector3D& lastForce() const { return lastForce_; }
+    double correctionAngle() const { return correction_angle_; }
 
     const Vector3D &momentum() const { return momentum_; }
     const Vector3D &position() const { return position_; }
@@ -68,28 +75,28 @@ public:
     Element* element() const { return element_; }
 
     /**
-     * Speed vector of the particle. Unit: c
+     * Speed vector of the particle. Unit: m/s
      * @return Speed vector
      */
     const Vector3D speed() const;
     /**
-     * Velocity of the particle. Unit: c
+     * Velocity of the particle. Unit: m/s
      * @return Scalar velocity
      */
     double velocity() const { return sqrt(velocitySquared()); }
     /**
-     * Velocity squared of the particle. Unit: c²
+     * Velocity squared of the particle. Unit: m²/s²
      * @return The scalar velocity of the particle but squared
      */
     double velocitySquared() const;
     /**
      * Return the norm squared of the component of the speed radial
-     * relative to the ideal trajectory. Unit : c
+     * relative to the ideal trajectory. Unit : m²/s²
      */
     double radialVelocitySqrd() const;
     /**
      * Return the norm squared of the radial distance of the particle
-     * relative to the ideal trajectory. Unit : c * s
+     * relative to the ideal trajectory. Unit : m/s
      */
     double radialDistanceSqrd() const;
     const RadialVec3D radialPosition() const { return element()->radialPosition(position()); }
