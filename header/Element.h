@@ -13,13 +13,13 @@ class Particle;
 
 class Element : public Content {
 private:
-    Vector3D entree_;
+    Vector3D start_;
     Vector3D exit_;
     double radius_;
     Element* nextElement_;
 public:
     Element(const Vector3D &entree, const Vector3D &exit, double radius, Element *nextElement)
-    : entree_(entree), exit_(exit), radius_(radius), nextElement_(nextElement) {}
+    : start_(entree), exit_(exit), radius_(radius), nextElement_(nextElement) {}
 
     /**
      * Get the magnetic fields at a given point in space.
@@ -36,17 +36,17 @@ public:
     /**
      * Test whether or not the particle is in
      * the next element.
-     * @param position of the particle
+     * @param pos of the particle
      */
-    virtual bool isOut(const Vector3D& position) const = 0;
+    virtual bool isOut(Vector3D pos) const = 0;
     /**
      * Return the norm squared of the radial distance of the particle
-     * relative to the ideal trajectory. Unit : c * s
+     * relative to the ideal trajectory. Unit : m
      */
-    virtual double radialDistanceSqrd(const Vector3D& position) const = 0;
+    virtual double radialDistanceSqrd(Vector3D pos) const = 0;
     /**
      * Return the norm squared of the component of the speed radial
-     * relative to the ideal trajectory. Unit : c
+     * relative to the ideal trajectory. Unit : m/s
      */
     virtual double length() const = 0;
     virtual double radialVelocitySqrd(const Vector3D& position, const Vector3D& speed) const = 0;
@@ -58,7 +58,7 @@ public:
      * @param absolutePosition Position in the accelerator
      * @return Radial
      */
-    virtual const RadialVec3D radialPosition(const Vector3D& absolutePosition) const = 0;
+    virtual const RadialVec3D radialPosition(Vector3D absolutePosition) const = 0;
     /**
      * Convert a speed expressed in the absolute coordinate space to the relative space RSZ
      * @param absolutePosition The position where the speed applies in the accelerator
@@ -85,18 +85,18 @@ public:
     /**
      * Radius of the tube of the element.
      */
-    double radius() const;
-    const Vector3D &entree() const;
-    const Vector3D &exit() const;
+    double radius() const { return radius_; }
+    const Vector3D &start() const { return start_; }
+    const Vector3D &exit() const { return exit_; }
+    Element* nextElement() const { return nextElement_; }
 
-    Element* nextElement() const;
     void setNextElement(Element* e) { nextElement_ = e; }
 
     /**
      * Print info of the element on the stream.
      * @param os The stream to write the element to
      * @return the same stream.
-     * @note we add the to allow for polymorphic printing of elements,
+     * @note we add this to allow for polymorphic printing of elements,
      *      but one should just use << as usual to write and element.
      */
     virtual std::ostream& print(std::ostream &os) const;

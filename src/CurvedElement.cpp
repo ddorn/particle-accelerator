@@ -8,9 +8,9 @@
 
 
 Vector3D CurvedElement::centerOfCurvature() const {
-    Vector3D L(exit() - entree());
+    Vector3D L(exit() - start());
     Vector3D direction(~L);
-    return (entree() + exit())/2 + 1/ curvature()
+    return (start() + exit())/2 + 1/ curvature()
     * sqrt(1 - curvature() * curvature() / 4 * L.normSquared()) * (direction ^ Vector3D::e3);
 }
 
@@ -18,8 +18,8 @@ double CurvedElement::radiusCircle() const{
     return 1/curvature();
 }
 
-double CurvedElement::radialDistanceSqrd(const Vector3D &position) const{
-    Vector3D X(position - centerOfCurvature());
+double CurvedElement::radialDistanceSqrd(Vector3D pos) const{
+    Vector3D X(pos - centerOfCurvature());
     Vector3D dir(X.x(), X.y(), 0);
     double transversalDistance(radiusCircle() - dir.norm());
     return transversalDistance * transversalDistance + X.z() * X.z();
@@ -56,8 +56,8 @@ bool CurvedElement::collideBorder(const Vector3D &position) const {
     return radialDistanceSqrd(position) > radius() * radius();
 }
 
-bool CurvedElement::isOut(const Vector3D& position) const {
-    return Vector3D::e3.tripleProduct(position - centerOfCurvature(), exit() - centerOfCurvature()) > 0;
+bool CurvedElement::isOut(Vector3D pos) const {
+    return Vector3D::e3.tripleProduct(pos - centerOfCurvature(), exit() - centerOfCurvature()) > 0;
 }
 
 double CurvedElement::curvature() const {
@@ -71,16 +71,16 @@ std::ostream &CurvedElement::print(std::ostream &os) const {
     return os;
 }
 
-const RadialVec3D CurvedElement::radialPosition(const Vector3D &pos) const {
+const RadialVec3D CurvedElement::radialPosition(Vector3D pos) const {
     Vector3D X(pos - centerOfCurvature());
     X -= X.z() * Vector3D::e3;
     if (X.isZero()) return RadialVec3D(0, 0, pos.z());
 
     Vector3D dir(~X);
-    Vector3D dirEntree(~(entree() - centerOfCurvature()));
-    // For S, we need to calculate the angle between the dir and the entree,
+    Vector3D dirEntree(~(start() - centerOfCurvature()));
+    // For S, we need to calculate the angle between the dir and the start,
     // but because we suppose no Element makes more than a half turn, it is
-    // just the acos of the projection of dir over the entree
+    // just the acos of the projection of dir over the start
     double angle(acos(dir * dirEntree));
     return RadialVec3D(pos * dir - radiusCircle(), radiusCircle() * angle, pos.z());
 }
@@ -97,7 +97,7 @@ const RadialVec3D CurvedElement::radialSpeed(const Vector3D &absolutePosition, c
 
 const Vector3D CurvedElement::absolutePosition(const RadialVec3D &radialPos) const {
     const Vector3D cc(centerOfCurvature());
-    Vector3D dir((entree() - cc).rotate(Vector3D::e3, -radialPos.s() / radiusCircle()));
+    Vector3D dir((start() - cc).rotate(Vector3D::e3, -radialPos.s() / radiusCircle()));
     dir *= 1 + radialPos.r() / radiusCircle();
     dir += cc;
     return Vector3D(dir.x(), dir.y(), radialPos.z());
@@ -105,7 +105,7 @@ const Vector3D CurvedElement::absolutePosition(const RadialVec3D &radialPos) con
 
 const Vector3D CurvedElement::absoluteSpeed(const RadialVec3D &relativePosition, const RadialVec3D &relativeSpeed) const {
     const Vector3D cc(centerOfCurvature());
-    Vector3D dir(~(entree() - cc).rotate(Vector3D::e3, -relativePosition.s() / radiusCircle()));
+    Vector3D dir(~(start() - cc).rotate(Vector3D::e3, -relativePosition.s() / radiusCircle()));
 
     Vector3D q = dir.rotate(Vector3D::e3, relativeSpeed.s() / radiusCircle());
     return dir * relativeSpeed.r()
@@ -115,7 +115,7 @@ const Vector3D CurvedElement::absoluteSpeed(const RadialVec3D &relativePosition,
 
 double CurvedElement::angle() const {
 	Vector3D center(centerOfCurvature());
-	Vector3D x(~(entree() - center));
+	Vector3D x(~(start() - center));
 	Vector3D y(~(exit() - center));
 	return std::acos(x*y);
 }

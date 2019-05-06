@@ -123,7 +123,7 @@ bool Accelerator::addCircularBeam(double mass, double charge, double energy, con
     if (mass < 0) return false;
     if (lambda < 1) return false;
 
-    Particle reference(mass, charge, energy, elements().front()->entree(), direction, color, elements().front().get());
+    Particle reference(mass, charge, energy, elements().front()->start(), direction, color, elements().front().get());
     beams_.push_back(std::make_unique<CircularBeam>(reference, lambda, nbrMacroParticle));
 
     return true;
@@ -135,24 +135,10 @@ bool Accelerator::addBeam(double mass, double charge, double energy, const Vecto
     if (mass < 0) return false;
     if (lambda < 1) return false;
 
-    Particle reference(mass, charge, energy, elements().front()->entree(), direction, color, elements().front().get());
+    Particle reference(mass, charge, energy, elements().front()->start(), direction, color, elements().front().get());
     beams_.push_back(std::make_unique<Beam>(reference, lambda, macroParticles.size()));
     for(auto& p : macroParticles) {
         beams_.back()->addMacroParticle(p.position(), p.speed(), elements().front().get());
     }
     return true;
-}
-
-ostream& Accelerator::completeDescription(std::ostream &os) const {
-    os << "Accelerator:" << endl
-       << " Beams:" << endl;
-    for (const auto &b : beams()) {
-        os << *b << endl;
-    }
-    os << " Elements:" << endl;
-    for (const auto &e : elements()) {
-        os << *e << endl;
-    }
-
-    return os;
 }

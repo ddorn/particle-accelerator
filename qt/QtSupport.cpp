@@ -307,21 +307,21 @@ void QtSupport::draw(const Accelerator &accelerator) {
 }
 void QtSupport::draw(const Element &element) {
     // This just draw a cube at the start and end of the element
-    drawCube(element.entree(), 0.05);
+    drawCube(element.start(), 0.05);
     drawCube(element.exit(), 0.05);
 }
 void QtSupport::draw(const StraightElement &element) {
-    drawTube(element.entree(), element.exit(), element.radius(), Vector3D(0.2, 0.6, 1));
+    drawTube(element.start(), element.exit(), element.radius(), Vector3D(0.2, 0.6, 1));
 }
 void QtSupport::draw(const Quadrupole &element  ) {
-    drawTube(element.entree(), element.exit(), element.radius(), Vector3D(1, 0.7, 0));
+    drawTube(element.start(), element.exit(), element.radius(), Vector3D(1, 0.7, 0));
 }
 void QtSupport::draw(const Segment &segment) {
     segment.StraightElement::draw(*this);
 }
 void QtSupport::draw(const CurvedElement &element) {
     Vector3D cc(element.centerOfCurvature());
-    Vector3D relEntree(element.entree() - cc);
+    Vector3D relEntree(element.start() - cc);
     Vector3D relExit(element.exit() - cc);
 
     QMatrix4x4 model;
