@@ -80,14 +80,17 @@ Semaine de vide
 
 
 ### Semaine 9
- -
- -
+ Les méthodes permettant de passer d'un repère cartésien à un repère radial marchent bien
+ Les faisceaux circulaires fonctionnent parfaitement grâce à ça
 ##### Humeur
 
 
-
 ### Semaine 10
- -
+ On travaille sur la simulation P10. Nos particules, pour on ne sait quelle raison,
+ se décalent progressivement des données de l'exemple. Les forces sont pourtant tout à
+ fait correctes au départ, on ne comprend donc pas la raison de ce décalage progressif.
+ De plus, nos particules sont instables et heurtent rapidement les bords. On a changé
+ le système d'unités pour être plus proche de celui de référence, mais cela n'aide pas.
  -
 ##### Humeur
 
