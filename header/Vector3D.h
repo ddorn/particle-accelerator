@@ -31,7 +31,7 @@ public:
      * This returns true for very small vectors.
      * @return Whether the vector is 0.
      */
-    bool isZero();
+    bool isZero() const;
     /**
      * The norm of a vector.
      * @related normSquared

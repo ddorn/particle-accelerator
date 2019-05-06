@@ -41,6 +41,7 @@ class Accelerator : public Content {
 private:
     ElementVector elements_;
     BeamVector beams_;
+    ParticleVector particles_;
     std::mt19937 rng;
     std::uniform_real_distribution<double> distribution;
 
@@ -48,6 +49,8 @@ public:
     explicit Accelerator(const Vector3D& start = Vector3D()) : rng(42), distribution(-0.03, 0.03), start_(start){}
     Accelerator(const Accelerator &other) = delete;
     void operator=(const Accelerator & other) = delete;
+
+    const ParticleVector &particles() const { return particles_; }
 
     /**
      * Cleanup the dust in the Accelerator and remove all particles.
@@ -86,12 +89,12 @@ public:
      */
     bool addQuadrupole(const Vector3D& exit, double radius, double magneticFieldIntensity);
 
-    bool addBeam(double mass, double charge, const Vector3D &momentum,
-            size_t lambda, const std::vector<Particle> &macroParticles, const Vector3D &color = Vector3D(1, 1, 1));
+    bool addBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
+                 const std::vector<Particle> &macroParticles, const Vector3D &color = Vector3D(1, 1, 1));
 
-    bool addCircularBeam(double mass, double charge, const Vector3D &momentum,
-            size_t lambda, size_t nbrMacroParticle, const Vector3D &color = Vector3D(1, 1, 1));
-
+    bool addCircularBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
+                                      size_t nbrMacroParticle, const Vector3D &color = Vector3D(1, 1, 1));
+    void addParticle(const Particle &p) { particles_.push_back(std::make_unique<Particle>(p)); }
     /**
     * @return if the last element ends where the first element begins.
     */

@@ -19,6 +19,9 @@ std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
     for (const auto &b : accelerator.beams()) {
         os << *b << endl;
     }
+    for (const auto &p : accelerator.particles()) {
+        os << *p << endl;
+    }
     return os;
 }
 
@@ -37,6 +40,28 @@ void Accelerator::evolve(double dt) {
             ++i;
         }
     }
+
+    // Update forces from the elements of the accelerator
+    for (auto &p : particles_) {
+        p->addMagneticForce(p->element()->magneticForceAt(p->position()), dt);
+    }
+
+    // And then compute the new position, speed and everything
+    for (auto& p : particles_) {
+        p->evolve(dt);
+    }
+
+    // Move particles_ between elements and remove them if needed
+    i = 0;
+    while (i < particles_.size()) {
+        if (!particles_[i]->updateElement()) {
+            swap(particles_[i], particles_.back());
+            particles_.pop_back();
+        } else {
+            ++i;
+        }
+    }
+
 
 }
 
@@ -92,25 +117,25 @@ bool Accelerator::acceptableNextElement(const Vector3D &exit, double radius) con
     return not(isClosed() or radius <= 0 or exit == elements().back()->exit() or exit.z() != 0);
 }
 
-bool Accelerator::addCircularBeam(double mass, double charge, const Vector3D &momentum, size_t lambda,
+bool Accelerator::addCircularBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
                                   size_t nbrMacroParticle, const Vector3D &color) {
     if (elements().empty()) return false;
     if (mass < 0) return false;
     if (lambda < 1) return false;
 
-    Particle reference(mass, charge, elements().front()->entree(), momentum, color, elements().front().get());
+    Particle reference(mass, charge, energy, elements().front()->entree(), direction, color, elements().front().get());
     beams_.push_back(std::make_unique<CircularBeam>(reference, lambda, nbrMacroParticle));
 
     return true;
 }
 
-bool Accelerator::addBeam(double mass, double charge, const Vector3D &momentum, size_t lambda,
-                          const vector<Particle> &macroParticles, const Vector3D &color) {
+bool Accelerator::addBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
+                          const std::vector<Particle> &macroParticles, const Vector3D &color) {
     if (elements().empty()) return false;
     if (mass < 0) return false;
     if (lambda < 1) return false;
 
-    Particle reference(mass, charge, elements().front()->entree(), momentum, color, elements().front().get());
+    Particle reference(mass, charge, energy, elements().front()->entree(), direction, color, elements().front().get());
     beams_.push_back(std::make_unique<Beam>(reference, lambda, macroParticles.size()));
     for(auto& p : macroParticles) {
         beams_.back()->addMacroParticle(p.position(), p.speed(), elements().front().get());

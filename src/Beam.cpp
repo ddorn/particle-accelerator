@@ -89,12 +89,13 @@ void Beam::removeMacroParticle(size_t i) {
     macroParticles_.pop_back();
 }
 
-void Beam::addMacroParticle(const Vector3D &position, const Vector3D &speed, Element* element) {
+void Beam::addMacroParticle(const Vector3D &position, const Vector3D &direction, Element* element) {
     if (nbrMacroParticles_ > macroParticles_.size()) {
         macroParticles_.push_back(make_unique<Particle>(refParticle_.mass(),
                                                         refParticle_.charge(),
+                                                        refParticle_.energy(),
                                                         position,
-                                                        momentumFromSpeed(speed, refParticle_.mass()),
+                                                        direction,
                                                         refParticle_.color(),
                                                         element));
     }

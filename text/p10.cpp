@@ -10,18 +10,7 @@
 using namespace std;
 
 int main() {
-    // ---- Parametrisation of the particles ----
-    Vector3D speed(0, -2.64754e08, 0); // constants::LIGHT_SPEED_MS);
-    double gamma(2.13158);
-    double mass(constants::M_PROTON);
-    double charge(constants::C_PROTON);
-    Vector3D momentum(speed * gamma * mass / constants::KG);
-    Vector3D position1(3.01, 0, 0);
-    Vector3D position2(2.99, 0, 0);
-    Particle p1(mass, charge, position1, momentum);
-    Particle p2(mass, charge, position2, momentum);
-    vector<Particle> particles{p2};
-          //  ---------
+
 
     double quadrupoleIntensity(1.2);
     double dipoleIntensity(5.89158);
@@ -49,12 +38,22 @@ int main() {
         pd2 = pd2 ^ Vector3D::e3;
     }
 
-    bobLEponge.addBeam(mass, charge,
-            momentum, 1, particles);
+    // ---- Parametrisation of the particles ----
+    Vector3D speed(0, -2.64754e08, 0); // constants::LIGHT_SPEED_MS);
+    double gamma(2.13158);
+    double mass(constants::M_PROTON);
+    double charge(constants::C_PROTON);
+    Vector3D momentum(speed * gamma * mass / constants::KG);
+    Vector3D position1(3.01, 0, 0);
+    Vector3D position2(2.99, 0, 0);
+    Particle p2(mass, charge, 2, position2, momentum, Vector3D(), bobLEponge.elements()[0].get());
+    vector<Particle> particles{p2};
+    //  ---------
+    bobLEponge.addParticle(p2);
 
     bobLEponge.draw(s);
 
-    for (int j = 0; j < 200; ++j) {
+    for (int j = 0; j < 3; ++j) {
         bobLEponge.evolve();
         bobLEponge.draw(s);
     }

@@ -300,6 +300,10 @@ void QtSupport::draw(const Accelerator &accelerator) {
     for (const auto& p : accelerator.beams()) {
         p->draw(*this);
     }
+    for (const auto& p : accelerator.particles()) {
+        p->draw(*this);
+    }
+
 }
 void QtSupport::draw(const Element &element) {
     // This just draw a cube at the start and end of the element

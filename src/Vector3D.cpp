@@ -131,7 +131,7 @@ Vector3D Vector3D::rotate(const Vector3D &axis, double angle) const {
         + s * (a ^ (*this));
 }
 
-bool Vector3D::isZero() {
+bool Vector3D::isZero() const {
     return fabs(x()) < getPrecision()
            && fabs(y()) < getPrecision()
            && fabs(z()) < getPrecision();

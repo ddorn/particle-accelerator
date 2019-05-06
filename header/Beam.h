@@ -68,7 +68,7 @@ public:
 
     void removeMacroParticle(size_t i);
 
-    void addMacroParticle(const Vector3D &position, const Vector3D &speed, Element *element);
+    void addMacroParticle(const Vector3D &position, const Vector3D &direction, Element *element);
 
 private:
     /**

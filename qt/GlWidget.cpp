@@ -176,72 +176,18 @@ void GlWidget::build(double) {
         pd2 = pd2 ^ Vector3D::e3;
     }
 
-//
-//    double radius(0.1);
-//    Vector3D pqd(-1, 3, 0);
-//    Vector3D pd2(0, 3, 0);
-//    Vector3D pqf(1, 3, 0);
-//    Vector3D pd1(2, 3, 0);
-//    Vector3D pd(3, 2, 0);
-//
-//    quadrupole_intensity = -1.2;
-//
-//    accelerator.cleanBeam();
-//    accelerator.cleanElements();
-//    for (int i = 0; i < 4; ++i) {
-//        accelerator.addQuadrupole(pqd, radius, quadrupole_intensity);
-//        accelerator.addSegment(pd2, radius);
-//        accelerator.addQuadrupole(pqf, radius, -quadrupole_intensity);
-//        accelerator.addSegment(pd1, radius);
-//        accelerator.addDipole(pd, radius, 1, 5.891582055618276);
-//
-//        pqf = pqf ^ Vector3D::e3;
-//        pd1 = pd1 ^ Vector3D::e3;
-//        pd = pd ^ Vector3D::e3;
-//        pqd = pqd ^ Vector3D::e3;
-//        pd2 = pd2 ^ Vector3D::e3;
-//    }
-//
-////    accelerator.addCircularBeam(M_PROTON, C_PROTON, Vector3D(1, 0, 0), 1, 100, Vector3D(1, 0.2, 0.8));
     addBeam();
 }
 
 void GlWidget::addBeam() {
     // ---- Parametrisation of the particles ----
-    Vector3D speed(0, -264754494.1719916, 0); // constants::LIGHT_SPEED_MS);
-    double gamma(2.131578049861873);
     double mass(constants::M_PROTON);
     double charge(constants::C_PROTON);
-    Vector3D momentum(speed * gamma * mass / constants::KG);
-    Vector3D position1(3.01, 0, 0);
     Vector3D position2(2.99, 0, 0);
-    Particle p1(mass, charge, position1, momentum);
-    Particle p2(mass, charge, position2, momentum);
+    Particle p2(mass, charge, 2, position2, Vector3D(0, -1, 0), Vector3D(), accelerator.elements()[0].get());
     std::vector<Particle> particles{p2};
-    accelerator.addBeam(mass, charge,
-                        momentum, 1, particles);
-
     //  ---------
-
-//
-//    Vector3D speed(264754494.1719916, 0, 0); // constants::LIGHT_SPEED_MS);
-//    double gamma(2.131578049861873);
-//    double mass(constants::M_PROTON);
-//    double charge(constants::C_PROTON);
-//    Vector3D momentum(speed * gamma * mass / constants::KG);
-//    Vector3D position1(3.01, 0, 0);
-//    Vector3D position2(-2, 2.99, 0);
-//    Particle p1(mass, charge, position1, momentum);
-//    Particle p2(mass, charge, position2, momentum);
-//    std::vector<Particle> particles{p2};
-//    accelerator.addBeam(mass, charge,
-//                       momentum, 1, particles);
-
-//    Vector3D speed(264754494.1719916, 0, 0); // constants::LIGHT_SPEED_MS);
-//    double gamma(2.131578049861873);
-//    double mass(constants::M_PROTON);
-//    Vector3D momentum(speed * gamma * mass / KG);
-//    accelerator.addCircularBeam(M_PROTON, C_PROTON, momentum, 1, 100);
+    accelerator.addParticle(p2);
 }
 
 
