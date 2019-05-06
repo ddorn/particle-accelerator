@@ -19,7 +19,6 @@ public:
             direction(~(exit - start)),
             radial_direction(Vector3D::e3 ^ direction) {}
 
-    bool collideBorder(const Vector3D& position) const override;
     bool isOut(Vector3D pos) const override;
 
     // TODO: remove both

@@ -28,12 +28,6 @@ public:
      */
     virtual const Vector3D magneticForceAt(const Vector3D & position) const = 0;
     /**
-     * Test whether or not the particle collided
-     * with the border
-     * @param position of the particle
-     */
-    virtual bool collideBorder(const Vector3D& position) const = 0;
-    /**
      * Test whether or not the particle is in
      * the next element.
      * @param pos of the particle
@@ -44,6 +38,12 @@ public:
      * relative to the ideal trajectory. Unit : m
      */
     virtual double radialDistanceSqrd(Vector3D pos) const = 0;
+    /**
+     * Test whether or not the particle collided
+     * with the border
+     * @param position of the particle
+     */
+    bool collideBorder(const Vector3D& position) const { return radialDistanceSqrd(position) > radius() * radius(); }
     /**
      * Return the norm squared of the component of the speed radial
      * relative to the ideal trajectory. Unit : m/s

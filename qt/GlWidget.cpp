@@ -39,7 +39,7 @@ void GlWidget::timerEvent(QTimerEvent *event) {
 
     for (int i = 0; i < steps; ++i) {
         accelerator.evolve(1e-11);
-        if (accelerator.beams().empty()) std::cout << counter << std::endl;
+        if (accelerator.particles().empty()) std::cout << counter << std::endl;
     }
 
     update();
@@ -184,7 +184,7 @@ void GlWidget::addBeam() {
     double mass(constants::M_PROTON);
     double charge(constants::C_PROTON);
     Vector3D position2(2.99, 0, 0);
-    Particle p2(mass, charge, 2, position2, Vector3D(0, -1, 0), Vector3D(), accelerator.elements()[0].get());
+    Particle p2(mass, charge, 2, position2, Vector3D(0, -1, 0), Vector3D(1, 1, 1), accelerator.elements()[0].get());
     std::vector<Particle> particles{p2};
     //  ---------
     accelerator.addParticle(p2);

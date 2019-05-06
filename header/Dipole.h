@@ -12,7 +12,7 @@ private:
     /**
      * magnetic field. Unit : tesla.
      */
-    Vector3D magneticField_;
+    const Vector3D magneticField_;
 
 public:
     /**
@@ -23,7 +23,7 @@ public:
     Dipole(const Vector3D &entree, const Vector3D &exit, double radius, Element *nextElement,
            double curvature, double magneticFieldIntensity) :
             CurvedElement(entree, exit, radius, nextElement, curvature),
-            magneticField_(Vector3D(0, 0, magneticFieldIntensity)) {}
+            magneticField_(magneticFieldIntensity * Vector3D::e3) {}
 
     const Vector3D magneticForceAt(const Vector3D &) const override { return magneticField_; }
 

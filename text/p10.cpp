@@ -52,8 +52,13 @@ int main() {
     bobLEponge.addParticle(p2);
 
     bobLEponge.draw(s);
-
-    for (int j = 0; j < 3; ++j) {
+//    int i(0);
+//    while (!bobLEponge.particles().empty()) {
+//        bobLEponge.evolve(1e-11);
+//        ++i;
+//    }
+//    cout <<i<< endl;
+    for (int j = 0; j < 2200; ++j) {
         bobLEponge.evolve();
         bobLEponge.draw(s);
     }

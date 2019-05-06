@@ -5,10 +5,6 @@
 #include "StraightElement.h"
 
 
-bool StraightElement::collideBorder(const Vector3D& position) const {
-    return radialDistanceSqrd(position) > radius() * radius();
-}
-
 bool StraightElement::isOut(Vector3D pos) const {
     pos -= start();
     Vector3D L(exit() - start());

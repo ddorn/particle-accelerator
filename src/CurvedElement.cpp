@@ -7,15 +7,14 @@
 #include <CurvedElement.h>
 
 
-Vector3D CurvedElement::centerOfCurvature() const {
+const Vector3D CurvedElement::calculateCenterOfCurvature() const {
     Vector3D L(exit() - start());
     Vector3D direction(~L);
-    return (start() + exit())/2 + 1/ curvature()
-    * sqrt(1 - curvature() * curvature() / 4 * L.normSquared()) * (direction ^ Vector3D::e3);
-}
-
-double CurvedElement::radiusCircle() const{
-    return 1/curvature();
+    return (start() + exit()) / 2.0
+           + 1.0
+             / curvature()
+             * sqrt(1.0 - curvature() * curvature() / 4.0 * L.normSquared())
+             * (direction ^ Vector3D::e3);
 }
 
 double CurvedElement::radialDistanceSqrd(Vector3D pos) const{
@@ -36,33 +35,10 @@ double CurvedElement::radialVelocitySqrd(const Vector3D &position, const Vector3
 }
 
 
-bool CurvedElement::collideBorder(const Vector3D &position) const {
-    /**
-     *  I don't understand what you did, and I'm not sure
-     *  it's correct, so I prefer to do a simpler version.
-     *  And we don't need to control if it's a the center
-     *  of curvature.
-     */
-    /*
-    Vector3D X(position - centerOfCurvature());
-    Vector3D dir(X.x(), X.y(), 0);
-
-    // A particle shouln't be on the center of curvature
-    // (or the element is too fat)
-    if (dir.isZero()) return false;
-
-    return (X - ~dir / fabs(curvature())).normSquared() > radius() * radius();
-     */
-    return radialDistanceSqrd(position) > radius() * radius();
-}
-
 bool CurvedElement::isOut(Vector3D pos) const {
     return Vector3D::e3.tripleProduct(pos - centerOfCurvature(), exit() - centerOfCurvature()) > 0;
 }
 
-double CurvedElement::curvature() const {
-    return curvature_;
-}
 
 std::ostream &CurvedElement::print(std::ostream &os) const {
     Element::print(os);
@@ -120,6 +96,3 @@ double CurvedElement::angle() const {
 	return std::acos(x*y);
 }
 
-double CurvedElement::length() const {
-	return angle() * radiusCircle();
-}
