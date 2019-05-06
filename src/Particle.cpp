@@ -74,6 +74,14 @@ std::ostream &operator<<(std::ostream &os, const Particle &partic) {
     Vector3D force(partic.charge() * (partic.speed() ^
     (partic.element()->magneticForceAt(partic.position())) * KG / COULOMB));
     double correctionAngle(asin(1e-11 * force.norm() / 2 / partic.momentum().norm()));
+
+    Vector3D forceCorrected(0, 0, 0);
+    Vector3D correction(partic.speed() ^ force);
+    if(not(correction.isZero())){
+        forceCorrected = force.rotate(correction, correctionAngle);
+    }
+    Vector3D forceInN(force * LIGHT_SPEED_MS / KG);
+    Vector3D forceInNCorrected(forceCorrected * LIGHT_SPEED_MS / KG);
     os << "Particle :" << std::endl
         << " - mass : " << partic.mass() << " GeV / c²" << std::endl
         << " - charge : " << partic.charge() << " eV" << std::endl
@@ -85,7 +93,8 @@ std::ostream &operator<<(std::ostream &os, const Particle &partic) {
         << " - speed : " << partic.speed() << " c" << std::endl
         << " - speed in m/s " << partic.speed() * LIGHT_SPEED_MS << " m/s" << std::endl
         << " - force : " << force << std::endl
-        << " - force in N : " << partic.charge() * C_PROTON_COULOMB * ((partic.speed() * LIGHT_SPEED_MS) ^ partic.element()->magneticForceAt(partic.position())) << std::endl
+        << " - force in N : " << forceInN << std::endl
+        << " - force in N corrected : " << forceInNCorrected << std::endl
         << " - correction angle : " << correctionAngle << " rad" << std::endl;
     return os;
 }
