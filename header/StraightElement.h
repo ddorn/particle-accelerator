@@ -10,7 +10,7 @@
 
 class StraightElement : public Element
 {
-private:
+protected:
     const Vector3D direction;  // We store it as it shouldn't change and it simplifies expressions
     const Vector3D radial_direction;  // We store it as it shouldn't change and it simplifies expressions
 public:
