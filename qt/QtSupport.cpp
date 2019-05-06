@@ -225,10 +225,10 @@ void QtSupport::drawTube(const QMatrix4x4 &model, double radius, const Vector3D 
     for (int i(0); i < NB_CIRCLES; ++i) {
         double angle(0);
         for (int j = 0; j < NB_SEGMENTS; ++j) {
-//            glNormal3f(0, radius * cos(angle), radius * sin(angle));
+            glNormal3f(0, radius * cos(angle), radius * sin(angle));
             prog.setAttributeValue(VertexId, x + X_STEP, radius * cos(angle), radius * sin(angle));
             prog.setAttributeValue(VertexId, x, radius * cos(angle), radius * sin(angle));
-//            glNormal3f(0, radius * cos(angle + ANGLE_STEP), radius * sin(angle + ANGLE_STEP));
+            glNormal3f(0, radius * cos(angle + ANGLE_STEP), radius * sin(angle + ANGLE_STEP));
             prog.setAttributeValue(VertexId, x, radius * cos(angle + ANGLE_STEP), radius * sin(angle + ANGLE_STEP));
             prog.setAttributeValue(VertexId, x + X_STEP, radius * cos(angle + ANGLE_STEP), radius * sin(angle + ANGLE_STEP));
             angle += ANGLE_STEP;

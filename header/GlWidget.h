@@ -32,6 +32,7 @@ public:
 
 private:
     void build(double quadrupole_intensity = 1.2);
+    void addBeam();
     // The 3 key methods of QOpenGLWidget to reimplement
     void initializeGL() override;
     void resizeGL(int width, int height) override;
