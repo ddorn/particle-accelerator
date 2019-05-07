@@ -21,6 +21,7 @@ HEADERS += \
     ../header/QtSupport.h \
     ../header/GlWidget.h \
     ../header/GlSphere.h \
+    ../header/themes.h \
 	../header/all.h
 
 

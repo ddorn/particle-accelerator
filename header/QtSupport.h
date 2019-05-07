@@ -10,6 +10,7 @@
 #include "Support.h"
 #include "GlSphere.h"
 #include "all.h"
+#include "themes.h"
 
 enum ViewMode {
     FREE_VIEW,
@@ -18,19 +19,26 @@ enum ViewMode {
     TOP_VIEW
 };
 
+typedef std::vector<std::unique_ptr<Theme>> ThemeVector;
+
 class QtSupport : public Support {
 private:
     QOpenGLShaderProgram prog;
     QMatrix4x4 view; // Camera
     GLSphere sphere;
     ViewMode viewMode;
+    ThemeVector themes;
+    size_t themeIndex = 0;
 public:
     // Initialisation
     // TODO: Why not put those two in the constructor ? Isn't it its purpose ?
     // Answer: because it simply doesn't work... but why ?
     void init();
     void initPosition();
-    void setViewMode(ViewMode v);
+    void initThemes();
+    void setViewMode(ViewMode v) { viewMode = v; initPosition(); }
+    void nextTheme() { themeIndex += 1; themeIndex %= themes.size(); }
+    const Theme* theme() { return themes[themeIndex].get(); }
     void updateViewMatrix(const Accelerator &accelerator);
 
     // Draw objects
@@ -46,6 +54,8 @@ public:
     void drawVector(Vector3D vec, const Vector3D &start = Vector3D());
     void drawTube(const QMatrix4x4 &model, double radius, const Vector3D &color, double length);
     void drawTube(const Vector3D& start, const Vector3D& end, double radius, const Vector3D& color = Vector3D(0.2, 0.6, 1));
+    void drawCurvedTube(const Vector3D &start, const Vector3D &end, const Vector3D &center, double radius, const Vector3D &color);
+
 
     void draw(const Accelerator &accelerator) override;
     void draw(const CurvedElement &element) override;
@@ -65,7 +75,7 @@ public:
     void translate(double x, double y, double z);
     void rotate(double angle, double dir_x, double dir_y, double dir_z);
     void lookAt(const Vector3D &eyePosition, const Vector3D &center, const Vector3D &up);
-    void draw(const Segment &segment) override;
+    void draw(const Segment &element) override;
 
 private:
     QMatrix4x4 posToModel(const Vector3D &position, double scale);

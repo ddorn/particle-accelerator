@@ -44,6 +44,8 @@ void QtSupport::init() {
 
     sphere.initialize();
     initPosition();
+
+    initThemes();
 }
 void QtSupport::initPosition() {
     view.setToIdentity();
@@ -71,7 +73,6 @@ void QtSupport::rotate(double angle, double dir_x, double dir_y, double dir_z) {
   view = rotation_supplementaire * view;
   prog.setUniformValue("view", view);
 }
-
 void QtSupport::lookAt(const Vector3D &eyePosition, const Vector3D &center, const Vector3D &up) {
     view.setToIdentity();  // We reset the view
     view.lookAt(  // and then look in the right direction
@@ -276,6 +277,59 @@ void QtSupport::drawTube(const Vector3D& start, const Vector3D &end, double radi
 
     drawTube(model, radius, color, (end - start).norm());
 }
+// Curved Tube
+void QtSupport::drawCurvedTube(const Vector3D &start, const Vector3D &end, const Vector3D &center, double radius,
+                               const Vector3D &color) {
+
+    Vector3D relEntree(start - center);
+    Vector3D relExit(end - center);
+
+    QMatrix4x4 model;
+    model.translate(center.x(), center.y());
+
+    prog.setUniformValue("model", model);
+    prog.setAttributeValue(ColorId, color.x(), color.y(), color.z(), 0.5);
+
+
+    constexpr int NB_SEGMENTS(12);
+    constexpr int NB_CIRCLES(6);
+    constexpr double CIRCLE_ANGLE(2 * M_PI / NB_SEGMENTS);
+
+    double a = acos(~relExit * ~relEntree);  // TODO: This supposes clockwise turn definition of accelerator
+    double angle(a / NB_CIRCLES);
+
+
+    glBegin(GL_QUADS);
+    Vector3D c(relEntree);
+    Vector3D axis1(relEntree ^ Vector3D::e3);
+    for (int i = 0; i <= NB_CIRCLES ; ++i) {
+        Vector3D next(relEntree.rotate(Vector3D::e3, -angle * i));
+        Vector3D axis2(next ^ Vector3D::e3);
+        Vector3D dir1(Vector3D::e3 * radius);
+        Vector3D dir2(Vector3D::e3 * radius);
+        for (int j = 0; j < NB_SEGMENTS; ++j) {
+            Vector3D nextDir1(dir1.rotate(axis1, CIRCLE_ANGLE));
+            Vector3D nextDir2(dir2.rotate(axis2, CIRCLE_ANGLE));
+
+            Vector3D a1(c + dir1);
+            Vector3D b1(c + nextDir1);
+            Vector3D a2(next + dir2);
+            Vector3D b2(next + nextDir2);
+
+            prog.setAttributeValue(VertexId, a1.x(), a1.y(), a1.z());
+            prog.setAttributeValue(VertexId, b1.x(), b1.y(), b1.z());
+            prog.setAttributeValue(VertexId, b2.x(), b2.y(), b2.z());
+            prog.setAttributeValue(VertexId, a2.x(), a2.y(), a2.z());
+
+            dir1 = nextDir1;
+            dir2 = nextDir2;
+        }
+        c = next;
+        axis1 = axis2;
+    }
+    glEnd();
+
+}
 
 
 /********************************** Draw real objects **********************************/
@@ -285,28 +339,38 @@ void QtSupport::draw(const Vector3D &d) {
     drawVector(d);
 }
 void QtSupport::draw(const Particle &particle) {
-    drawSphere(particle.position(), 0.03, particle.color());
+    drawSphere(particle.position(), 0.03, theme()->getParticleColor());
 }
 void QtSupport::draw(const Accelerator &accelerator) {
     updateViewMatrix(accelerator);
 
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
-    glEnable(GL_BLEND);
-//    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // passe en mode "fil de fer"
 
-    for (const auto &e : accelerator.elements()) {  
+    if (theme()->isElementFilled())  {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+//        glPolygonMode(GL_BACK, GL_FILL);
+    }
+    else glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+    if (theme()->getElementTransparency() != 1) glEnable(GL_BLEND);
+    else glDisable(GL_BLEND);
+
+    for (const auto &e : accelerator.elements()) {
         e->draw(*this);
     }
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glDisable(GL_BLEND);
-    glPolygonMode(GL_FRONT, GL_FILL);
-    for (const auto& p : accelerator.beams()) {
+    if (theme()->isParticleFilled())glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    else glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+
+    for (const auto &p : accelerator.beams()) {
         p->draw(*this);
     }
-    for (const auto& p : accelerator.particles()) {
+    for (const auto &p : accelerator.particles()) {
         p->draw(*this);
     }
 
@@ -321,64 +385,18 @@ void QtSupport::draw(const StraightElement &element) {
 }
 void QtSupport::draw(const Quadrupole &element  ) {
     element.StraightElement::draw(*this);
-    drawTube(element.start(), element.exit(), element.radius(), Vector3D(1, 0.7, 0));
+    drawTube(element.start(), element.exit(), element.radius(), theme()->getQuadrupoleColor());
 }
-void QtSupport::draw(const Segment &segment) {
-    drawTube(segment.start(), segment.exit(), segment.radius(), Vector3D(0.2, 0.6, 1));
-    segment.StraightElement::draw(*this);
+void QtSupport::draw(const Segment &element) {
+    element.StraightElement::draw(*this);
+    drawTube(element.start(), element.exit(), element.radius(), theme()->getSegmentColor());
 }
 void QtSupport::draw(const CurvedElement &element) {
     drawCircle(element.centerOfCurvature(), 1 / element.curvature(), Vector3D::e3, Vector3D(1, 1, 1));
-
-    Vector3D cc(element.centerOfCurvature());
-    Vector3D relEntree(element.start() - cc);
-    Vector3D relExit(element.exit() - cc);
-
-    QMatrix4x4 model;
-    model.translate(cc.x(), cc.y());
-    prog.setUniformValue("model", model);
-prog.setAttributeValue(ColorId, 1, 0, 0, 0.5);
-
-    constexpr int NB_SEGMENTS(12);
-    constexpr int NB_CIRCLES(6);
-    constexpr double CIRCLE_ANGLE(2 * M_PI / NB_SEGMENTS);
-
-    double a = acos(~relExit * ~relEntree);  // TODO: This supposes clockwise turn definition of accelerator
-    double angle(a / NB_CIRCLES);
-
-
-    glBegin(GL_QUADS);
-    Vector3D center(relEntree);
-    Vector3D axis1(relEntree ^ Vector3D::e3);
-    for (int i = 0; i <= NB_CIRCLES ; ++i) {
-        Vector3D next(relEntree.rotate(Vector3D::e3, -angle * i));
-        Vector3D axis2(next ^ Vector3D::e3);
-        Vector3D dir1(Vector3D::e3 * element.radius());
-        Vector3D dir2(Vector3D::e3 * element.radius());
-        for (int j = 0; j < NB_SEGMENTS; ++j) {
-            Vector3D nextDir1(dir1.rotate(axis1, CIRCLE_ANGLE));
-            Vector3D nextDir2(dir2.rotate(axis2, CIRCLE_ANGLE));
-
-            Vector3D a1(center + dir1);
-            Vector3D b1(center + nextDir1);
-            Vector3D a2(next + dir2);
-            Vector3D b2(next + nextDir2);
-
-            prog.setAttributeValue(VertexId, a1.x(), a1.y(), a1.z());
-            prog.setAttributeValue(VertexId, b1.x(), b1.y(), b1.z());
-            prog.setAttributeValue(VertexId, b2.x(), b2.y(), b2.z());
-            prog.setAttributeValue(VertexId, a2.x(), a2.y(), a2.z());
-
-            dir1 = nextDir1;
-            dir2 = nextDir2;
-        }
-        center = next;
-        axis1 = axis2;
-    }
-    glEnd();
 }
-void QtSupport::draw(const Dipole &dipole) {
-    dipole.CurvedElement::draw(*this);
+void QtSupport::draw(const Dipole &element) {
+    element.CurvedElement::draw(*this);
+    drawCurvedTube(element.start(), element.exit(), element.centerOfCurvature(), element.radius(), theme()->getDipoleColor());
 }
 
 void QtSupport::draw(const Beam &beam) {
@@ -393,8 +411,11 @@ QMatrix4x4 QtSupport::posToModel(const Vector3D &position, double scale) {
     return model;
 }
 
-void QtSupport::setViewMode(ViewMode v) {
-    viewMode = v;
+void QtSupport::initThemes() {
+    themes.clear();
+    themes.push_back(make_unique<Theme>(Classix()));
+    themes.push_back(make_unique<Theme>(Matrix()));
 }
+
 
 

@@ -8,7 +8,7 @@ class GLSphere {
 public:
     GLSphere() : vbo(QGLBuffer::VertexBuffer), ibo(QGLBuffer::IndexBuffer) {}
 
-    void initialize(GLuint slices = 12, GLuint stacks = 12);
+    void initialize(GLuint slices = 20, GLuint stacks = 20);
 
     void draw(QOpenGLShaderProgram &program, int attributeLocation);
 

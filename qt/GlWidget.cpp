@@ -136,6 +136,9 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
       case Qt::Key_3:
           support.setViewMode(TOP_VIEW);
           break;
+      case Qt::Key_Tab:
+          support.nextTheme();
+          break;
       case Qt::Key_K:
           steps += 5;
           break;
