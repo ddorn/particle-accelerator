@@ -145,16 +145,14 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
 }
 
 GlWidget::GlWidget(QWidget *parent)
-        : QOpenGLWidget(parent), counter(0), accelerator(Vector3D(3, 0, 0)) {
+        : QOpenGLWidget(parent), counter(0), accelerator(Vector3D(3, 2, 0)) {
 
     build(intensity);
 }
 
-void GlWidget::build(double quadrupoleIntensity) {
+void GlWidget::build(double coucou) {
     accelerator.cleanBeam();
     accelerator.cleanElements();
-    std::cout << quadrupoleIntensity << std::endl;
-    quadrupoleIntensity = 1.2;
 //    double quadrupoleIntensity(1.2);
     double dipoleIntensity(5.891582055618276);
 
@@ -166,11 +164,12 @@ void GlWidget::build(double quadrupoleIntensity) {
     Vector3D pd2(0, -3, 0);
 
     for (int i = 0; i < 4; ++i) {
-        accelerator.addQuadrupole(pqf, radius, -quadrupoleIntensity);
-        accelerator.addSegment(pd1, radius);
+        accelerator.addFODO(pd1, coucou, radius, 1.2);
+//        accelerator.addQuadrupole(pqf, radius, -quadrupoleIntensity);
+//        accelerator.addSegment(pd1, radius);
         accelerator.addDipole(pd, radius, 1, dipoleIntensity);
-        accelerator.addQuadrupole(pqd, radius, quadrupoleIntensity);
-        accelerator.addSegment(pd2, radius);
+//        accelerator.addQuadrupole(pqd, radius, quadrupoleIntensity);
+//        accelerator.addSegment(pd2, radius);
 
         pqf = pqf ^ Vector3D::e3;
         pd1 = pd1 ^ Vector3D::e3;
@@ -178,6 +177,8 @@ void GlWidget::build(double quadrupoleIntensity) {
         pqd = pqd ^ Vector3D::e3;
         pd2 = pd2 ^ Vector3D::e3;
     }
+
+
 
 //    addBeam();
 }

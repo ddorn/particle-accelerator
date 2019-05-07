@@ -69,42 +69,64 @@ void Accelerator::evolve(double dt) {
 }
 
 bool Accelerator::addSegment(const Vector3D &exit, double radius) {
-    if (not(acceptableNextElement(exit, radius))) { return false; }
-    if (elements().empty()) {
-        elements_.push_back(std::make_unique<Segment>(start_, exit, radius, nullptr));
-    } else {
-        elements_.push_back(std::make_unique<Segment>(elements().back()->exit(), exit, radius, nullptr));
-        linkElements();
-    }
+    if (!acceptableNextElement(exit, radius)) return false;
+
+    elements_.push_back(std::make_unique<Segment>(nextStart(), exit, radius, nullptr));
+    linkElements();
+
     return true;
 }
 
 bool Accelerator::addDipole(const Vector3D &exit, double radius, double curvature, double magneticFieldIntensity) {
-    if (not(acceptableNextElement(exit, radius)) or fabs(curvature) < Vector3D::getPrecision()) { return false; }
-    if (elements().empty()) {
-        elements_.push_back(std::make_unique<Dipole>(start_, exit, radius, nullptr, curvature, magneticFieldIntensity));
-    } else {
-        elements_.push_back(std::make_unique<Dipole>(elements().back()->exit(), exit, radius, nullptr, curvature,
-                                                     magneticFieldIntensity));
-        linkElements();
-    }
+    if (!acceptableNextElement(exit, radius)
+        || fabs(curvature) < Vector3D::getPrecision()) return false;
+
+    elements_.push_back(std::make_unique<Dipole>(nextStart(), exit, radius, nullptr, curvature,
+                                                 magneticFieldIntensity));
+    linkElements();
+    return true;
+}
+
+bool Accelerator::addDipole(const Vector3D &exit, double radius, double curvature, double mass, double charge,
+                            double energy) {
+    if (!acceptableNextElement(exit, radius)
+        || fabs(curvature) < Vector3D::getPrecision()) return false;
+    if (mass <= 0) return false;
+    if (energy <= 0) return false;
+
+    elements_.push_back(std::make_unique<Dipole>(nextStart(), exit, radius, nullptr, curvature, mass, charge, energy));
+    linkElements();
     return true;
 }
 
 bool Accelerator::addQuadrupole(const Vector3D &exit, double radius, double magneticFieldIntensity) {
-    if(not(acceptableNextElement(exit, radius))){return false;}
-    if(elements().empty()){
-        elements_.push_back(std::make_unique<Quadrupole>(start_, exit, radius, nullptr, magneticFieldIntensity));
-    } else{
-        elements_.push_back(std::make_unique<Quadrupole>(elements().back()->exit(), exit, radius, nullptr, magneticFieldIntensity));
-        linkElements();
-    }
+    if (!acceptableNextElement(exit, radius)) return false;
+
+    elements_.push_back(std::make_unique<Quadrupole>(nextStart(), exit, radius, nullptr, magneticFieldIntensity));
+    linkElements();
+    return true;
+}
+
+bool Accelerator::addFODO(const Vector3D &exit, double quadrupoleLength, double radius, double magneticFieldIntesity) {
+    if (!acceptableNextElement(exit, radius)) return false;
+    Vector3D dir(~(exit - nextStart()));
+
+    double length((nextStart() - exit).norm());
+    double segmentLength(length / 2.0 - quadrupoleLength);
+
+    addQuadrupole(nextStart() + quadrupoleLength * dir, radius, magneticFieldIntesity);
+    addSegment(nextStart() + segmentLength * dir, radius);
+    addQuadrupole(nextStart() + quadrupoleLength * dir, radius, -magneticFieldIntesity);
+    addSegment(exit, radius);
+
     return true;
 }
 
 void Accelerator::linkElements() {
+    if (elements().size() < 2) return;
+
     elements_[elements().size() - 2]->setNextElement(elements().back().get());
-    if(isClosed()){
+    if (isClosed()) {
         elements_.back()->setNextElement(elements_.front().get());
     }
 }
@@ -114,7 +136,7 @@ bool Accelerator::isClosed() const {
 }
 
 bool Accelerator::acceptableNextElement(const Vector3D &exit, double radius) const {
-    if(elements().empty()){
+    if (elements().empty()) {
         return radius > 0 and exit.z() == 0;
     }
     return not(isClosed() or radius <= 0 or exit == elements().back()->exit() or exit.z() != 0);

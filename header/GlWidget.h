@@ -22,7 +22,7 @@ class GlWidget : public QOpenGLWidget {
 private:
     int counter;
     bool stream = false;
-    double intensity = 0.35;
+    double intensity = 0.5;
     int steps = 10;
     Accelerator accelerator;
     QtSupport support;

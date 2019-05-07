@@ -42,7 +42,7 @@ public:
     void drawCircle(const QMatrix4x4 &model, double r=1, double g=1, double b=1, size_t points=30);
     void drawCircle(const Vector3D &position, double radius, const Vector3D &dir, const Vector3D &color);
     void drawVector(Vector3D vec, const Vector3D &start = Vector3D());
-    void drawTube(const QMatrix4x4 &model, double radius, const Vector3D &color);
+    void drawTube(const QMatrix4x4 &model, double radius, const Vector3D &color, double length);
     void drawTube(const Vector3D& start, const Vector3D& end, double radius, const Vector3D& color = Vector3D(0.2, 0.6, 1));
 
     void draw(const Accelerator &accelerator) override;

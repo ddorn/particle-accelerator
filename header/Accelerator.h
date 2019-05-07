@@ -45,6 +45,8 @@ private:
     std::mt19937 rng;
     std::uniform_real_distribution<double> distribution;
 
+    const Vector3D nextStart() { return elements().empty() ? start_ : elements().back()->exit(); }
+
 public:
     explicit Accelerator(const Vector3D& start = Vector3D()) : rng(42), distribution(-0.03, 0.03), start_(start){}
     Accelerator(const Accelerator &other) = delete;
@@ -83,12 +85,13 @@ public:
      * @return false if it cannot add this element.
      */
     bool addDipole(const Vector3D& exit, double radius, double curveture, double magneticFieldIntensity);
+    bool addDipole(const Vector3D& exit, double radius, double curvature, double mass, double charge, double energy);
     /**
      * Add a quadrupole. It begins where the last added element ends.
      * @return false if it cannot add this element.
      */
     bool addQuadrupole(const Vector3D& exit, double radius, double magneticFieldIntensity);
-
+    bool addFODO(const Vector3D &exit, double quadrupoleLength, double radius, double magneticFieldIntesity);
     bool addBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
                  const std::vector<Particle> &macroParticles, const Vector3D &color = Vector3D(1, 1, 1));
 

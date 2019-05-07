@@ -209,14 +209,14 @@ void QtSupport::drawVector(Vector3D vec, const Vector3D &start) {
     glEnd();
 }
 // Tube
-void QtSupport::drawTube(const QMatrix4x4 &model, double radius, const Vector3D &color) {
+void QtSupport::drawTube(const QMatrix4x4 &model, double radius, const Vector3D &color, double length) {
     prog.setUniformValue("model", model);
     prog.setUniformValue("view", view);
 
     prog.setAttributeValue(ColorId, color.x(), color.y(), color.z(), 0.5);
 
     constexpr int NB_CIRCLES(6);
-    constexpr double X_STEP(1.0 / NB_CIRCLES);
+    const double X_STEP(length / NB_CIRCLES);
     constexpr int NB_SEGMENTS(12);
     constexpr double ANGLE_STEP(2 * M_PI / NB_SEGMENTS);
 
@@ -226,10 +226,10 @@ void QtSupport::drawTube(const QMatrix4x4 &model, double radius, const Vector3D 
     for (int i(0); i < NB_CIRCLES; ++i) {
         double angle(0);
         for (int j = 0; j < NB_SEGMENTS; ++j) {
-            glNormal3f(0, radius * cos(angle), radius * sin(angle));
+//            glNormal3f(0, radius * cos(angle), radius * sin(angle));
             prog.setAttributeValue(VertexId, x + X_STEP, radius * cos(angle), radius * sin(angle));
             prog.setAttributeValue(VertexId, x, radius * cos(angle), radius * sin(angle));
-            glNormal3f(0, radius * cos(angle + ANGLE_STEP), radius * sin(angle + ANGLE_STEP));
+//            glNormal3f(0, radius * cos(angle + ANGLE_STEP), radius * sin(angle + ANGLE_STEP));
             prog.setAttributeValue(VertexId, x, radius * cos(angle + ANGLE_STEP), radius * sin(angle + ANGLE_STEP));
             prog.setAttributeValue(VertexId, x + X_STEP, radius * cos(angle + ANGLE_STEP), radius * sin(angle + ANGLE_STEP));
             angle += ANGLE_STEP;
@@ -245,7 +245,7 @@ void QtSupport::drawTube(const Vector3D& start, const Vector3D &end, double radi
     if (dir.y() < 0) angle *= -1;
     model.rotate(angle * 180 / M_PI, 0, 0, 1);
 
-    drawTube(model, radius, color);
+    drawTube(model, radius, color, (end - start).norm());
 }
 
 
