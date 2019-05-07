@@ -57,7 +57,7 @@ int main() {
 //        ++i;
 //    }
 //    cout <<i<< endl;
-    for (int j = 0; j < 40000; ++j) {
+    for (int j = 0; j < 100; ++j) {
         bobLEponge.evolve();
 //        if (bobLEponge.particles().front()->element() == bobLEponge.elements()[2].get())
             bobLEponge.draw(s);

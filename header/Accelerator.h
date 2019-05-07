@@ -45,7 +45,7 @@ private:
     std::mt19937 rng;
     std::uniform_real_distribution<double> distribution;
 
-    const Vector3D nextStart() { return elements().empty() ? start_ : elements().back()->exit(); }
+    const Vector3D nextStart() const { return elements().empty() ? start_ : elements().back()->exit(); }
 
 public:
     explicit Accelerator(const Vector3D& start = Vector3D()) : rng(42), distribution(-0.03, 0.03), start_(start){}

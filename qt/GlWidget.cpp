@@ -107,8 +107,6 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
           break;
       case Qt::Key_P:
           addBeam();
-//          accelerator.addCircularBeam(M_PROTON, C_PROTON, Vector3D(1, 0, 0), 1, 100);
-//          accelerator.addParticle(M_PROTON, C_PROTON, Vector3D(1, 0, 0), Vector3D(1, 0, 0));
           break;
       case Qt::Key_Space:
           stream = !stream;
@@ -157,25 +155,15 @@ void GlWidget::build(double coucou) {
     double dipoleIntensity(5.891582055618276);
 
     double radius(0.1);
-    Vector3D pqf(3, -1, 0);
     Vector3D pd1(3, -2, 0);
     Vector3D pd(2, -3, 0);
-    Vector3D pqd(1, -3, 0);
-    Vector3D pd2(0, -3, 0);
 
     for (int i = 0; i < 4; ++i) {
         accelerator.addFODO(pd1, coucou, radius, 1.2);
-//        accelerator.addQuadrupole(pqf, radius, -quadrupoleIntensity);
-//        accelerator.addSegment(pd1, radius);
         accelerator.addDipole(pd, radius, 1, dipoleIntensity);
-//        accelerator.addQuadrupole(pqd, radius, quadrupoleIntensity);
-//        accelerator.addSegment(pd2, radius);
 
-        pqf = pqf ^ Vector3D::e3;
         pd1 = pd1 ^ Vector3D::e3;
         pd = pd ^ Vector3D::e3;
-        pqd = pqd ^ Vector3D::e3;
-        pd2 = pd2 ^ Vector3D::e3;
     }
 
 

@@ -93,10 +93,11 @@ bool Accelerator::addDipole(const Vector3D &exit, double radius, double curvatur
         || fabs(curvature) < Vector3D::getPrecision()) return false;
     if (mass <= 0) return false;
     if (energy <= 0) return false;
-
-    elements_.push_back(std::make_unique<Dipole>(nextStart(), exit, radius, nullptr, curvature, mass, charge, energy));
-    linkElements();
-    return true;
+    if (charge == 0) return false;
+    return false;
+//    elements_.push_back(std::make_unique<Dipole>(nextStart(), exit, radius, nullptr, curvature, mass, charge, energy));
+//    linkElements();
+//    return true;
 }
 
 bool Accelerator::addQuadrupole(const Vector3D &exit, double radius, double magneticFieldIntensity) {
@@ -136,10 +137,10 @@ bool Accelerator::isClosed() const {
 }
 
 bool Accelerator::acceptableNextElement(const Vector3D &exit, double radius) const {
-    if (elements().empty()) {
-        return radius > 0 and exit.z() == 0;
-    }
-    return not(isClosed() or radius <= 0 or exit == elements().back()->exit() or exit.z() != 0);
+    if (radius <= 0) return false;
+    if (exit == nextStart()) return false;
+    if (exit.z() != 0) return false;
+    return !isClosed();
 }
 
 bool Accelerator::addCircularBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
