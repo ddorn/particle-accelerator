@@ -18,6 +18,9 @@ void Particle::addMagneticForce(const Vector3D &b, double dt) {
     if (dt <= 0) return;
 
     Vector3D force(charge() * speed() ^ b);
+//    cout << b << endl;
+//    cout << "Champ: " << force << endl;
+
     if (force.isZero()) return;
 
     double angle(asin(dt * force.norm()
@@ -55,12 +58,12 @@ bool Particle::updateElement() {
 
 std::ostream& operator<<(std::ostream &os, const Particle &partic) {
     os << "Particle :" << std::endl
-        << " - mass : " << partic.mass() << " GeV / c²" << std::endl
-        << " - charge : " << partic.charge() << " C" << std::endl
-        << " - position : " << partic.position() << std::endl
+        << " - mass [GeV/c²]: " << partic.mass() << std::endl
+        << " - charge [C]: " << partic.charge() << std::endl
+        << " - position [m]: " << partic.position() << std::endl
         << " - gamma : " << partic.gamma() << std::endl
-        << " - energy : " << partic.energy() << " GeV" << std::endl
-        << " - speed : " << partic.speed() << " m/s" << std::endl
-        << " - corrected force : " << partic.lastForce() << std::endl;
+        << " - energy [GeV]: " << partic.energy() << std::endl
+        << " - speed [m/s]: " << partic.speed() << std::endl
+        << " - corrected force [N]: " << partic.lastForce() << std::endl;
     return os;
 }

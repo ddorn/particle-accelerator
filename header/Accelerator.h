@@ -55,7 +55,7 @@ public:
     /**
      * Cleanup the dust in the Accelerator and remove all particles.
      */
-    void cleanBeam() { beams_.clear(); }
+    void cleanBeam() { beams_.clear(); particles_.clear();}
     /**
      * Remove all the elements of the accelerator.
      * Warning: don't forget to recycle all this metal otherwise students will have good reasons to demonstrate

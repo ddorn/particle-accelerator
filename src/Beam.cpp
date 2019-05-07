@@ -96,8 +96,8 @@ void Beam::addMacroParticle(const Vector3D &position, const Vector3D &direction,
                                                         refParticle_.energy(),
                                                         position,
                                                         direction,
-                                                        refParticle_.color(),
-                                                        element));
+                                                        element,
+                                                        refParticle_.color()));
     }
 }
 

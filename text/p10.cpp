@@ -39,15 +39,14 @@ int main() {
     }
 
     // ---- Parametrisation of the particles ----
-    Vector3D speed(0, -2.64754e08, 0); // constants::LIGHT_SPEED_MS);
-    double gamma(2.13158);
     double mass(constants::M_PROTON);
     double charge(constants::C_PROTON);
-    Vector3D momentum(speed * gamma * mass / constants::KG);
-    Vector3D position1(3.01, 0, 0);
-    Vector3D position2(2.99, 0, 0);
-    Particle p2(mass, charge, 2, position2, momentum, Vector3D(), bobLEponge.elements()[0].get());
-    vector<Particle> particles{p2};
+    Vector3D position2(2.99, 2, 0);
+    Particle p2(mass, charge, 2, position2, Vector3D(0, -1, 0), bobLEponge.elements()[18].get(), Vector3D());
+    Particle p0(mass, charge, 2, Vector3D(2.99, 0, 0), Vector3D(0, -1, 0), bobLEponge.elements()[0].get());
+    Particle dipHole(constants::M_PROTON, constants::C_PROTON, 2, Vector3D(3.01318, -2.01213, 0),
+            Vector3D(-139591, -2.64754e+08, 0), bobLEponge.elements()[2].get());
+//    vector<Particle> particles{dipHole};
     //  ---------
     bobLEponge.addParticle(p2);
 
@@ -58,9 +57,10 @@ int main() {
 //        ++i;
 //    }
 //    cout <<i<< endl;
-    for (int j = 0; j < 2200; ++j) {
+    for (int j = 0; j < 40000; ++j) {
         bobLEponge.evolve();
-        bobLEponge.draw(s);
+//        if (bobLEponge.particles().front()->element() == bobLEponge.elements()[2].get())
+            bobLEponge.draw(s);
     }
     return 0;
 }

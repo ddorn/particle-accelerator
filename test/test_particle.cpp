@@ -17,7 +17,7 @@ int main(){
     Vector3D momentum2(speed2 * gamma * mass / KG);
     Vector3D position1(3.00984, -0.391837, 0);
     Vector3D position2(2.99016, -0.391837, 0);
-    Particle p(M_PROTON, C_PROTON, position1, momentum1);
+    Particle p(M_PROTON, C_PROTON, position1, momentum1, <#initializer#>, nullptr, <#initializer#>);
     cout << p << endl;
 
     Vector3D magnetic_field(0, 0, 7);
@@ -33,7 +33,7 @@ int main(){
 
     cout << p << endl;
 
-    Particle p2(M_PROTON, C_PROTON, position2, momentum2);
+    Particle p2(M_PROTON, C_PROTON, position2, momentum2, <#initializer#>, nullptr, <#initializer#>);
     cout << p2 << endl;
     for (int j = 0; j < 1; ++j) {
         p2.addMagneticForce(magnetic_field, dt);

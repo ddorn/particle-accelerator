@@ -58,9 +58,8 @@ public:
      * @param color The color to represent the particle
      * @param element A c-like pointer to the element containing the particle
      */
-    Particle(double mass, double charge, double energy, const Vector3D &position,
-             const Vector3D &direction, const Vector3D &color = Vector3D(1, 1, 1),
-             Element *element = nullptr)
+    Particle(double mass, double charge, double energy, const Vector3D &position, const Vector3D &direction,
+             Element *element = nullptr, const Vector3D &color = Vector3D(1, 1, 1))
             : mass_(mass),
               charge_(charge),
               position_(position),

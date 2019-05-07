@@ -199,6 +199,7 @@ void QtSupport::drawVector(Vector3D vec, const Vector3D &start) {
     QMatrix4x4 model;
     prog.setUniformValue("model", model);
     prog.setUniformValue("view", view);
+    prog.setAttributeValue(ColorId, 1, 1, 1, 1);
 
     glNormal3f(0, 2, 4);  // This is the lights position
 
@@ -262,10 +263,10 @@ void QtSupport::draw(const Accelerator &accelerator) {
         case FREE:
             break;
         case FOLLOW_PARTICLE:
-            if (!accelerator.beams().empty()) {
-                const auto& b = accelerator.beams()[0];
-                if (!b->macroParticles().empty()) {
-                    const auto& particle = b->macroParticles()[0];
+            if (!accelerator.particles().empty()) {
+//                const auto& b = accelerator.beams()[0];
+//                if (!b->macroParticles().empty()) {
+                    const auto& particle = accelerator.particles()[0];
                     const Vector3D& pos(particle->position());
                     Vector3D look = pos + particle->speed();
                     view.setToIdentity();
@@ -273,9 +274,9 @@ void QtSupport::draw(const Accelerator &accelerator) {
                     view.lookAt(QVector3D(pos.x(), pos.y(), pos.z()),
                             QVector3D(look.x(), look.y(), look.z()),
                             QVector3D(0, 0, 1));
-                } else {
-                    initPosition();
-                }
+//                } else {
+//                    initPosition();
+//                }
             } else {
                 initPosition();
             }
@@ -311,15 +312,19 @@ void QtSupport::draw(const Element &element) {
     drawCube(element.exit(), 0.05);
 }
 void QtSupport::draw(const StraightElement &element) {
-    drawTube(element.start(), element.exit(), element.radius(), Vector3D(0.2, 0.6, 1));
+    drawVector(element.exit() - element.start(), element.start());
 }
 void QtSupport::draw(const Quadrupole &element  ) {
+    element.StraightElement::draw(*this);
     drawTube(element.start(), element.exit(), element.radius(), Vector3D(1, 0.7, 0));
 }
 void QtSupport::draw(const Segment &segment) {
+    drawTube(segment.start(), segment.exit(), segment.radius(), Vector3D(0.2, 0.6, 1));
     segment.StraightElement::draw(*this);
 }
 void QtSupport::draw(const CurvedElement &element) {
+    drawCircle(element.centerOfCurvature(), 1 / element.curvature(), Vector3D::e3, Vector3D(1, 1, 1));
+
     Vector3D cc(element.centerOfCurvature());
     Vector3D relEntree(element.start() - cc);
     Vector3D relExit(element.exit() - cc);

@@ -6,9 +6,11 @@
 
 
 bool StraightElement::isOut(Vector3D pos) const {
-    pos -= start();
-    Vector3D L(exit() - start());
-    return pos * L > L.normSquared();
+    return Vector3D::e3.tripleProduct(pos, exit()) > 0;
+
+//    pos -= start();
+//    Vector3D L(exit() - start());
+//    return pos * L > L.normSquared();
 }
 
 double StraightElement::radialDistanceSqrd(Vector3D pos) const {

@@ -36,7 +36,8 @@ double CurvedElement::radialVelocitySqrd(const Vector3D &position, const Vector3
 
 
 bool CurvedElement::isOut(Vector3D pos) const {
-    return Vector3D::e3.tripleProduct(pos - centerOfCurvature(), exit() - centerOfCurvature()) > 0;
+//    return Vector3D::e3.tripleProduct(pos - centerOfCurvature(), exit() - centerOfCurvature()) > 0;
+    return Vector3D::e3.tripleProduct(pos, exit()) > 0;
 }
 
 

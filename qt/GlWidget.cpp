@@ -39,7 +39,7 @@ void GlWidget::timerEvent(QTimerEvent *event) {
 
     for (int i = 0; i < steps; ++i) {
         accelerator.evolve(1e-11);
-        if (accelerator.particles().empty()) std::cout << counter << std::endl;
+//        if (accelerator.particles().empty()) std::cout << counter << std::endl;
     }
 
     update();
@@ -150,9 +150,12 @@ GlWidget::GlWidget(QWidget *parent)
     build(intensity);
 }
 
-void GlWidget::build(double) {
-
-    double quadrupoleIntensity(1.2);
+void GlWidget::build(double quadrupoleIntensity) {
+    accelerator.cleanBeam();
+    accelerator.cleanElements();
+    std::cout << quadrupoleIntensity << std::endl;
+    quadrupoleIntensity = 1.2;
+//    double quadrupoleIntensity(1.2);
     double dipoleIntensity(5.891582055618276);
 
     double radius(0.1);
@@ -176,16 +179,15 @@ void GlWidget::build(double) {
         pd2 = pd2 ^ Vector3D::e3;
     }
 
-    addBeam();
+//    addBeam();
 }
 
 void GlWidget::addBeam() {
     // ---- Parametrisation of the particles ----
     double mass(constants::M_PROTON);
     double charge(constants::C_PROTON);
-    Vector3D position2(2.99, 0, 0);
-    Particle p2(mass, charge, 2, position2, Vector3D(0, -1, 0), Vector3D(1, 1, 1), accelerator.elements()[0].get());
-    std::vector<Particle> particles{p2};
+    Vector3D position2(2.99, 2, 0);
+    Particle p2(mass, charge, 2, position2, Vector3D(0, -1, 0), accelerator.elements()[18].get(), Vector3D(1, 1, 1));
     //  ---------
     accelerator.addParticle(p2);
 }
