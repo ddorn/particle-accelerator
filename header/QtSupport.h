@@ -12,8 +12,10 @@
 #include "all.h"
 
 enum ViewMode {
-    FREE,
-    FOLLOW_PARTICLE,
+    FREE_VIEW,
+    FIRST_PERSON,
+    THIRD_PERSON,
+    TOP_VIEW
 };
 
 class QtSupport : public Support {
@@ -29,9 +31,9 @@ public:
     void init();
     void initPosition();
     void setViewMode(ViewMode v);
+    void updateViewMatrix(const Accelerator &accelerator);
 
     // Draw objects
-
 
     void drawCube(const QMatrix4x4 &model);
     void drawCube(const Vector3D &position, double scale);
@@ -61,9 +63,8 @@ public:
     { prog.setUniformValue("projection", projection); }
 
     void translate(double x, double y, double z);
-
     void rotate(double angle, double dir_x, double dir_y, double dir_z);
-
+    void lookAt(const Vector3D &eyePosition, const Vector3D &center, const Vector3D &up);
     void draw(const Segment &segment) override;
 
 private:

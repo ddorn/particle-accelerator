@@ -4,7 +4,6 @@
 
 #include "CurvedElement.h"
 #include <cmath>
-#include <CurvedElement.h>
 
 
 const Vector3D CurvedElement::calculateCenterOfCurvature() const {

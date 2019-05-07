@@ -3,8 +3,6 @@
 //
 
 
-#include <Accelerator.h>
-
 #include "Accelerator.h"
 #include "Segment.h"
 #include "Dipole.h"

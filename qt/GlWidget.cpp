@@ -125,10 +125,16 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
           accelerator.cleanBeam();
           break;
       case Qt::Key_Escape:
-          support.setViewMode(FREE);
+          support.setViewMode(FREE_VIEW);
           break;
       case Qt::Key_1:
-          support.setViewMode(FOLLOW_PARTICLE);
+          support.setViewMode(FIRST_PERSON);
+          break;
+      case Qt::Key_2:
+          support.setViewMode(THIRD_PERSON);
+          break;
+      case Qt::Key_3:
+          support.setViewMode(TOP_VIEW);
           break;
       case Qt::Key_K:
           steps += 5;

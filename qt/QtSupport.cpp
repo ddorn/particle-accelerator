@@ -3,8 +3,6 @@
 //
 
 #include <iostream>
-#include <QtSupport.h>
-
 
 #include "all.h"
 #include "QtSupport.h"
@@ -74,12 +72,48 @@ void QtSupport::rotate(double angle, double dir_x, double dir_y, double dir_z) {
   prog.setUniformValue("view", view);
 }
 
+void QtSupport::lookAt(const Vector3D &eyePosition, const Vector3D &center, const Vector3D &up) {
+    view.setToIdentity();  // We reset the view
+    view.lookAt(  // and then look in the right direction
+            QVector3D(eyePosition.x(), eyePosition.y(), eyePosition.z()),
+            QVector3D(center.x(), center.y(), center.z()),
+            QVector3D(up.x(), up.y(), up.z())
+    );
+}
+void QtSupport::updateViewMatrix(const Accelerator &accelerator) {
+    const Particle *particle(nullptr);
+    Vector3D pos, speed;
+    if (!accelerator.beams().empty() &&
+        !accelerator.beams()[0]->macroParticles().empty()) {
+        particle = accelerator.beams()[0]->macroParticles()[0].get();
+        pos = particle->position();
+        speed = particle->speed();
+    } else {
+        setViewMode(FREE_VIEW);
+        return;
+    }
+
+    switch (viewMode) {
+        case FREE_VIEW:
+            break;
+        case FIRST_PERSON:
+            lookAt(pos, pos + speed, Vector3D::e3);
+            break;
+        case THIRD_PERSON:
+            lookAt(pos - ~particle->speed() * 0.15, pos, Vector3D::e3);
+            break;
+        case TOP_VIEW:
+            lookAt(pos + Vector3D::e3, pos, Vector3D::e3 ^ speed);
+            break;
+    }
+
+    prog.setUniformValue("view", view);
+}
 
 // Base draw methods
 // Cube
 void QtSupport::drawCube(const QMatrix4x4 &model = QMatrix4x4()) {
 
-    prog.setUniformValue("view", view);
     prog.setUniformValue("model", model);
 
     glBegin(GL_QUADS);
@@ -139,7 +173,6 @@ void QtSupport::drawCube(const Vector3D &position, double scale) {
 }
 // Circle
 void QtSupport::drawCircle(const QMatrix4x4 &model, double r, double g, double b, size_t points) {
-    prog.setUniformValue("view", view);
     prog.setUniformValue("model", model);
     prog.setAttributeValue(ColorId, r, g, b);
 
@@ -156,7 +189,6 @@ void QtSupport::drawCircle(const Vector3D &position, double radius, const Vector
     QMatrix4x4 model;
     model.translate(position.x(), position.y(), position.z());
 
-    prog.setUniformValue("view", view);
     prog.setUniformValue("model", model);
     prog.setAttributeValue(ColorId, color.x(), color.y(), color.z());
 
@@ -177,7 +209,6 @@ void QtSupport::drawCircle(const Vector3D &position, double radius, const Vector
 void QtSupport::drawSphere(const QMatrix4x4 &model, double r, double g, double b) {
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // passe en mode "fil de fer"
 
-    prog.setUniformValue("view", view);
     prog.setUniformValue("model", model);
     prog.setAttributeValue(ColorId, r, g, b, 1);
 
@@ -198,7 +229,6 @@ void QtSupport::drawVector(Vector3D vec, const Vector3D &start) {
 
     QMatrix4x4 model;
     prog.setUniformValue("model", model);
-    prog.setUniformValue("view", view);
     prog.setAttributeValue(ColorId, 1, 1, 1, 1);
 
     glNormal3f(0, 2, 4);  // This is the lights position
@@ -211,7 +241,6 @@ void QtSupport::drawVector(Vector3D vec, const Vector3D &start) {
 // Tube
 void QtSupport::drawTube(const QMatrix4x4 &model, double radius, const Vector3D &color, double length) {
     prog.setUniformValue("model", model);
-    prog.setUniformValue("view", view);
 
     prog.setAttributeValue(ColorId, color.x(), color.y(), color.z(), 0.5);
 
@@ -259,31 +288,7 @@ void QtSupport::draw(const Particle &particle) {
     drawSphere(particle.position(), 0.03, particle.color());
 }
 void QtSupport::draw(const Accelerator &accelerator) {
-    switch (viewMode) {
-        case FREE:
-            break;
-        case FOLLOW_PARTICLE:
-            if (!accelerator.particles().empty()) {
-//                const auto& b = accelerator.beams()[0];
-//                if (!b->macroParticles().empty()) {
-                    const auto& particle = accelerator.particles()[0];
-                    const Vector3D& pos(particle->position());
-                    Vector3D look = pos + particle->speed();
-                    view.setToIdentity();
-//                    view.translate(particle->position().x(), particle->position().y(), particle->position().z());
-                    view.lookAt(QVector3D(pos.x(), pos.y(), pos.z()),
-                            QVector3D(look.x(), look.y(), look.z()),
-                            QVector3D(0, 0, 1));
-//                } else {
-//                    initPosition();
-//                }
-            } else {
-                initPosition();
-            }
-            break;
-    }
-
-    prog.setUniformValue("view", view);
+    updateViewMatrix(accelerator);
 
     glDisable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
@@ -332,8 +337,7 @@ void QtSupport::draw(const CurvedElement &element) {
     QMatrix4x4 model;
     model.translate(cc.x(), cc.y());
     prog.setUniformValue("model", model);
-    prog.setUniformValue("view", view);
-    prog.setAttributeValue(ColorId, 1, 0, 0, 0.5);
+prog.setAttributeValue(ColorId, 1, 0, 0, 0.5);
 
     constexpr int NB_SEGMENTS(12);
     constexpr int NB_CIRCLES(6);
@@ -391,8 +395,6 @@ QMatrix4x4 QtSupport::posToModel(const Vector3D &position, double scale) {
 
 void QtSupport::setViewMode(ViewMode v) {
     viewMode = v;
-    if (viewMode == FREE) {
-        initPosition();
-    }
 }
+
 

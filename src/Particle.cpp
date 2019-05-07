@@ -9,9 +9,7 @@ using namespace constants;
 using namespace std;
 
 double Particle::velocityFromEnergy(double energy, double mass) const {
-    double a = LIGHT_SPEED * sqrt(1 - mass * mass / (energy * energy));
-    std::cout << a << energy << " " << mass<< endl;
-    return a;
+    return LIGHT_SPEED * sqrt(1 - mass * mass / (energy * energy));
 }
 
 void Particle::addMagneticForce(const Vector3D &b, double dt) {
