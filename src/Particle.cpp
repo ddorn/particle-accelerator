@@ -49,7 +49,7 @@ bool Particle::updateElement() {
         if (element()->nextElement() == nullptr) {
             return false;
         } else {
-            cout << "Depasse et mtn dans : " << *element()->nextElement();
+//            cout << "Depasse et mtn dans : " << *element()->nextElement();
             element_ = element()->nextElement();
         }
     }

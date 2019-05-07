@@ -4,13 +4,19 @@
 
 #include "StraightElement.h"
 
+using namespace std;
+
 
 bool StraightElement::isOut(Vector3D pos) const {
     return Vector3D::e3.tripleProduct(pos, exit()) > 0;
 
-//    pos -= start();
-//    Vector3D L(exit() - start());
-//    return pos * L > L.normSquared();
+    cout << "------------" << endl;
+    cout << pos << endl;
+    pos -= start();
+    cout << pos << endl;
+    Vector3D L(exit() - start());
+    cout << L << endl;
+    return (pos - start()) * L > L.normSquared();
 }
 
 double StraightElement::radialDistanceSqrd(Vector3D pos) const {
