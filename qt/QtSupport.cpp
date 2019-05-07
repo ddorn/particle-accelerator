@@ -413,8 +413,9 @@ QMatrix4x4 QtSupport::posToModel(const Vector3D &position, double scale) {
 
 void QtSupport::initThemes() {
     themes.clear();
-    themes.push_back(make_unique<Theme>(Classix()));
-    themes.push_back(make_unique<Theme>(Matrix()));
+    themes.push_back(make_unique<Classix>());
+    themes.push_back(make_unique<Matrix>());
+    themes.push_back(make_unique<Rainbox>());
 }
 
 
