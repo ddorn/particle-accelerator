@@ -380,8 +380,8 @@ void QtSupport::draw(const Element &element) {
     drawCube(element.start(), 0.05);
     drawCube(element.exit(), 0.05);
 }
-void QtSupport::draw(const StraightElement &element) {
-    drawVector(element.exit() - element.start(), element.start());
+void QtSupport::draw(const StraightElement &/*element*/) {
+//    drawVector(element.exit() - element.start(), element.start());
 }
 void QtSupport::draw(const Quadrupole &element  ) {
     element.StraightElement::draw(*this);
@@ -391,8 +391,8 @@ void QtSupport::draw(const Segment &element) {
     element.StraightElement::draw(*this);
     drawTube(element.start(), element.exit(), element.radius(), theme()->getSegmentColor());
 }
-void QtSupport::draw(const CurvedElement &element) {
-    drawCircle(element.centerOfCurvature(), 1 / element.curvature(), Vector3D::e3, Vector3D(1, 1, 1));
+void QtSupport::draw(const CurvedElement &/*element*/) {
+//    drawCircle(element.centerOfCurvature(), 1 / element.curvature(), Vector3D::e3, Vector3D(1, 1, 1));
 }
 void QtSupport::draw(const Dipole &element) {
     element.CurvedElement::draw(*this);
