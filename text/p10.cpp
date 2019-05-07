@@ -12,8 +12,11 @@ using namespace std;
 int main() {
 
 
+    double mass(constants::M_PROTON);
+    double charge(constants::C_PROTON);
+    double energy(2);
     double quadrupoleIntensity(1.2);
-    double dipoleIntensity(5.89158);
+//    double dipoleIntensity(5.89158);
     TextSupport s(cout);
     Accelerator bobLEponge(Vector3D(3, 0, 0));
 
@@ -27,7 +30,7 @@ int main() {
     for (int i = 0; i < 4; ++i) {
         bobLEponge.addQuadrupole(pqf, radius, -quadrupoleIntensity);
         bobLEponge.addSegment(pd1, radius);
-        bobLEponge.addDipole(pd, radius, 1, dipoleIntensity);
+        bobLEponge.addDipole(pd, radius, 1, mass, charge, energy);
         bobLEponge.addQuadrupole(pqd, radius, quadrupoleIntensity);
         bobLEponge.addSegment(pd2, radius);
 
@@ -39,8 +42,6 @@ int main() {
     }
 
     // ---- Parametrisation of the particles ----
-    double mass(constants::M_PROTON);
-    double charge(constants::C_PROTON);
     Vector3D position2(2.99, 2, 0);
     Particle p2(mass, charge, 2, position2, Vector3D(0, -1, 0), bobLEponge.elements()[18].get(), Vector3D());
     Particle p0(mass, charge, 2, Vector3D(2.99, 0, 0), Vector3D(0, -1, 0), bobLEponge.elements()[0].get());
