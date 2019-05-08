@@ -37,6 +37,44 @@ public:
               bgColor(bgColor),
               sextupoleColor(sextupoleColor) {}
 
+    Theme(bool particleFilled, bool elementFilled, double elementTransparency, const Color &particleColor,
+          const Color &elementColor, const Color &bgColor = Color())
+            : particleFilled(particleFilled),
+              elementFilled(elementFilled),
+              elementTransparency(elementTransparency),
+              particleColor(particleColor),
+              dipoleColor(elementColor),
+              quadrupoleColor(elementColor),
+              segmentColor(elementColor),
+              bgColor(bgColor),
+              sextupoleColor(elementColor) {}
+
+    static Theme Matrix() {
+        return Theme(true, false, 1, Color(1, 1, 1), Color(0, 0.23, 0));
+    }
+
+    static Theme Classix(bool dark = true) {
+
+        Theme classix = Theme(true, true, 0.5, Color(1, 1, 1), Color(1, 0, 0), Color(1, 0.7, 0), Color(0.2, 0.6, 1),
+                     Color(0.965, 0.141, 0.349));
+        if (!dark) classix.bgColor = Vector3D(1, 1, 1);
+        return classix;
+    }
+
+    static Theme SteamPunx() {
+        return Theme(true, true, 0.7, Color(0.847, 0.596, 0.251), Color(0.173, 0.122, 0.102), Color(0.17, 0.18, 0.15));
+    }
+
+    static Theme Pinx() {
+        return Theme(true, true, 0.5,
+                Color(1.0, 0.749, 0.827),
+                Color(1.0, 0.0, 0.663),
+                Color(0.984, 0.345, 0.345),
+                Color(0.984, 0.624, 0.624),
+                Color(0.973, 0.341, 0.835),
+                Color(1.0, 0.0, 0.396));
+    }
+
     bool isParticleFilled() const {
         return particleFilled;
     }
@@ -75,30 +113,7 @@ public:
 
 };
 
-class UniformTheme : public Theme {
-public:
-    UniformTheme(bool particleFilled, bool elementFilled, double elementTransparency, const Color &particleColor,
-                 const Color &elementsColor, const Color &bgColor = Color()) : Theme(particleFilled, elementFilled,
-                                                                                     elementTransparency, particleColor,
-                                                                                     elementsColor, elementsColor,
-                                                                                     elementsColor, elementsColor,
-                                                                                     bgColor) {}
-
-};
-
-
-class Matrix : public UniformTheme {
-public:
-    Matrix() : UniformTheme(true, false, 1, Color(1, 1, 1), Color(0, 0.23, 0)) {}
-};
-
-class Classix : public Theme {
-public:
-    Classix() : Theme(true, true, 0.5, Color(1, 1, 1), Color(1, 0, 0), Color(1, 0.7, 0), Color(0.2, 0.6, 1),
-                      Color(0.965, 0.141, 0.349)) {}
-};
-
-class Rainbox : public UniformTheme {
+class Rainbox : public Theme {
 private:
     /**
      * Converts aa HSV color to RGB
@@ -146,7 +161,7 @@ private:
     }
 
 public:
-    Rainbox() : UniformTheme(true, false, 1, Color(), Color(1, 1, 1)*0.7) {}
+    Rainbox() : Theme(true, false, 1, Color(), Color(1, 1, 1)*0.7) {}
 
     const Color getParticleColor() const override {
         long ms = system_clock::now().time_since_epoch().count();  // Color depends on the time
@@ -156,8 +171,4 @@ public:
 
 };
 
-class SteamPunx : public UniformTheme {
-public:
-    SteamPunx() : UniformTheme(true, true, 0.7, Color(0.847, 0.596, 0.251), Color(0.173, 0.122, 0.102), Color(0.17, 0.18, 0.15)/7) {}
-};
 #endif //PARTICLEACCELERATOR_THEMES_H

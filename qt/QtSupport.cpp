@@ -41,7 +41,8 @@ void QtSupport::init() {
     glEnable(GL_BLEND);
 //    glBlendFunc(GL_SRC_ALPHA, GL_ONE);  // best
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+    glLineWidth(2);  // The size doesn't matter, but the width definitely does.
+    
     sphere.initialize();
     initPosition();
 
@@ -425,10 +426,12 @@ QMatrix4x4 QtSupport::posToModel(const Vector3D &position, double scale) {
 
 void QtSupport::initThemes() {
     themes.clear();
-    themes.push_back(make_unique<Classix>());
-    themes.push_back(make_unique<Matrix>());
+    themes.push_back(make_unique<Theme>(Theme::Classix()));
+    themes.push_back(make_unique<Theme>(Theme::Matrix()));
     themes.push_back(make_unique<Rainbox>());
-    themes.push_back(make_unique<SteamPunx>());
+    themes.push_back(make_unique<Theme>(Theme::SteamPunx()));
+    themes.push_back(make_unique<Theme>(Theme::Pinx()));
+    themes.push_back(make_unique<Theme>(Theme::Classix(false)));
 }
 
 
