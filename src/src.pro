@@ -19,6 +19,7 @@ SOURCES = \
     CurvedElement.cpp \
     StraightElement.cpp \
 	Segment.cpp \
+	Sextupole.cpp \
 	Quadrupole.cpp
 
 HEADERS += all.h

@@ -7,6 +7,7 @@
 #include "Segment.h"
 #include "Dipole.h"
 #include "Quadrupole.h"
+#include "Sextupole.h"
 #include "CircularBeam.h"
 
 using namespace std;
@@ -88,20 +89,29 @@ bool Accelerator::addDipole(const Vector3D &exit, double radius, double curvatur
 bool Accelerator::addDipole(const Vector3D &exit, double radius, double curvature, double mass, double charge,
                             double energy) {
     if (!acceptableNextElement(exit, radius)
-        || fabs(curvature) < Vector3D::getPrecision()) return false;
+        || fabs(curvature) < Vector3D::getPrecision())
+        return false;
     if (mass <= 0) return false;
     if (energy <= 0) return false;
     if (charge == 0) return false;
-    return false;
-//    elements_.push_back(std::make_unique<Dipole>(nextStart(), exit, radius, nullptr, curvature, mass, charge, energy));
-//    linkElements();
-//    return true;
+
+    elements_.push_back(std::make_unique<Dipole>(nextStart(), exit, radius, nullptr, curvature, mass, charge, energy));
+    linkElements();
+    return true;
 }
 
 bool Accelerator::addQuadrupole(const Vector3D &exit, double radius, double magneticFieldIntensity) {
     if (!acceptableNextElement(exit, radius)) return false;
 
     elements_.push_back(std::make_unique<Quadrupole>(nextStart(), exit, radius, nullptr, magneticFieldIntensity));
+    linkElements();
+    return true;
+}
+
+bool Accelerator::addSextupole(const Vector3D &exit, double radius, double magneticlFieldIntensity) {
+    if (!acceptableNextElement(exit, radius)) return false;
+
+    elements_.push_back(std::make_unique<Sextupole>(nextStart(), exit, radius, nullptr, magneticlFieldIntensity));
     linkElements();
     return true;
 }

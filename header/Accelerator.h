@@ -92,6 +92,7 @@ public:
      */
     bool addQuadrupole(const Vector3D& exit, double radius, double magneticFieldIntensity);
     bool addFODO(const Vector3D &exit, double quadrupoleLength, double radius, double magneticFieldIntesity);
+    bool addSextupole(const Vector3D &exit, double radius, double magneticlFieldIntensity);
     bool addBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
                  const std::vector<Particle> &macroParticles, const Vector3D &color = Vector3D(1, 1, 1));
 

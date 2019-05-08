@@ -45,6 +45,13 @@ void TextSupport::draw(const Segment &segment) {
     ostream_ << segment << endl;
 }
 
+
+void TextSupport::draw(const Sextupole &sextupole) {
+    ostream_ << sextupole << endl;
+}
+
+
+
 void TextSupport::draw(const Beam &beam) {
     ostream_ << beam << endl;
 }

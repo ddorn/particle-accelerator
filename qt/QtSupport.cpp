@@ -405,11 +405,17 @@ void QtSupport::draw(const Dipole &element) {
     drawCurvedTube(element.start(), element.exit(), element.centerOfCurvature(), element.radius(), theme()->getDipoleColor());
 }
 
+void QtSupport::draw(const Sextupole &element) {
+    element.StraightElement::draw(*this);
+    drawTube(element.start(), element.exit(), element.radius(), theme()->getSextupoleColor());
+
+}
 void QtSupport::draw(const Beam &beam) {
     for (auto const& p : beam.macroParticles()) {
         draw(*p);
     }
 }
+
 QMatrix4x4 QtSupport::posToModel(const Vector3D &position, double scale) {
     QMatrix4x4 model;
     model.translate(position.x(), position.y(), position.z());

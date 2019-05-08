@@ -9,16 +9,17 @@
 // those classes need to include Support in their
 // headers so one has to be defined before the other.
 // And we choosed Support as it's a very light class
-class Vector3D;
-class Particle;
-class Element;
-class Dipole;
 class Accelerator;
-class Quadrupole;
-class CurvedElement;
-class StraightElement;
-class Segment;
 class Beam;
+class CurvedElement;
+class Dipole;
+class Element;
+class Particle;
+class Quadrupole;
+class Segment;
+class Sextupole;
+class StraightElement;
+class Vector3D;
 
 
 class Content;
@@ -34,6 +35,7 @@ public:
     virtual void draw(const Particle&) = 0;
     virtual void draw(const Quadrupole&) = 0;
     virtual void draw(const Segment&) = 0;
+    virtual void draw(const Sextupole&) = 0;
     virtual void draw(const StraightElement&) = 0;
     virtual void draw(const Vector3D&) = 0;
 

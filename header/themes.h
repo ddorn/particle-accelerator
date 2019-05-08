@@ -22,9 +22,11 @@ protected:
     Color quadrupoleColor;
     Color segmentColor;
     Color bgColor;
+    Color sextupoleColor;
 public:
     Theme(bool particleFilled, bool elementFilled, double elementTransparency, const Color &particleColor,
-          const Color &dipoleColor, const Color &quadrupoleColor, const Color &segmentColor, const Color &bgColor = Color())
+          const Color &dipoleColor, const Color &quadrupoleColor, const Color &segmentColor,
+          const Color &sextupoleColor, const Color &bgColor = Color())
             : particleFilled(particleFilled),
               elementFilled(elementFilled),
               elementTransparency(elementTransparency),
@@ -32,7 +34,8 @@ public:
               dipoleColor(dipoleColor),
               quadrupoleColor(quadrupoleColor),
               segmentColor(segmentColor),
-              bgColor(bgColor) {}
+              bgColor(bgColor),
+              sextupoleColor(sextupoleColor) {}
 
     bool isParticleFilled() const {
         return particleFilled;
@@ -62,6 +65,10 @@ public:
         return segmentColor;
     }
 
+    const Color &getSextupoleColor() const {
+        return sextupoleColor;
+    }
+
     const Color &getBgColor() const {
         return bgColor;
     }
@@ -74,7 +81,8 @@ public:
                  const Color &elementsColor, const Color &bgColor = Color()) : Theme(particleFilled, elementFilled,
                                                                                      elementTransparency, particleColor,
                                                                                      elementsColor, elementsColor,
-                                                                                     elementsColor, bgColor) {}
+                                                                                     elementsColor, elementsColor,
+                                                                                     bgColor) {}
 
 };
 
@@ -86,7 +94,8 @@ public:
 
 class Classix : public Theme {
 public:
-    Classix() : Theme(true, true, 0.5, Color(1, 1, 1), Color(1, 0, 0), Color(1, 0.7, 0), Color(0.2, 0.6, 1)) {}
+    Classix() : Theme(true, true, 0.5, Color(1, 1, 1), Color(1, 0, 0), Color(1, 0.7, 0), Color(0.2, 0.6, 1),
+                      Color(0.965, 0.141, 0.349)) {}
 };
 
 class Rainbox : public UniformTheme {

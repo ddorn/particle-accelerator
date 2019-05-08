@@ -18,6 +18,7 @@
 #include "Particle.h"
 #include "Quadrupole.h"
 #include "Segment.h"
+#include "Sextupole.h"
 #include "StraightElement.h"
 #include "Vector3D.h"
 

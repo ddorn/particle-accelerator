@@ -17,7 +17,8 @@ set(SOURCE_FILES
 		src/Segment.cpp
 		src/Quadrupole.cpp
         src/CircularBeam.cpp
-		src/Beam.cpp)
+		src/Beam.cpp
+		src/Sextupole.cpp)
 
 set(TEXT_SOURCES
         text/TextSupport.cpp)

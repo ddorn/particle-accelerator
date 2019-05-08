@@ -166,14 +166,17 @@ void GlWidget::build(double coucou) {
     double dipoleIntensity(5.891582055618276);
 
     double radius(0.1);
-    Vector3D pd1(3, -2, 0);
     Vector3D pd(2, -3, 0);
+    Vector3D pSex(3, 2 - coucou, 0);
+    Vector3D pFODO(3, -2, 0);
 
     for (int i = 0; i < 4; ++i) {
-        accelerator.addFODO(pd1, coucou, radius, 1.2);
+        accelerator.addSextupole(pSex, radius, 1000);
+        accelerator.addFODO(pFODO, 0.5, radius, 1.2);
         accelerator.addDipole(pd, radius, 1, dipoleIntensity);
 
-        pd1 = pd1 ^ Vector3D::e3;
+        pSex = pSex ^ Vector3D::e3;
+        pFODO = pFODO ^ Vector3D::e3;
         pd = pd ^ Vector3D::e3;
     }
 
