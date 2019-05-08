@@ -248,7 +248,7 @@ void QtSupport::drawTube(const QMatrix4x4 &model, double radius, const Vector3D 
 
     constexpr int NB_CIRCLES(6);
     const double X_STEP(length / NB_CIRCLES);
-    constexpr int NB_SEGMENTS(12);
+    constexpr int NB_SEGMENTS(8);
     constexpr double ANGLE_STEP(2 * M_PI / NB_SEGMENTS);
 
     glBegin(GL_QUADS);
@@ -292,7 +292,7 @@ void QtSupport::drawCurvedTube(const Vector3D &start, const Vector3D &end, const
     prog.setAttributeValue(ColorId, color.x(), color.y(), color.z(), 0.5);
 
 
-    constexpr int NB_SEGMENTS(12);
+    constexpr int NB_SEGMENTS(8);
     constexpr int NB_CIRCLES(6);
     constexpr double CIRCLE_ANGLE(2 * M_PI / NB_SEGMENTS);
 

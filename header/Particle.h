@@ -34,6 +34,8 @@ class Particle : public Content {
 private:
     double mass_;
     double charge_;
+    size_t turns = 0;
+    const Element* spawn_;  // Used to count number of turns
     Vector3D position_;
     Vector3D force_;
     Vector3D lastForce_;
@@ -59,15 +61,22 @@ public:
      * @param element A c-like pointer to the element containing the particle
      */
     Particle(double mass, double charge, double energy, const Vector3D &position, const Vector3D &direction,
-             Element *element = nullptr, const Vector3D &color = Vector3D(1, 1, 1))
+             Element *element, const Vector3D &color = Vector3D(1, 1, 1))
             : mass_(mass),
               charge_(charge),
+              spawn_(element),
               position_(position),
               element_(element),
               color_(color),
               speed_(direction.isZero() ? Vector3D()
-                                        : ~direction * velocityFromEnergy(energy, mass)) {}
+                                        : ~direction * velocityFromEnergy(energy, mass)) {
+        if (element == nullptr) {
+            std::cout << "Particles SHALL spawn in elements" << std::endl;
+            throw 1;
+        }
+    }
 
+    size_t nbrOfTurn() const { return turns; }
     double charge() const { return charge_; }
 
     /**

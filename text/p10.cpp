@@ -49,6 +49,7 @@ int main() {
             Vector3D(-139591, -2.64754e+08, 0), bobLEponge.elements()[2].get());
 //    vector<Particle> particles{dipHole};
     //  ---------
+
     bobLEponge.addParticle(p2);
 
     bobLEponge.draw(s);
@@ -58,10 +59,17 @@ int main() {
 //        ++i;
 //    }
 //    cout <<i<< endl;
-    for (int j = 0; j < 100; ++j) {
-        bobLEponge.evolve();
-//        if (bobLEponge.particles().front()->element() == bobLEponge.elements()[2].get())
-            bobLEponge.draw(s);
+    int i = 0;
+    while (!bobLEponge.particles().empty()) {
+        bobLEponge.evolve(1e-12);
+        ++i;
+        if (i % 1000000 == 1
+        ) cout << i << endl;
     }
+//    for (int j = 0; j < 10000000; ++j) {
+//        bobLEponge.evolve(1e-12);
+//        if (bobLEponge.particles().front()->element() == bobLEponge.elements()[2].get())
+//            bobLEponge.draw(s);
+//    }
     return 0;
 }

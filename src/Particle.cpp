@@ -49,6 +49,7 @@ bool Particle::updateElement() {
         } else {
 //            cout << "Depasse et mtn dans : " << *element()->nextElement();
             element_ = element()->nextElement();
+            if (element_ == spawn_) turns += 1;
         }
     }
     return true;

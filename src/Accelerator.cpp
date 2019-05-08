@@ -57,6 +57,7 @@ void Accelerator::evolve(double dt) {
     i = 0;
     while (i < particles_.size()) {
         if (!particles_[i]->updateElement()) {
+            cout << particles_[i]->nbrOfTurn() << endl;
             swap(particles_[i], particles_.back());
             particles_.pop_back();
         } else {
