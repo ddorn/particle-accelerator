@@ -4,6 +4,8 @@ varying vec3 normal;
 
 void main()
 {
+    if (base_color.a < 0.5)
+        discard;
     float ambiant = 0.1;
     vec3 light_source = vec3(0, 2, 4);
 

@@ -24,6 +24,8 @@ void GlWidget::resizeGL(int width, int height) {
 }
 void GlWidget::paintGL() {
     // Clear the screen
+    const Color& color(support.theme()->getBgColor());
+    glClearColor(color.x(), color.y(), color.z(), 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // And then draw the accelerator
     support.draw(accelerator);
@@ -37,8 +39,8 @@ void GlWidget::timerEvent(QTimerEvent *event) {
     //    double dt = chronometre.restart() / 1000.0;
     chronometre.restart();
 
-    for (int i = 0; i < steps; ++i) {
-        accelerator.evolve(1e-11);
+    for (int i = 0; i < steps * 10; ++i) {
+        accelerator.evolve(1e-12);
 //        if (accelerator.particles().empty()) std::cout << counter << std::endl;
     }
 

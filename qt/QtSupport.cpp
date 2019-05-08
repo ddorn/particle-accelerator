@@ -349,7 +349,12 @@ void QtSupport::draw(const Accelerator &accelerator) {
 
     if (theme()->isElementFilled())  {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-//        glPolygonMode(GL_BACK, GL_FILL);
+        if (viewMode == FIRST_PERSON || viewMode == THIRD_PERSON) {
+            glPolygonMode(GL_BACK, GL_LINE);
+            glDisable(GL_CULL_FACE);
+            glDisable(GL_DEPTH_TEST);
+        }
+
     }
     else glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
@@ -359,6 +364,7 @@ void QtSupport::draw(const Accelerator &accelerator) {
     for (const auto &e : accelerator.elements()) {
         e->draw(*this);
     }
+
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -416,6 +422,7 @@ void QtSupport::initThemes() {
     themes.push_back(make_unique<Classix>());
     themes.push_back(make_unique<Matrix>());
     themes.push_back(make_unique<Rainbox>());
+    themes.push_back(make_unique<SteamPunx>());
 }
 
 
