@@ -138,6 +138,8 @@ public:
 
     const RadialVec3D radialSpeed() const { return element()->radialSpeed(position(), speed()); }
 
+    double longitudinalPosition() const { return element()->radialPosition(position()).s(); }
+
     /**
      * Add a magnetic force on the particle that is applied
      * during a given timestep `dt`. This `dt` should be

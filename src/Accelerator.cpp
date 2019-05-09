@@ -177,3 +177,11 @@ bool Accelerator::addBeam(double mass, double charge, double energy, const Vecto
     }
     return true;
 }
+
+double Accelerator::length() const {
+    double l(0);
+    for(auto &e : elements()){
+        l += e->length();
+    }
+    return l;
+}

@@ -62,7 +62,7 @@ public:
     }
 
     static Theme SteamPunx() {
-        return Theme(true, true, 0.7, Color(0.847, 0.596, 0.251), Color(0.173, 0.122, 0.102), Color(0.17, 0.18, 0.15));
+        return Theme(true, true, 0.7, Color(0.847, 0.596, 0.251), Color(0.173, 0.122, 0.102), Color(1, 1, 1)*0.7);
     }
 
     static Theme Pinx() {
@@ -72,7 +72,7 @@ public:
                 Color(0.984, 0.345, 0.345),
                 Color(0.984, 0.624, 0.624),
                 Color(0.973, 0.341, 0.835),
-                Color(1.0, 0.0, 0.396));
+                Color(1.0, 0.8, 0.396));
     }
 
     bool isParticleFilled() const {

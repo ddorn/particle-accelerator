@@ -103,6 +103,7 @@ public:
     * @return if the last element ends where the first element begins.
     */
     bool isClosed() const;
+    double length() const;
 private:
     /**
      * Add a new particle in the accelerator.
