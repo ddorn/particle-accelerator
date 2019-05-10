@@ -90,3 +90,43 @@ création des instances à ne pas créer des instances locales, puis à les ajou
 à une classe abstraite, car les zones mémoire seraient alors désallouées, mais
 les pointeurs ne seraient pas supprimés. La solution est alors d'allouer dynamiquement
 les zones mémoires, en faisant new Class(...).
+
+### Question P11.1
+> Comment avez-vous implémenté ces différentes caractéristiques : comme attribut ou comme méthode ? (concernant les
+    ellipses de phase et l'émittance)
+
+Ces valeurs changent avec le temps, il n'y a donc pas de raison de les mettre comme attributs.
+A VOIR : Il pourrait cependant être intéressant de garder les valeurs de départ, notamment pour les faisceaux avec
+une distribution aléatoire.
+
+### Question 13.1
+> Quelle est la complexité de ces deux algorithmes ? (algorithmes d'application des forces interparticules où les
+    particules dans un faisceau interagissent toutes entre elles.)
+
+Avec n particules dans un faisceau, cela demande une complexité en O(n²) pour chaque faisceau. En effet, on applique
+toutes les forces, on a donc ((n - 1)² + n - 1) / 2 interactions. Le fait de parcourir la liste des
+particules d'un faisceau est en O(n), cela ne change par conséquent pas la complexité.
+
+### Question 14.1
+> quelle est la complexité temporelle pire cas de cette solution en fonction du nombre de particules ? Quelles
+    inconvénients présentent cette solution ? (En ce qui concerne la gestion proposée des meilleurs voisins)
+
+Soit n le nombre de particules. Comme l'on suppose que le nombre de particules par case
+est en O(1), les forces à appliquer sur chaque particules sont également en O(1). De plus, le nombre de
+cases ne dépend pas du nombre de particules, il est en O(1). Parcourir la liste des cases est
+par conséquent en O(1). On a finalement une complexité en O(n * O(1) + O(1)) = O(n).
+
+Le principal inconvénient de cette méthode est qu'il utilise énormément de mémoire : il y a de de 10⁵ à 10⁶ cases
+dans le modèle proposé, alors qu'on ne simule que quelques dizaines, voire quelques centaines de particules. La
+grande majorité des cases sont donc vides.
+
+### Question 14.2
+> Comment et où avez-vous implémenté cette nouvelle façon de calculer les interactions entre particules ?
+
+Pour éviter d'utiliser beaucoup de mémoire inutilement, mais en gardant une complexité en O(n), nous avons
+décidé de faire une liste doublement chaînée circulaire de particules, dans l'ordre de leurs positions
+longitudinales. Nous faisons intéragir chaque particule avec les suivantes dans la liste, jusqu'à ce que la suivante
+soit plus loin qu'une certaine distance maximale, et à ce moment-là nous passons à la suivante.
+À chaque pas, nous contrôlons que l'ordre est correct. Un pointeur vers la tête de la liste chaînée est contenu
+dans l'accélérateur et celui-ci gère la liste. Nous expliquons plus longuement son fonctionnement
+dans le fichier CONCEPTION.

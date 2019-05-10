@@ -91,14 +91,18 @@ Semaine de vide
  fait correctes au départ, on ne comprend donc pas la raison de ce décalage progressif.
  De plus, nos particules sont instables et heurtent rapidement les bords. On a changé
  le système d'unités pour être plus proche de celui de référence, mais cela n'aide pas.
- -
+
 ##### Humeur
 
 
 
 ### Semaine 11
- -
- -
+  Le problème a été résolu, l'accélérateur fonctionne maintenant parfaitement.
+  Nous avons ajouté les sextupôles, les mailles FODO, et les particules peuvent
+  maintenant aller dans les deux sens. Nous avons décidé de mettre en place une
+  gestion des interactions interparticules à l'aide d'une liste doublement chaînée
+  circulaire, afin d'économiser l'utilisation de mémoire inutile.
+
 ##### Humeur
 
 
