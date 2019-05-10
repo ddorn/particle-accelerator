@@ -29,6 +29,8 @@ private:
     ViewMode viewMode;
     ThemeVector themes;
     size_t themeIndex = 0;
+
+    bool viewInsideAccelerator() { return viewMode == FIRST_PERSON || viewMode == THIRD_PERSON; }
 public:
     // Initialisation
     // TODO: Why not put those two in the constructor ? Isn't it its purpose ?
@@ -66,8 +68,10 @@ public:
     void draw(const Element &element) override;
     void draw(const Dipole &) override;
     void draw(const Sextupole &) override;
-
     void draw(const Beam &beam) override;
+
+    void drawParticles(const Accelerator &accelerator);
+    void drawElements(const Accelerator &accelerator);
 
     // Set view
     void setProjection(const QMatrix4x4 &projection)

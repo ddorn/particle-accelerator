@@ -257,10 +257,10 @@ void QtSupport::drawTube(const QMatrix4x4 &model, double radius, const Vector3D 
     for (int i(0); i < NB_CIRCLES; ++i) {
         double angle(0);
         for (int j = 0; j < NB_SEGMENTS; ++j) {
-//            glNormal3f(0, radius * cos(angle), radius * sin(angle));
+            glNormal3f(0, radius * cos(angle), radius * sin(angle));
             prog.setAttributeValue(VertexId, x + X_STEP, radius * cos(angle), radius * sin(angle));
             prog.setAttributeValue(VertexId, x, radius * cos(angle), radius * sin(angle));
-//            glNormal3f(0, radius * cos(angle + ANGLE_STEP), radius * sin(angle + ANGLE_STEP));
+            glNormal3f(0, radius * cos(angle + ANGLE_STEP), radius * sin(angle + ANGLE_STEP));
             prog.setAttributeValue(VertexId, x, radius * cos(angle + ANGLE_STEP), radius * sin(angle + ANGLE_STEP));
             prog.setAttributeValue(VertexId, x + X_STEP, radius * cos(angle + ANGLE_STEP), radius * sin(angle + ANGLE_STEP));
             angle += ANGLE_STEP;
@@ -270,13 +270,52 @@ void QtSupport::drawTube(const QMatrix4x4 &model, double radius, const Vector3D 
     glEnd();
 }
 void QtSupport::drawTube(const Vector3D& start, const Vector3D &end, double radius, const Vector3D& color) {
-    QMatrix4x4 model(posToModel(start, 1));
+    // This supposes start and end are in the XY plane.
+
     Vector3D dir(~(end - start));
     double angle(acos(dir.x()));
     if (dir.y() < 0) angle *= -1;
-    model.rotate(angle * 180 / M_PI, 0, 0, 1);
 
-    drawTube(model, radius, color, (end - start).norm());
+    QMatrix4x4 model(posToModel(start, 1));
+    model.rotate(angle * 180 / M_PI, 0, 0, 1);
+    prog.setUniformValue("model", model);
+    prog.setAttributeValue(ColorId, color.x(), color.y(), color.z(), 0.5);
+
+
+    constexpr int NB_CIRCLES(6);
+    const double X_STEP((end - start).norm() / NB_CIRCLES);
+    constexpr int NB_SEGMENTS(8);
+    constexpr double ANGLE_STEP(2 * M_PI / NB_SEGMENTS);
+
+    glBegin(GL_QUADS);
+    glNormal3f(2, 2, 4);  // TODO: Remove magic number (direction of light)
+    double x(0);
+    for (int i(0); i < NB_CIRCLES; ++i) {
+        double a(0);
+        for (int j = 0; j < NB_SEGMENTS; ++j) {
+
+            if (theme()->isElementFilled() && !viewInsideAccelerator()) {
+                // If tubes are not filled we should not apply lightning, as half of them are almost invisible
+                Vector3D normal(0, radius * cos(a), radius * sin(a));
+                normal = normal.rotate(Vector3D::e3, angle);
+                glNormal3f(normal.x(), normal.y(), normal.z());
+            }
+
+            prog.setAttributeValue(VertexId, x + X_STEP, radius * cos(a), radius * sin(a));
+            prog.setAttributeValue(VertexId, x, radius * cos(a), radius * sin(a));
+
+            if (theme()->isElementFilled() && !viewInsideAccelerator()) {
+                Vector3D normal2(0, radius * cos(a + ANGLE_STEP), radius * sin(a + ANGLE_STEP));
+                normal2 = normal2.rotate(Vector3D::e3, angle);
+                glNormal3f(normal2.x(), normal2.y(), normal2.z());
+            }
+            prog.setAttributeValue(VertexId, x, radius * cos(a + ANGLE_STEP), radius * sin(a + ANGLE_STEP));
+            prog.setAttributeValue(VertexId, x + X_STEP, radius * cos(a + ANGLE_STEP), radius * sin(a + ANGLE_STEP));
+            a += ANGLE_STEP;
+        }
+        x += X_STEP;
+    }
+    glEnd();
 }
 // Curved Tube
 void QtSupport::drawCurvedTube(const Vector3D &start, const Vector3D &end, const Vector3D &center, double radius,
@@ -340,48 +379,23 @@ void QtSupport::draw(const Vector3D &d) {
     drawVector(d);
 }
 void QtSupport::draw(const Particle &particle) {
-//    drawSphere(particle.position(), 0.03, theme()->getParticleColor());
-    drawSphere(particle.position(), 0.03, particle.color());
+    drawSphere(particle.position(), 0.03, theme()->getParticleColor());
 }
 void QtSupport::draw(const Accelerator &accelerator) {
     updateViewMatrix(accelerator);
 
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
-
-    if (theme()->isElementFilled())  {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        if (viewMode == FIRST_PERSON || viewMode == THIRD_PERSON) {
-            glPolygonMode(GL_BACK, GL_LINE);
-            glDisable(GL_CULL_FACE);
-            glDisable(GL_DEPTH_TEST);
-        }
-
+    if (viewInsideAccelerator()) {
+        // When we are inside the accelerator, draw elements first
+        // and then particles on top
+        drawElements(accelerator);
+        drawParticles(accelerator);
+    } else {
+        // We are probably outside (we could have a real check for collision but... no
+        // So elements are on top of particles (so we don't need to sort fragments and
+        // still have a good transparency
+        drawParticles(accelerator);
+        drawElements(accelerator);
     }
-    else glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-    if (theme()->getElementTransparency() != 1) glEnable(GL_BLEND);
-    else glDisable(GL_BLEND);
-
-    for (const auto &e : accelerator.elements()) {
-        e->draw(*this);
-    }
-
-
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    glDisable(GL_BLEND);
-    if (theme()->isParticleFilled())glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    else glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-
-    for (const auto &p : accelerator.beams()) {
-        p->draw(*this);
-    }
-    for (const auto &p : accelerator.particles()) {
-        p->draw(*this);
-    }
-
 }
 void QtSupport::draw(const Element &element) {
     // This just draw a cube at the start and end of the element
@@ -406,7 +420,6 @@ void QtSupport::draw(const Dipole &element) {
     element.CurvedElement::draw(*this);
     drawCurvedTube(element.start(), element.exit(), element.centerOfCurvature(), element.radius(), theme()->getDipoleColor());
 }
-
 void QtSupport::draw(const Sextupole &element) {
     element.StraightElement::draw(*this);
     drawTube(element.start(), element.exit(), element.radius(), theme()->getSextupoleColor());
@@ -415,6 +428,63 @@ void QtSupport::draw(const Sextupole &element) {
 void QtSupport::draw(const Beam &beam) {
     for (auto const& p : beam.macroParticles()) {
         draw(*p);
+    }
+}
+
+
+void QtSupport::drawParticles(const Accelerator &accelerator) {
+    // We can never see through particles
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glDisable(GL_BLEND);
+    if (theme()->isParticleFilled())glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    else glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+
+    for (const auto &p : accelerator.beams()) {
+        p->draw(*this);
+    }
+    for (const auto &p : accelerator.particles()) {
+        p->draw(*this);
+    }
+}
+
+void QtSupport::drawElements(const Accelerator &accelerator) {
+    // We don't want the depth test because we want to see through the transparent faces
+    glDisable(GL_DEPTH_TEST);
+    // We want the back quads to be visible
+    glDisable(GL_CULL_FACE);
+    // Bigger lines = more visible
+    glLineWidth(2);
+
+    if (theme()->isElementFilled()) {
+        // Draw the front and back side of quads as filled
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        if (viewInsideAccelerator()) {
+            // But not the backface when we are inside the accelerator
+            // soo we can better see through
+            glPolygonMode(GL_BACK, GL_LINE);
+        } else {
+            // Outside the accelerator we enable them because it's the easiest way to
+            // remove drawing artifacts and have something consistent
+            glEnable(GL_CULL_FACE);
+            glEnable(GL_DEPTH_TEST);
+        }
+
+    } else {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        if (!viewInsideAccelerator()) {
+            // Lines are a bit to big in to view so we make them smaller
+            glLineWidth(1);
+        }
+    }
+
+    // Activate transparency if needed
+    if (theme()->getElementTransparency() != 1) glEnable(GL_BLEND);
+    else glDisable(GL_BLEND);
+
+    for (const auto &e : accelerator.elements()) {
+        e->draw(*this);
     }
 }
 
@@ -434,6 +504,7 @@ void QtSupport::initThemes() {
     themes.push_back(make_unique<Theme>(Theme::Pinx()));
     themes.push_back(make_unique<Theme>(Theme::Classix(false)));
 }
+
 
 
 

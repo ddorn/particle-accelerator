@@ -21,7 +21,8 @@ void main()
     // Note that this works only because we don't rotate spheres
     normal = vertex;
   } else {
-    // Case of something I control
+    // Case of something I somewhat control
+
     normal = gl_Normal;
   }
 }

@@ -56,7 +56,7 @@ bool Particle::updateElement() {
         // Count a turn if again in the element it started
         if (element_ == spawn_) turns += 1;
     }
-    
+
     return true;
 }
 
