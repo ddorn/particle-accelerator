@@ -16,6 +16,7 @@
 #include "Dipole.h"
 #include "Element.h"
 #include "Particle.h"
+#include "Particles.h"
 #include "Quadrupole.h"
 #include "Segment.h"
 #include "Sextupole.h"
