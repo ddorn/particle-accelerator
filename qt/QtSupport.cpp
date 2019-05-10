@@ -244,34 +244,6 @@ void QtSupport::drawVector(const Vector3D &vec, const Vector3D &start) {
     glEnd();
 }
 // Tube
-void QtSupport::drawTube(const QMatrix4x4 &model, double radius, const Vector3D &color, double length) {
-    prog.setUniformValue("model", model);
-
-    prog.setAttributeValue(ColorId, color.x(), color.y(), color.z(), 0.5);
-
-    constexpr int NB_CIRCLES(6);
-    const double X_STEP(length / NB_CIRCLES);
-    constexpr int NB_SEGMENTS(8);
-    constexpr double ANGLE_STEP(2 * M_PI / NB_SEGMENTS);
-
-    glBegin(GL_QUADS);
-    glNormal3f(2, 2, 4);
-    double x(0);
-    for (int i(0); i < NB_CIRCLES; ++i) {
-        double angle(0);
-        for (int j = 0; j < NB_SEGMENTS; ++j) {
-            glNormal3f(0, radius * cos(angle), radius * sin(angle));
-            prog.setAttributeValue(VertexId, x + X_STEP, radius * cos(angle), radius * sin(angle));
-            prog.setAttributeValue(VertexId, x, radius * cos(angle), radius * sin(angle));
-            glNormal3f(0, radius * cos(angle + ANGLE_STEP), radius * sin(angle + ANGLE_STEP));
-            prog.setAttributeValue(VertexId, x, radius * cos(angle + ANGLE_STEP), radius * sin(angle + ANGLE_STEP));
-            prog.setAttributeValue(VertexId, x + X_STEP, radius * cos(angle + ANGLE_STEP), radius * sin(angle + ANGLE_STEP));
-            angle += ANGLE_STEP;
-        }
-        x += X_STEP;
-    }
-    glEnd();
-}
 void QtSupport::drawTube(const Vector3D& start, const Vector3D &end, double radius, const Vector3D& color) {
     // This supposes start and end are in the XY plane.
 
@@ -284,9 +256,9 @@ void QtSupport::drawTube(const Vector3D& start, const Vector3D &end, double radi
     prog.setUniformValue("model", model);
     prog.setAttributeValue(ColorId, color.x(), color.y(), color.z(), 0.5);
 
-
-    constexpr int NB_CIRCLES(6);
-    const double X_STEP((end - start).norm() / NB_CIRCLES);
+    const double length((end - start).norm());
+    const int NB_CIRCLES(ceil(length / 0.2));
+    const double X_STEP(length / NB_CIRCLES);
     constexpr int NB_SEGMENTS(8);
     constexpr double ANGLE_STEP(2 * M_PI / NB_SEGMENTS);
 
