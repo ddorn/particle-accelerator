@@ -11,6 +11,8 @@
 #include "GlSphere.h"
 #include "all.h"
 #include "themes.h"
+#include "vertex_shader.h"
+
 
 enum ViewMode {
     FREE_VIEW,
@@ -29,8 +31,6 @@ private:
     ViewMode viewMode;
     ThemeVector themes;
     size_t themeIndex = 0;
-
-    bool viewInsideAccelerator() { return viewMode == FIRST_PERSON || viewMode == THIRD_PERSON; }
 public:
     // Initialisation
     // TODO: Why not put those two in the constructor ? Isn't it its purpose ?
@@ -53,7 +53,7 @@ public:
     void drawSphere(const Vector3D& position, double scale, double r = 1, double g = 1, double b = 1);
     void drawCircle(const QMatrix4x4 &model, double r=1, double g=1, double b=1, size_t points=30);
     void drawCircle(const Vector3D &position, double radius, const Vector3D &dir, const Vector3D &color);
-    void drawVector(Vector3D vec, const Vector3D &start = Vector3D());
+    void drawVector(const Vector3D &vec, const Vector3D &start = Vector3D());
     void drawTube(const QMatrix4x4 &model, double radius, const Vector3D &color, double length);
     void drawTube(const Vector3D& start, const Vector3D& end, double radius, const Vector3D& color = Vector3D(0.2, 0.6, 1));
     void drawCurvedTube(const Vector3D &start, const Vector3D &end, const Vector3D &center, double radius, const Vector3D &color);
@@ -76,14 +76,31 @@ public:
     // Set view
     void setProjection(const QMatrix4x4 &projection)
     { prog.setUniformValue("projection", projection); }
-
     void translate(double x, double y, double z);
     void rotate(double angle, double dir_x, double dir_y, double dir_z);
     void lookAt(const Vector3D &eyePosition, const Vector3D &center, const Vector3D &up);
     void draw(const Segment &element) override;
 
 private:
+    /**
+     * Convert a position and a scale to the corresponding matrix
+     * @param position Position of the object
+     * @param scale Scale of the object
+     * @return
+     */
     QMatrix4x4 posToModel(const Vector3D &position, double scale);
+    /**
+     * Whether the eye is forced inside the accelerator by the ViewMode.
+     */
+    bool viewInsideAccelerator() { return viewMode == FIRST_PERSON || viewMode == THIRD_PERSON; }
+
+    /**
+     * Whether Elements drawn should be lit or not
+     */
+    bool elementsLighting() { return theme()->isElementFilled() && !viewInsideAccelerator(); }
+    void sendPoint(const Vector3D &point) { prog.setAttributeValue(VertexId, point.x(), point.y(), point.z()); };
+    void sendNormal(const Vector3D &normal = Vector3D(2, 2, 4)) { glNormal3f(normal.x(), normal.y(), normal.z()); }
+
 };
 
 

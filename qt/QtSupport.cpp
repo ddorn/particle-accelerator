@@ -226,18 +226,15 @@ void QtSupport::drawSphere(const Vector3D &position, double scale, double r, dou
     drawSphere(posToModel(position, scale), r, g, b);
 }
 // Vector
-void QtSupport::drawVector(Vector3D vec, const Vector3D &start) {
-    vec += start;
+void QtSupport::drawVector(const Vector3D &vec, const Vector3D &start) {
 
-    QMatrix4x4 model;
-    prog.setUniformValue("model", model);
+    prog.setUniformValue("model", QMatrix4x4());
     prog.setAttributeValue(ColorId, 1, 1, 1, 1);
 
-    glNormal3f(0, 2, 4);  // This is the lights position
-
     glBegin(GL_LINES);
-    prog.setAttributeValue(VertexId, start.x(), start.y(), start.z());
-    prog.setAttributeValue(VertexId, vec.x(), vec.y(), vec.z());
+    sendNormal();  // This is the lights position
+    sendPoint(start);
+    sendPoint(vec + start);
     glEnd();
 }
 // Tube
@@ -288,27 +285,29 @@ void QtSupport::drawTube(const Vector3D& start, const Vector3D &end, double radi
     constexpr double ANGLE_STEP(2 * M_PI / NB_SEGMENTS);
 
     glBegin(GL_QUADS);
-    glNormal3f(2, 2, 4);  // TODO: Remove magic number (direction of light)
+    if (!elementsLighting()) sendNormal();
+
     double x(0);
     for (int i(0); i < NB_CIRCLES; ++i) {
         double a(0);
-        for (int j = 0; j < NB_SEGMENTS; ++j) {
+        for (int j(0); j < NB_SEGMENTS; ++j) {
 
-            if (theme()->isElementFilled() && !viewInsideAccelerator()) {
+            if (elementsLighting()) {
                 // If tubes are not filled we should not apply lightning, as half of them are almost invisible
                 Vector3D normal(0, radius * cos(a), radius * sin(a));
                 normal = normal.rotate(Vector3D::e3, angle);
-                glNormal3f(normal.x(), normal.y(), normal.z());
+                sendNormal(normal);
             }
 
             prog.setAttributeValue(VertexId, x + X_STEP, radius * cos(a), radius * sin(a));
             prog.setAttributeValue(VertexId, x, radius * cos(a), radius * sin(a));
 
-            if (theme()->isElementFilled() && !viewInsideAccelerator()) {
-                Vector3D normal2(0, radius * cos(a + ANGLE_STEP), radius * sin(a + ANGLE_STEP));
-                normal2 = normal2.rotate(Vector3D::e3, angle);
-                glNormal3f(normal2.x(), normal2.y(), normal2.z());
+            if (elementsLighting()) {
+                Vector3D normal(0, radius * cos(a + ANGLE_STEP), radius * sin(a + ANGLE_STEP));
+                normal = normal.rotate(Vector3D::e3, angle);
+                sendNormal(normal);
             }
+            
             prog.setAttributeValue(VertexId, x, radius * cos(a + ANGLE_STEP), radius * sin(a + ANGLE_STEP));
             prog.setAttributeValue(VertexId, x + X_STEP, radius * cos(a + ANGLE_STEP), radius * sin(a + ANGLE_STEP));
             a += ANGLE_STEP;
@@ -340,7 +339,8 @@ void QtSupport::drawCurvedTube(const Vector3D &start, const Vector3D &end, const
 
 
     glBegin(GL_QUADS);
-    glNormal3f(2, 2, 4);  // TODO: remove magic number
+    if (!elementsLighting()) sendNormal();
+
     Vector3D c(relEntree);
     Vector3D axis1(relEntree ^ Vector3D::e3);
     for (int i = 0; i <= NB_CIRCLES ; ++i) {
@@ -352,19 +352,14 @@ void QtSupport::drawCurvedTube(const Vector3D &start, const Vector3D &end, const
             Vector3D nextDir1(dir1.rotate(axis1, CIRCLE_ANGLE));
             Vector3D nextDir2(dir2.rotate(axis2, CIRCLE_ANGLE));
 
-            Vector3D a1(c + dir1);
-            Vector3D b1(c + nextDir1);
-            Vector3D a2(next + dir2);
-            Vector3D b2(next + nextDir2);
-
-            if (!viewInsideAccelerator()) glNormal3f(dir1.x(), dir1.y(), dir1.z());
-            prog.setAttributeValue(VertexId, a1.x(), a1.y(), a1.z());
-            if (!viewInsideAccelerator())glNormal3f(nextDir1.x(), nextDir1.y(), nextDir1.z());
-            prog.setAttributeValue(VertexId, b1.x(), b1.y(), b1.z());
-            if (!viewInsideAccelerator())glNormal3f(nextDir2.x(), nextDir2.y(), nextDir2.z());
-            prog.setAttributeValue(VertexId, b2.x(), b2.y(), b2.z());
-            if (!viewInsideAccelerator()) glNormal3f(dir2.x(), dir2.y(), dir2.z());
-            prog.setAttributeValue(VertexId, a2.x(), a2.y(), a2.z());
+            if (elementsLighting()) sendNormal(dir1);
+            sendPoint(c + dir1);
+            if (elementsLighting()) sendNormal(nextDir1);
+            sendPoint(c + nextDir1);
+            if (elementsLighting()) sendNormal(nextDir2);
+            sendPoint(next + nextDir2);
+            if (elementsLighting()) sendNormal(dir2);
+            sendPoint(next + dir2);
 
             dir1 = nextDir1;
             dir2 = nextDir2;
@@ -509,6 +504,7 @@ void QtSupport::initThemes() {
     themes.push_back(make_unique<Theme>(Theme::Pinx()));
     themes.push_back(make_unique<Theme>(Theme::Classix(false)));
 }
+
 
 
 
