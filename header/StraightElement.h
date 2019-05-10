@@ -14,12 +14,12 @@ protected:
     const Vector3D direction;  // We store it as it shouldn't change and it simplifies expressions
     const Vector3D radial_direction;  // We store it as it shouldn't change and it simplifies expressions
 public:
-    StraightElement(const Vector3D &start, const Vector3D &exit, double radius, Element *nextElement)
-            : Element(start, exit, radius, nextElement),
+    StraightElement(const Vector3D &start, const Vector3D &exit, double radius)
+            : Element(start, exit, radius),
             direction(~(exit - start)),
             radial_direction(Vector3D::e3 ^ direction) {}
 
-    bool isOut(Vector3D pos) const override;
+    bool isOut(Vector3D pos, bool clockwise) const override;
 
     // TODO: remove both
     double radialDistanceSqrd(Vector3D pos) const override;

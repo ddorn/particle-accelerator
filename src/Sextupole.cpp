@@ -4,8 +4,6 @@
 
 #include "Sextupole.h"
 
-Sextupole::Sextupole(const Vector3D &start, const Vector3D &exit, double radius, Element *nextElement, double intensity)
-        : StraightElement(start, exit, radius, nextElement), intensity_(intensity){}
 
 const Vector3D Sextupole::magneticForceAt(const Vector3D &position) const {
     RadialVec3D pos = radialPosition(position);

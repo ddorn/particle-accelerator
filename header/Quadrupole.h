@@ -11,8 +11,8 @@
 
 class Quadrupole : public StraightElement{
 public:
-    Quadrupole(const Vector3D &entree, const Vector3D &exit, double radius, Element *nextElement, double intensity)
-            : StraightElement(entree, exit, radius, nextElement), intensity_(intensity) {}
+    Quadrupole(const Vector3D &entree, const Vector3D &exit, double radius, double intensity)
+            : StraightElement(entree, exit, radius), intensity_(intensity) {}
 
     /**
      * The magnetic force concentrates the beam of particles

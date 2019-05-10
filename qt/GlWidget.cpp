@@ -195,7 +195,7 @@ void GlWidget::addBeam() {
     //  ---------
 //    accelerator.addParticle(p0);
 
-    accelerator.addCircularBeam(mass, charge, 2, Vector3D(0, -1, 0), 1, 100);
+    accelerator.addCircularBeam(mass, -charge, 2, Vector3D(0, -1, 0), 1, 100);
 }
 
 

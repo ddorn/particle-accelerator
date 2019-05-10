@@ -340,7 +340,8 @@ void QtSupport::draw(const Vector3D &d) {
     drawVector(d);
 }
 void QtSupport::draw(const Particle &particle) {
-    drawSphere(particle.position(), 0.03, theme()->getParticleColor());
+//    drawSphere(particle.position(), 0.03, theme()->getParticleColor());
+    drawSphere(particle.position(), 0.03, particle.color());
 }
 void QtSupport::draw(const Accelerator &accelerator) {
     updateViewMatrix(accelerator);

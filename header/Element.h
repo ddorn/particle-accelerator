@@ -17,9 +17,10 @@ private:
     Vector3D exit_;
     double radius_;
     Element* nextElement_;
+    Element* previousElement_;
 public:
-    Element(const Vector3D &entree, const Vector3D &exit, double radius, Element *nextElement)
-    : start_(entree), exit_(exit), radius_(radius), nextElement_(nextElement) {}
+    Element(const Vector3D &entree, const Vector3D &exit, double radius)
+    : start_(entree), exit_(exit), radius_(radius), nextElement_(nullptr), previousElement_(nullptr) {}
 
     /**
      * Get the magnetic fields at a given point in space.
@@ -31,8 +32,10 @@ public:
      * Test whether or not the particle is in
      * the next element.
      * @param pos of the particle
+     *
+     * TODO: Define this in Element or make it work wherever the elements are.
      */
-    virtual bool isOut(Vector3D pos) const = 0;
+    virtual bool isOut(Vector3D pos, bool clockwise) const = 0;
     /**
      * Return the norm squared of the radial distance of the particle
      * relative to the ideal trajectory. Unit : m
@@ -89,8 +92,10 @@ public:
     const Vector3D &start() const { return start_; }
     const Vector3D &exit() const { return exit_; }
     Element* nextElement() const { return nextElement_; }
+    Element* previousElement() const { return previousElement_; }
 
     void setNextElement(Element* e) { nextElement_ = e; }
+    void setPreviousElement(Element* e) { previousElement_ = e; }
 
     /**
      * Print info of the element on the stream.

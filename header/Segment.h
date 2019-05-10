@@ -14,8 +14,8 @@
 class Segment : public StraightElement{
 
 public:
-    Segment(const Vector3D &entree, const Vector3D &exit, double radius, Element *nextElement)
-            : StraightElement(entree, exit, radius, nextElement) {}
+    Segment(const Vector3D &entree, const Vector3D &exit, double radius)
+            : StraightElement(entree, exit, radius) {}
     /**
      * Segment applies no magnetic force
      * It returns a null vector.

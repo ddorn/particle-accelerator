@@ -7,8 +7,9 @@
 using namespace std;
 
 
-bool StraightElement::isOut(Vector3D pos) const {
-    return Vector3D::e3.tripleProduct(pos, exit()) > 0;
+bool StraightElement::isOut(Vector3D pos, bool clockwise) const {
+    if (clockwise) return Vector3D::e3.tripleProduct(pos, exit()) > 0;
+    else return Vector3D::e3.tripleProduct(pos, start()) < 0;
 
     cout << "------------" << endl;
     cout << pos << endl;

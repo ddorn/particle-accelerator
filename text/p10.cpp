@@ -43,7 +43,7 @@ int main() {
 
     // ---- Parametrisation of the particles ----
     Vector3D position2(2.99, 2, 0);
-    Particle p2(mass, charge, 2, position2, Vector3D(0, -1, 0), bobLEponge.elements()[18].get(), Vector3D());
+    Particle p2(mass, -charge, 2, position2, Vector3D(0, 1, 0), bobLEponge.elements()[18].get(), Vector3D());
     Particle p0(mass, charge, 2, Vector3D(2.99, 0, 0), Vector3D(0, -1, 0), bobLEponge.elements()[0].get());
     Particle dipHole(constants::M_PROTON, constants::C_PROTON, 2, Vector3D(3.01318, -2.01213, 0),
             Vector3D(-139591, -2.64754e+08, 0), bobLEponge.elements()[2].get());
@@ -61,7 +61,7 @@ int main() {
 //    cout <<i<< endl;
     int i = 0;
     while (!bobLEponge.particles().empty()) {
-        bobLEponge.evolve(1e-12);
+        bobLEponge.evolve(1e-11);
         ++i;
         if (i % 1000000 == 1
         ) cout << i << endl;

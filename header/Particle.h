@@ -76,7 +76,7 @@ public:
         }
     }
 
-    size_t nbrOfTurn() const { return turns; }
+    size_t nbrOfTurns() const { return turns; }
     double charge() const { return charge_; }
 
     /**
@@ -162,7 +162,7 @@ public:
 
     /**
      * If the is outside of the accelerator (aka dead), it returns false.
-     * Otherwise tt updates the element where the particle is
+     * Otherwise it updates the element where the particle is
      * and returns true.
      */
     bool updateElement();

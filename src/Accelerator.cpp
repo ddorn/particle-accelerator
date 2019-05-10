@@ -57,7 +57,7 @@ void Accelerator::evolve(double dt) {
     i = 0;
     while (i < particles_.size()) {
         if (!particles_[i]->updateElement()) {
-            cout << particles_[i]->nbrOfTurn() << endl;
+            cout << particles_[i]->nbrOfTurns() << endl;
             swap(particles_[i], particles_.back());
             particles_.pop_back();
         } else {
@@ -71,7 +71,7 @@ void Accelerator::evolve(double dt) {
 bool Accelerator::addSegment(const Vector3D &exit, double radius) {
     if (!acceptableNextElement(exit, radius)) return false;
 
-    elements_.push_back(std::make_unique<Segment>(nextStart(), exit, radius, nullptr));
+    elements_.push_back(std::make_unique<Segment>(nextStart(), exit, radius));
     linkElements();
 
     return true;
@@ -81,7 +81,7 @@ bool Accelerator::addDipole(const Vector3D &exit, double radius, double curvatur
     if (!acceptableNextElement(exit, radius)
         || fabs(curvature) < Vector3D::getPrecision()) return false;
 
-    elements_.push_back(std::make_unique<Dipole>(nextStart(), exit, radius, nullptr, curvature,
+    elements_.push_back(std::make_unique<Dipole>(nextStart(), exit, radius, curvature,
                                                  magneticFieldIntensity));
     linkElements();
     return true;
@@ -96,7 +96,7 @@ bool Accelerator::addDipole(const Vector3D &exit, double radius, double curvatur
     if (energy <= 0) return false;
     if (charge == 0) return false;
 
-    elements_.push_back(std::make_unique<Dipole>(nextStart(), exit, radius, nullptr, curvature, mass, charge, energy));
+    elements_.push_back(std::make_unique<Dipole>(nextStart(), exit, radius,  curvature, mass, charge, energy));
     linkElements();
     return true;
 }
@@ -104,7 +104,7 @@ bool Accelerator::addDipole(const Vector3D &exit, double radius, double curvatur
 bool Accelerator::addQuadrupole(const Vector3D &exit, double radius, double magneticFieldIntensity) {
     if (!acceptableNextElement(exit, radius)) return false;
 
-    elements_.push_back(std::make_unique<Quadrupole>(nextStart(), exit, radius, nullptr, magneticFieldIntensity));
+    elements_.push_back(std::make_unique<Quadrupole>(nextStart(), exit, radius,  magneticFieldIntensity));
     linkElements();
     return true;
 }
@@ -112,7 +112,7 @@ bool Accelerator::addQuadrupole(const Vector3D &exit, double radius, double magn
 bool Accelerator::addSextupole(const Vector3D &exit, double radius, double magneticlFieldIntensity) {
     if (!acceptableNextElement(exit, radius)) return false;
 
-    elements_.push_back(std::make_unique<Sextupole>(nextStart(), exit, radius, nullptr, magneticlFieldIntensity));
+    elements_.push_back(std::make_unique<Sextupole>(nextStart(), exit, radius,  magneticlFieldIntensity));
     linkElements();
     return true;
 }
@@ -135,9 +135,14 @@ bool Accelerator::addFODO(const Vector3D &exit, double quadrupoleLength, double 
 void Accelerator::linkElements() {
     if (elements().size() < 2) return;
 
-    elements_[elements().size() - 2]->setNextElement(elements().back().get());
+    auto last = elements().back().get();
+    auto second = elements_[elements().size() - 2].get();
+
+    second->setNextElement(last);
+    last->setPreviousElement(second);
     if (isClosed()) {
-        elements_.back()->setNextElement(elements_.front().get());
+        last->setNextElement(elements_.front().get());
+        elements_.front()->setPreviousElement(last);
     }
 }
 

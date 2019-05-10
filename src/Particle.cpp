@@ -43,15 +43,20 @@ void Particle::evolve(double dt) {
 
 bool Particle::updateElement() {
     if (element()->collideBorder(position())) return false;
-    if (element()->isOut(position())) {
-        if (element()->nextElement() == nullptr) {
-            return false;
-        } else {
-//            cout << "Depasse et mtn dans : " << *element()->nextElement();
-            element_ = element()->nextElement();
-            if (element_ == spawn_) turns += 1;
-        }
+
+    // [e3, pos, speed] is positive with right hand rule aka CCW motion
+    bool clockwise(Vector3D::e3.tripleProduct(position(), speed()) < 0);
+
+    if (element()->isOut(position(), clockwise)) {
+        if (element()->nextElement() == nullptr) return false;
+
+        // update to the correct next element
+        element_ = clockwise ? element()->nextElement()
+                             : element()->previousElement();
+        // Count a turn if again in the element it started
+        if (element_ == spawn_) turns += 1;
     }
+    
     return true;
 }
 
