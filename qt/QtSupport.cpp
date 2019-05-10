@@ -74,15 +74,17 @@ void QtSupport::rotate(double angle, double dir_x, double dir_y, double dir_z) {
   view = rotation_supplementaire * view;
   prog.setUniformValue("view", view);
 }
-void QtSupport::lookAt(const Vector3D &eyePosition, const Vector3D &center, const Vector3D &up) {
-    view.setToIdentity();  // We reset the view
-    view.lookAt(  // and then look in the right direction
+QMatrix4x4 QtSupport::lookAt(const Vector3D &eyePosition, const Vector3D &center, const Vector3D &up) {
+    QMatrix4x4 m;
+    m.lookAt(
             QVector3D(eyePosition.x(), eyePosition.y(), eyePosition.z()),
             QVector3D(center.x(), center.y(), center.z()),
             QVector3D(up.x(), up.y(), up.z())
     );
+    return m;
 }
-void QtSupport::updateViewMatrix(const Accelerator &accelerator) {
+const QMatrix4x4 QtSupport::updateViewMatrix(const Accelerator &accelerator) {
+
     const Particle *particle(nullptr);
     Vector3D pos, speed;
     if (!accelerator.beams().empty() &&
@@ -92,24 +94,29 @@ void QtSupport::updateViewMatrix(const Accelerator &accelerator) {
         speed = particle->speed();
     } else {
         setViewMode(FREE_VIEW);
-        return;
     }
 
+    // We use the current view matrix only in free mode, otherwise
+    // we determine it but don't save it so we can go back to where
+    // we were looking before going in say, FPS
+    QMatrix4x4 v;
     switch (viewMode) {
         case FREE_VIEW:
+            v = view;
             break;
         case FIRST_PERSON:
-            lookAt(pos, pos + speed, Vector3D::e3);
+            v = lookAt(pos, pos + speed, Vector3D::e3);
             break;
         case THIRD_PERSON:
-            lookAt(pos - ~particle->speed() * 0.15, pos, Vector3D::e3);
+            v = lookAt(pos - ~speed * 0.15, pos, Vector3D::e3);
             break;
         case TOP_VIEW:
-            lookAt(pos + Vector3D::e3, pos, Vector3D::e3 ^ speed);
+            v = lookAt(pos + Vector3D::e3, pos, Vector3D::e3 ^ speed);
             break;
     }
 
-    prog.setUniformValue("view", view);
+    prog.setUniformValue("view", v);
+    return v;
 }
 
 // Base draw methods

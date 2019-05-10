@@ -48,110 +48,113 @@ void GlWidget::timerEvent(QTimerEvent *event) {
 }
 
 void GlWidget::keyPressEvent(QKeyEvent *event) {
+    bool isShift = event->modifiers() & Qt::Modifier::SHIFT;
 
-  constexpr double petit_angle(5.0); // en degrés
-  constexpr double petit_pas(1.0);
+    constexpr double petit_angle(5.0); // en degrés
+    constexpr double petit_pas(1.0);
 
-  switch (event->key()) {
+    switch (event->key()) {
 
-      case Qt::Key_Left:
-          support.rotate(petit_angle, 0.0, -1.0, 0.0);
-          break;
+        case Qt::Key_Left:
+            support.rotate(petit_angle, 0.0, -1.0, 0.0);
+            break;
 
-      case Qt::Key_Right:
-          support.rotate(petit_angle, 0.0, +1.0, 0.0);
-          break;
+        case Qt::Key_Right:
+            support.rotate(petit_angle, 0.0, +1.0, 0.0);
+            break;
 
-      case Qt::Key_Up:
-          support.rotate(petit_angle, -1.0, 0.0, 0.0);
-          break;
+        case Qt::Key_Up:
+            support.rotate(petit_angle, -1.0, 0.0, 0.0);
+            break;
 
-      case Qt::Key_Down:
-          support.rotate(petit_angle, +1.0, 0.0, 0.0);
-          break;
+        case Qt::Key_Down:
+            support.rotate(petit_angle, +1.0, 0.0, 0.0);
+            break;
 
-      case Qt::Key_PageUp:
-      case Qt::Key_W:
-          support.translate(0.0, 0.0, petit_pas);
-          break;
+        case Qt::Key_PageUp:
+        case Qt::Key_W:
+            support.translate(0.0, 0.0, petit_pas);
+            break;
 
-      case Qt::Key_PageDown:
-      case Qt::Key_S:
-          support.translate(0.0, 0.0, -petit_pas);
-          break;
+        case Qt::Key_PageDown:
+        case Qt::Key_S:
+            support.translate(0.0, 0.0, -petit_pas);
+            break;
 
-      case Qt::Key_A:
-          support.translate(petit_pas, 0.0, 0.0);
-          break;
+        case Qt::Key_A:
+            support.translate(petit_pas, 0.0, 0.0);
+            break;
 
-      case Qt::Key_D:
-          support.translate(-petit_pas, 0.0, 0.0);
-          break;
+        case Qt::Key_D:
+            support.translate(-petit_pas, 0.0, 0.0);
+            break;
 
-      case Qt::Key_R:
-          support.translate(0.0, -petit_pas, 0.0);
-          break;
+        case Qt::Key_R:
+            support.translate(0.0, -petit_pas, 0.0);
+            break;
 
-      case Qt::Key_F:
-          support.translate(0.0, petit_pas, 0.0);
-          break;
+        case Qt::Key_F:
+            support.translate(0.0, petit_pas, 0.0);
+            break;
 
-      case Qt::Key_Q:
-          support.rotate(petit_angle, 0.0, 0.0, -1.0);
-          break;
+        case Qt::Key_Q:
+            support.rotate(petit_angle, 0.0, 0.0, -1.0);
+            break;
 
-      case Qt::Key_E:
-          support.rotate(petit_angle, 0.0, 0.0, +1.0);
-          break;
+        case Qt::Key_E:
+            support.rotate(petit_angle, 0.0, 0.0, +1.0);
+            break;
 
-      case Qt::Key_Home:
-          support.initPosition();
-          break;
-      case Qt::Key_P:
-          if (event->modifiers() & Qt::Modifier::SHIFT) addBeam(false);
-          else addBeam(true);
-          break;
-      case Qt::Key_Space:
-          stream = !stream;
-          break;
-      case Qt::Key_Plus:
-          intensity *= 1.05;
-          std::cout << intensity << std::endl;
-          build(intensity);
-          break;
-      case Qt::Key_Minus:
-          intensity /= 1.05;
-          std::cout << intensity << std::endl;
-          build(intensity);
-          break;
-      case Qt::Key_Backspace:
-          accelerator.cleanBeam();
-          break;
-      case Qt::Key_Escape:
-          support.setViewMode(FREE_VIEW);
-          break;
-      case Qt::Key_1:
-          support.setViewMode(FIRST_PERSON);
-          break;
-      case Qt::Key_2:
-          support.setViewMode(THIRD_PERSON);
-          break;
-      case Qt::Key_3:
-          support.setViewMode(TOP_VIEW);
-          break;
-      case Qt::Key_Tab:
-          support.nextTheme();
-          break;
-      case Qt::Key_K:
-          steps += 5;
-          break;
-      case Qt::Key_J:
-          steps -= 1;
-          if (steps < 1) steps = 1;
-          break;
-  };
+        case Qt::Key_Home:
+            support.setViewMode(FREE_VIEW);
+            support.initPosition();
+            break;
+        case Qt::Key_P:
+            if (isShift) addBeam(false);
+            else addBeam(true);
+            break;
+        case Qt::Key_Space:
+            stream = !stream;
+            break;
+        case Qt::Key_Plus:
+            intensity *= 1.05;
+            std::cout << intensity << std::endl;
+            build(intensity);
+            break;
+        case Qt::Key_Minus:
+            intensity /= 1.05;
+            std::cout << intensity << std::endl;
+            build(intensity);
+            break;
+        case Qt::Key_Backspace:
+            accelerator.cleanBeam();
+            break;
+        case Qt::Key_Escape:
+            if (isShift) support.saveView(accelerator);
+            support.setViewMode(FREE_VIEW);
+            break;
+        case Qt::Key_1:
+            support.setViewMode(FIRST_PERSON);
+            break;
+        case Qt::Key_2:
+            support.setViewMode(THIRD_PERSON);
+            break;
+        case Qt::Key_3:
+            support.setViewMode(TOP_VIEW);
+            break;
+        case Qt::Key_Tab:
+            support.nextTheme();
+            break;
+        case Qt::Key_K:
+            steps += 5;
+            break;
+        case Qt::Key_J:
+            steps -= 1;
+            if (steps < 1) steps = 1;
+            break;
+    };
 
-  update(); // redessine
+    update(); // redessine
 }
 
 GlWidget::GlWidget(QWidget *parent)

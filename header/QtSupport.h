@@ -38,10 +38,12 @@ public:
     void init();
     void initPosition();
     void initThemes();
-    void setViewMode(ViewMode v) { viewMode = v; initPosition(); }
+    void setViewMode(ViewMode v) { viewMode = v; }
     void nextTheme() { themeIndex += 1; themeIndex %= themes.size(); }
-    const Theme* theme() { return themes[themeIndex].get(); }
-    void updateViewMatrix(const Accelerator &accelerator);
+    const Theme* theme() const { return themes[themeIndex].get(); }
+    const QMatrix4x4 updateViewMatrix(const Accelerator &accelerator);
+    void saveView(const Accelerator& accelerator) { view = updateViewMatrix(accelerator); }
+
 
     // Draw objects
 
@@ -78,7 +80,7 @@ public:
     { prog.setUniformValue("projection", projection); }
     void translate(double x, double y, double z);
     void rotate(double angle, double dir_x, double dir_y, double dir_z);
-    void lookAt(const Vector3D &eyePosition, const Vector3D &center, const Vector3D &up);
+    QMatrix4x4 lookAt(const Vector3D &eyePosition, const Vector3D &center, const Vector3D &up);
     void draw(const Segment &element) override;
 
 private:
