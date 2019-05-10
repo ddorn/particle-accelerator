@@ -21,9 +21,9 @@ std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
     for (const auto &p : accelerator.particles()) {
         os << *p << endl;
     }
-    for (const auto &e : accelerator.elements()) {
-        os << *e << endl;
-    }
+//    for (const auto &e : accelerator.elements()) {
+//        os << *e << endl;
+//    }
     return os;
 }
 

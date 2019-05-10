@@ -40,19 +40,26 @@ public:
      * It is a measure for
      * the average spread of particle coordinates
      * in position-and-momentum phase space
-     * @return emittance. Unit : c * s
+     * @return emittance. Unit : m²/s
      */
-    double emittance() const;
+    double emittanceZ() const;
+    double emittanceR() const;
 
     /**
      * A11, A12 and A22 are coefficients which describe the ellipsis
      * of the beam in position-and-momentum phase space.
      */
-    double A11() const;
+    double A11R() const;
 
-    double A12() const;
+    double A12R() const;
 
-    double A22() const;
+    double A22R() const;
+
+    double A11Z() const;
+
+    double A12Z() const;
+
+    double A22Z() const;
 
     /**
      * @return the ratio between the real particles and the macroparticles,
@@ -75,22 +82,6 @@ private:
      * The number of real particles in a macroparticle
      */
     size_t lambda_;
-
-    /**
-     * @return mean radial distance of the particles
-     */
-    double meanDistancesSqrd() const;
-
-    /**
-     * @return mean radial velocity of the particles
-     */
-    double meanVelocitiesSqrd() const;
-
-    /**
-     * @return mean of the product of the radial distance
-     *  and radial velocity of the particles
-     */
-    double meanDistancesVelocities() const;
 
 protected:
     size_t nbrMacroParticles_;
