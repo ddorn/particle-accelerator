@@ -12,8 +12,6 @@ using namespace std;
 int main() {
 
 
-    double mass(constants::M_PROTON);
-    double charge(constants::C_PROTON);
     double energy(2);
     double quadrupoleIntensity(1.2);
 //    double dipoleIntensity(5.89158);

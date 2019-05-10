@@ -9,11 +9,11 @@
 
 class CircularBeam : public Beam {
 public:
-    CircularBeam(const Particle &refParticle_, size_t lambda_, size_t nbrMacroParticles) : Beam(refParticle_, lambda_,
-                                                                                                nbrMacroParticles) { generateParticles(); }
+    CircularBeam(const Particle &refParticle_, size_t lambda_, size_t nbrMacroParticles, double standardDeviation = 0.01, int rng = 42) : Beam(refParticle_, lambda_,
+                                                                                                nbrMacroParticles) { generateParticles(standardDeviation, rng); }
 
 private:
-    void generateParticles();
+    void generateParticles(double standardDeviation, int rng);
 };
 
 #endif //PARTICLEACCELERATOR_CIRCULARBEAM_H

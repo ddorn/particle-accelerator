@@ -158,13 +158,13 @@ bool Accelerator::acceptableNextElement(const Vector3D &exit, double radius) con
 }
 
 bool Accelerator::addCircularBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
-                                  size_t nbrMacroParticle, const Vector3D &color) {
+                                  size_t nbrMacroParticle, const Vector3D &color, double standardDeviation, int rng) {
     if (elements().empty()) return false;
     if (mass < 0) return false;
     if (lambda < 1) return false;
 
     Particle reference(mass, charge, energy, elements().front()->start(), direction, elements().front().get(), color);
-    beams_.push_back(std::make_unique<CircularBeam>(reference, lambda, nbrMacroParticle));
+    beams_.push_back(std::make_unique<CircularBeam>(reference, lambda, nbrMacroParticle, standardDeviation, rng));
 
     return true;
 }

@@ -3,9 +3,12 @@
 //
 
 #include "CircularBeam.h"
+#include <random>
 
 
-void CircularBeam::generateParticles() {
+void CircularBeam::generateParticles(double standardDeviation, int rng) {
+    std::default_random_engine gen(rng);
+    std::normal_distribution<double> distribution_(0, standardDeviation);
     Element* element(refParticle_.element());
     double s(0);
     RadialVec3D radialPosition(refParticle_.radialPosition());
@@ -24,7 +27,7 @@ void CircularBeam::generateParticles() {
             s -= element->length();
             element = element->nextElement();
         }
-        RadialVec3D position(radialPosition.r(), s, radialPosition.z());
+        RadialVec3D position(radialPosition.r() + distribution_(gen), s + distribution_(gen), radialPosition.z() + distribution_(gen));
         addMacroParticle(element->absolutePosition(position), element->absoluteSpeed(position, radialSpeed),
                          element);
         s += ds;

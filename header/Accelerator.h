@@ -42,13 +42,12 @@ private:
     ElementVector elements_;
     BeamVector beams_;
     ParticleVector particles_;
-    std::mt19937 rng;
-    std::uniform_real_distribution<double> distribution;
+    std::default_random_engine rng_;
 
     const Vector3D nextStart() const { return elements().empty() ? start_ : elements().back()->exit(); }
 
 public:
-    explicit Accelerator(const Vector3D& start = Vector3D()) : rng(42), distribution(-0.03, 0.03), start_(start){}
+    explicit Accelerator(const Vector3D& start = Vector3D(), int rng = 42) : rng_(rng), start_(start){}
     Accelerator(const Accelerator &other) = delete;
     void operator=(const Accelerator & other) = delete;
 
@@ -97,7 +96,7 @@ public:
                  const std::vector<Particle> &macroParticles, const Vector3D &color = Vector3D(1, 1, 1));
 
     bool addCircularBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
-                                      size_t nbrMacroParticle, const Vector3D &color = Vector3D(1, 1, 1));
+                                      size_t nbrMacroParticle, const Vector3D &color = Vector3D(1, 1, 1), double standardDeviation = 0.01, int rng = 42);
     void addParticle(const Particle &p) { particles_.push_back(std::make_unique<Particle>(p)); }
     /**
     * @return if the last element ends where the first element begins.
