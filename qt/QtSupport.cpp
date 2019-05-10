@@ -340,6 +340,7 @@ void QtSupport::drawCurvedTube(const Vector3D &start, const Vector3D &end, const
 
 
     glBegin(GL_QUADS);
+    glNormal3f(2, 2, 4);  // TODO: remove magic number
     Vector3D c(relEntree);
     Vector3D axis1(relEntree ^ Vector3D::e3);
     for (int i = 0; i <= NB_CIRCLES ; ++i) {
@@ -356,9 +357,13 @@ void QtSupport::drawCurvedTube(const Vector3D &start, const Vector3D &end, const
             Vector3D a2(next + dir2);
             Vector3D b2(next + nextDir2);
 
+            if (!viewInsideAccelerator()) glNormal3f(dir1.x(), dir1.y(), dir1.z());
             prog.setAttributeValue(VertexId, a1.x(), a1.y(), a1.z());
+            if (!viewInsideAccelerator())glNormal3f(nextDir1.x(), nextDir1.y(), nextDir1.z());
             prog.setAttributeValue(VertexId, b1.x(), b1.y(), b1.z());
+            if (!viewInsideAccelerator())glNormal3f(nextDir2.x(), nextDir2.y(), nextDir2.z());
             prog.setAttributeValue(VertexId, b2.x(), b2.y(), b2.z());
+            if (!viewInsideAccelerator()) glNormal3f(dir2.x(), dir2.y(), dir2.z());
             prog.setAttributeValue(VertexId, a2.x(), a2.y(), a2.z());
 
             dir1 = nextDir1;
