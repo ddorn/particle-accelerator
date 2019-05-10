@@ -108,7 +108,8 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
           support.initPosition();
           break;
       case Qt::Key_P:
-          addBeam();
+          if (event->modifiers() & Qt::Modifier::SHIFT) addBeam(false);
+          else addBeam(true);
           break;
       case Qt::Key_Space:
           stream = !stream;
@@ -185,17 +186,20 @@ void GlWidget::build(double coucou) {
 //    addBeam();
 }
 
-void GlWidget::addBeam() {
+void GlWidget::addBeam(bool clockwise) {
     // ---- Parametrisation of the particles ----
     double mass(constants::M_PROTON);
     double charge(constants::C_PROTON);
+    double energy(2);
+    Vector3D direction(0, -1, 0);
 //    Vector3D position2(2.99, 2, 0);
 //    Particle p2(mass, charge, 2, position2, Vector3D(0, -1, 0), accelerator.elements()[18].get(), Vector3D(1, 1, 1));
 //    Particle p0(mass, charge, 2, Vector3D(2.99, 0, 0), Vector3D(0, -1, 0), accelerator.elements()[0].get(), Vector3D(1, 1, 1));
     //  ---------
 //    accelerator.addParticle(p0);
 
-    accelerator.addCircularBeam(mass, -charge, 2, Vector3D(0, 1, 0), 1, 100);
+    if (clockwise) accelerator.addCircularBeam(mass, -charge, energy, -direction, 1, 42);
+    else accelerator.addCircularBeam(mass, charge, energy, direction, 1, 42);
 }
 
 

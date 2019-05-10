@@ -202,8 +202,7 @@ void QtSupport::drawCircle(const Vector3D &position, double radius, const Vector
     glBegin(GL_LINE_LOOP);  // draw closed lines
     glNormal3f(0, 2, 4);
     for (size_t p = 0; p < 30; ++p) {
-        Vector3D v(r.rotate(dir, M_PI * 2 * p / 30.0));
-        prog.setAttributeValue(VertexId, v.x(), v.y(), v.z());
+        sendPoint(r.rotate(dir, M_PI * 2 * p / 30.0));
     }
     glEnd();
 }
@@ -307,7 +306,7 @@ void QtSupport::drawTube(const Vector3D& start, const Vector3D &end, double radi
                 normal = normal.rotate(Vector3D::e3, angle);
                 sendNormal(normal);
             }
-            
+
             prog.setAttributeValue(VertexId, x, radius * cos(a + ANGLE_STEP), radius * sin(a + ANGLE_STEP));
             prog.setAttributeValue(VertexId, x + X_STEP, radius * cos(a + ANGLE_STEP), radius * sin(a + ANGLE_STEP));
             a += ANGLE_STEP;

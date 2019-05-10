@@ -56,6 +56,7 @@ public:
      *        I think it would make more sense as it's not the particularity of a vector
      */
     component tripleProduct(const Vector3D&, const Vector3D&) const;
+
     /**
      * Get a rotated version of the vector, rotated by angle around axis
      * @param axis A vector around which to rotate the vector.
