@@ -62,6 +62,5 @@ int main() {
     cout << nice << " rotated by pi rad around the x axis is " << nice.rotate(xAxis, pi) << endl;
     cout << nice << " rotated by pi/3 rad around the vertical axis is " << nice.rotate(vertical, pi/3) << endl;
     cout << "The vector " << a << " divided by the scalar 0 is " << a / 0 << endl;
-
     return 0;
 }

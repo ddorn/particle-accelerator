@@ -23,7 +23,7 @@ private:
     int counter;
     bool stream = false;
     double intensity = 0.5;
-    int steps = 10;
+    int steps = 5;
     Accelerator accelerator;
     QtSupport support;
 public:

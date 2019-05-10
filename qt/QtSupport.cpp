@@ -483,6 +483,16 @@ void QtSupport::initThemes() {
     themes.push_back(make_unique<Theme>(Theme::Classix(false)));
 }
 
+void QtSupport::nextTheme(int n) {
+    // size_t arithmetic apparently works differently...
+    n %= (int)themes.size();
+    cout << n << endl;
+    //  So it's always positive
+    if (n < 0) n += themes.size();
+    themeIndex += n;
+    themeIndex %= themes.size();
+}
+
 
 
 

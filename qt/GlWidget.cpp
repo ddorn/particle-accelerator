@@ -49,9 +49,10 @@ void GlWidget::timerEvent(QTimerEvent *event) {
 
 void GlWidget::keyPressEvent(QKeyEvent *event) {
     bool isShift = event->modifiers() & Qt::Modifier::SHIFT;
+    double factor(isShift ? 0.1 : 1);
 
-    constexpr double petit_angle(5.0); // en degrés
-    constexpr double petit_pas(1.0);
+    const double petit_angle(5.0 * factor); // en degrés
+    const double petit_pas(1.0 * factor);
 
     switch (event->key()) {
 
@@ -110,19 +111,18 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
             support.initPosition();
             break;
         case Qt::Key_P:
-            if (isShift) addBeam(false);
-            else addBeam(true);
+            addBeam(!isShift);
             break;
         case Qt::Key_Space:
             stream = !stream;
             break;
         case Qt::Key_Plus:
-            intensity *= 1.05;
+            intensity *= 1 + 0.4 * factor;
             std::cout << intensity << std::endl;
             build(intensity);
             break;
         case Qt::Key_Minus:
-            intensity /= 1.05;
+            intensity /= 1 + 0.4 * factor;
             std::cout << intensity << std::endl;
             build(intensity);
             break;
@@ -145,15 +145,20 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
         case Qt::Key_Tab:
             support.nextTheme();
             break;
+        case Qt::Key_Backtab:
+            support.nextTheme(-1);
+            break;
         case Qt::Key_K:
-            steps += 5;
+            steps += isShift ? 10 : 1;
             break;
         case Qt::Key_J:
-            steps -= 1;
-            if (steps < 1) steps = 1;
+            steps -= isShift ? 10 : 1;
+            if (steps < 0) steps = 0;
             break;
-    };
-
+        default:
+            return;
+    }
+    event->accept();
     update(); // redessine
 }
 

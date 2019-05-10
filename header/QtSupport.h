@@ -39,7 +39,7 @@ public:
     void initPosition();
     void initThemes();
     void setViewMode(ViewMode v) { viewMode = v; }
-    void nextTheme() { themeIndex += 1; themeIndex %= themes.size(); }
+    void nextTheme(int n = 1);
     const Theme* theme() const { return themes[themeIndex].get(); }
     const QMatrix4x4 updateViewMatrix(const Accelerator &accelerator);
     void saveView(const Accelerator& accelerator) { view = updateViewMatrix(accelerator); }
