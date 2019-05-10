@@ -96,7 +96,9 @@ public:
                  const std::vector<Particle> &macroParticles, const Vector3D &color = Vector3D(1, 1, 1));
 
     bool addCircularBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
-                                      size_t nbrMacroParticle, const Vector3D &color = Vector3D(1, 1, 1), double standardDeviation = 0.01, int rng = 42);
+                                      size_t nbrMacroParticle, const Vector3D &color = Vector3D(1, 1, 1), double standardDeviation = 0.01);
+    bool addCircularBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
+                                      size_t nbrMacroParticle, const Vector3D &color, double standardDeviation, int rng);
     void addParticle(const Particle &p) { particles_.push_back(std::make_unique<Particle>(p)); }
     /**
     * @return if the last element ends where the first element begins.

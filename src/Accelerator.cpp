@@ -9,6 +9,7 @@
 #include "Quadrupole.h"
 #include "Sextupole.h"
 #include "CircularBeam.h"
+#include <chrono>
 
 using namespace std;
 
@@ -155,6 +156,11 @@ bool Accelerator::acceptableNextElement(const Vector3D &exit, double radius) con
     if (exit == nextStart()) return false;
     if (exit.z() != 0) return false;
     return !isClosed();
+}
+
+bool Accelerator::addCircularBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
+                                  size_t nbrMacroParticle, const Vector3D &color, double standardDeviation){
+    return addCircularBeam(mass, charge, energy, direction, lambda, nbrMacroParticle, color, standardDeviation, int(std::chrono::system_clock::now().time_since_epoch().count() % 1000000));
 }
 
 bool Accelerator::addCircularBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
