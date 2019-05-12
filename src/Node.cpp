@@ -20,3 +20,12 @@ void Node::exchangePlace(int n){
     this->position_ = otherPos;
     this->particle_.swap(other->particle_);
 }
+
+void Node::insertNode(Particle_ptr particle, double position) {
+    if(particle == nullptr) return;
+    Node* newNode = new Node(particle, position);
+    newNode->previous_ = this;
+    newNode->next_ = this->next();
+    this->next_->previous_ = newNode;
+    this->next_ = newNode;
+}
