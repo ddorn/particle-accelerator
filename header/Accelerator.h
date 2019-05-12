@@ -95,7 +95,7 @@ public:
      */
     bool addQuadrupole(const Vector3D& exit, double radius, double magneticFieldIntensity);
     /**
-     * Add a FODO.
+     * Add a FODO cell.
      */
     bool addFODO(const Vector3D &exit, double quadrupoleLength, double radius, double magneticFieldIntensity);
     /**

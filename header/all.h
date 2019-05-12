@@ -15,6 +15,7 @@
 #include "CurvedElement.h"
 #include "Dipole.h"
 #include "Element.h"
+#include "Node.h"
 #include "Particle.h"
 #include "Particles.h"
 #include "Quadrupole.h"

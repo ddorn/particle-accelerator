@@ -34,7 +34,7 @@ class Particle : public Content {
 private:
     double mass_;
     double charge_;
-    size_t turns = 0;
+    size_t turns_ = 0;
     const Element* spawn_;  // Used to count number of turns
     Vector3D position_;
     Vector3D force_;
@@ -76,7 +76,7 @@ public:
         }
     }
 
-    size_t nbrOfTurns() const { return turns; }
+    size_t nbrOfTurns() const { return turns_; }
     double charge() const { return charge_; }
 
     /**
@@ -100,7 +100,6 @@ public:
 
     const Vector3D &color() const { return color_; }
 
-    // TODO: Should it be const ?
     Element *element() const { return element_; }
 
     /**

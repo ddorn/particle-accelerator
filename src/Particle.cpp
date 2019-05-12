@@ -26,7 +26,7 @@ void Particle::addMagneticForce(const Vector3D &b, double dt) {
 
     const Vector3D axis(speed() ^ force);
     if (axis.isZero()) {
-        cout << "Axis was zero but this shouldn't happen" << endl;
+        cerr << "Axis was zero but this shouldn't happen" << endl;
         return;
     }
 
@@ -54,7 +54,7 @@ bool Particle::updateElement() {
         element_ = clockwise ? element()->nextElement()
                              : element()->previousElement();
         // Count a turn if again in the element it started
-        if (element_ == spawn_) turns += 1;
+        if (element_ == spawn_) turns_ += 1;
     }
 
     return true;
