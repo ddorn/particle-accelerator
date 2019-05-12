@@ -11,32 +11,41 @@ using namespace std;
 
 int main() {
 
+// THIS VERSION MUST BE CONSERVED WITHOUT MODIFICATION
 
+    double mass(constants::M_PROTON);
+    double charge(constants::C_PROTON);
     double energy(2);
     double quadrupoleIntensity(1.2);
-//    double dipoleIntensity(5.89158);
+    double sextupoleIntensity(1);
+    double curvatureDipole(1);
     TextSupport s(cout);
     Accelerator bobLEponge(Vector3D(3, 0, 0));
-
     double radius(0.1);
-    Vector3D pqf(3, -1, 0);
-    Vector3D pd1(3, -2, 0);
-    Vector3D pd(2, -3, 0);
-    Vector3D pqd(1, -3, 0);
-    Vector3D pd2(0, -3, 0);
+    Vector3D endQuad1(3, 1.5, 0);
+    Vector3D endSex1(3, 1, 0);
+    Vector3D endSeg1(3, 0, 0);
+    Vector3D endQuad2(3, -0.5, 0);
+    Vector3D endSex2(3, -1, 0);
+    Vector3D endSeg2(3, -2, 0);
+    Vector3D endDip(2, -3, 0);
 
     for (int i = 0; i < 4; ++i) {
-        bobLEponge.addQuadrupole(pqf, radius, -quadrupoleIntensity);
-        bobLEponge.addSegment(pd1, radius);
-        bobLEponge.addDipole(pd, radius, 1, mass, charge, energy);
-        bobLEponge.addQuadrupole(pqd, radius, quadrupoleIntensity);
-        bobLEponge.addSegment(pd2, radius);
+        bobLEponge.addQuadrupole(endQuad1, radius, -quadrupoleIntensity);
+        bobLEponge.addSextupole(endSex1, radius, sextupoleIntensity);
+        bobLEponge.addSegment(endSeg1, radius);
+        bobLEponge.addQuadrupole(endQuad2, radius, quadrupoleIntensity);
+        bobLEponge.addSextupole(endSex2, radius, sextupoleIntensity);
+        bobLEponge.addSegment(endSeg2, radius);
+        bobLEponge.addDipole(endDip, radius, curvatureDipole, mass, charge, energy);
 
-        pqf = pqf ^ Vector3D::e3;
-        pd1 = pd1 ^ Vector3D::e3;
-        pd = pd ^ Vector3D::e3;
-        pqd = pqd ^ Vector3D::e3;
-        pd2 = pd2 ^ Vector3D::e3;
+        endQuad1 = endQuad1 ^ Vector3D::e3;
+        endSex1 = endSex1 ^ Vector3D::e3;
+        endSeg1 = endSeg1 ^ Vector3D::e3;
+        endQuad2 = endQuad2 ^ Vector3D::e3;
+        endSex2 = endSex2 ^ Vector3D::e3;
+        endSeg2 = endSeg2 ^ Vector3D::e3;
+        endDip = endDip ^ Vector3D::e3;
     }
 
     // ---- Parametrisation of the particles ----

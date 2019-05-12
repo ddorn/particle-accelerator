@@ -84,16 +84,25 @@ public:
      * @return false if it cannot add this element.
      */
     bool addDipole(const Vector3D& exit, double radius, double curveture, double magneticFieldIntensity);
+    /**
+     * This method will create a dipole with the perfect magnetic field intensity, in function of
+     * the mean mass, charge and energy of the particles.
+     */
     bool addDipole(const Vector3D& exit, double radius, double curvature, double mass, double charge, double energy);
     /**
      * Add a quadrupole. It begins where the last added element ends.
      * @return false if it cannot add this element.
      */
     bool addQuadrupole(const Vector3D& exit, double radius, double magneticFieldIntensity);
-    bool addFODO(const Vector3D &exit, double quadrupoleLength, double radius, double magneticFieldIntesity);
-    bool addSextupole(const Vector3D &exit, double radius, double magneticlFieldIntensity);
-    bool addBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
-                 const std::vector<Particle> &macroParticles, const Vector3D &color = Vector3D(1, 1, 1));
+    /**
+     * Add a FODO.
+     */
+    bool addFODO(const Vector3D &exit, double quadrupoleLength, double radius, double magneticFieldIntensity);
+    /**
+     * Add a sextupole. It begins where the last added element ends.
+     * @return false if it cannot add this element.
+     */
+    bool addSextupole(const Vector3D &exit, double radius, double magneticFieldIntensity);
 
     bool addCircularBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
                                       size_t nbrMacroParticle, const Vector3D &color = Vector3D(1, 1, 1), double standardDeviation = 0.01);
@@ -124,6 +133,15 @@ private:
      * if the element is in the xy plane.
      */
     bool acceptableNextElement(const Vector3D& exit, double radius) const;
+
+    /**
+     * return a ptr at the element in the direction of the position, ie.
+     * the element such that the vector position is between the start and the end.
+     * But the vector position can be out of the element. If no element is
+     * adequate, it will return a nullptr.
+     */
+    Element* elementFromPosition(Vector3D& position);
+
 
 };
 

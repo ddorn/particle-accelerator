@@ -10,6 +10,8 @@
 #include "Sextupole.h"
 #include "CircularBeam.h"
 #include <chrono>
+#include <Accelerator.h>
+
 
 using namespace std;
 
@@ -175,19 +177,6 @@ bool Accelerator::addCircularBeam(double mass, double charge, double energy, con
     return true;
 }
 
-bool Accelerator::addBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
-                          const std::vector<Particle> &macroParticles, const Vector3D &color) {
-    if (elements().empty()) return false;
-    if (mass < 0) return false;
-    if (lambda < 1) return false;
-
-    Particle reference(mass, charge, energy, elements().front()->start(), direction, elements().front().get(), color);
-    beams_.push_back(std::make_unique<Beam>(reference, lambda, macroParticles.size()));
-    for(auto& p : macroParticles) {
-        beams_.back()->addMacroParticle(p.position(), p.speed(), elements().front().get());
-    }
-    return true;
-}
 
 double Accelerator::length() const {
     double l(0);
@@ -195,4 +184,13 @@ double Accelerator::length() const {
         l += e->length();
     }
     return l;
+}
+
+Element *Accelerator::elementFromPosition(Vector3D &position) {
+    for(auto& e : elements()){
+        if(Vector3D::e3.tripleProduct(position, e->exit()) < 0 and Vector3D::e3.tripleProduct(position, e->start()) > 0){
+            return e.get();
+        }
+    }
+    return nullptr;
 }
