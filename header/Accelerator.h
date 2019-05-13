@@ -33,15 +33,17 @@
 #include "Content.h"
 #include "Support.h"
 #include "CircularBeam.h"
+#include "Node.h"
 
 typedef std::vector<std::unique_ptr<Element>> ElementVector;
 typedef std::vector<std::unique_ptr<Beam>> BeamVector;
+typedef std::unique_ptr<Node> LinkedList;
 
 class Accelerator : public Content {
 private:
     ElementVector elements_;
     BeamVector beams_;
-    ParticleVector particles_;
+    LinkedList particles_;
     std::default_random_engine rng_;
 
     const Vector3D nextStart() const { return elements().empty() ? start_ : elements().back()->exit(); }
@@ -51,7 +53,7 @@ public:
     Accelerator(const Accelerator &other) = delete;
     void operator=(const Accelerator & other) = delete;
 
-    const ParticleVector &particles() const { return particles_; }
+    const LinkedList &particles() const { return particles_; }
 
     /**
      * Cleanup the dust in the Accelerator and remove all particles.

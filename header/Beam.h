@@ -13,7 +13,7 @@
 #include <memory>
 
 
-typedef std::vector<std::unique_ptr<Particle>> ParticleVector;
+typedef std::vector<std::shared_ptr<Particle>> ParticleVector;
 
 /**
  * The beams will serve to inject particles and

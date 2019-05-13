@@ -71,7 +71,7 @@ public:
               speed_(direction.isZero() ? Vector3D()
                                         : ~direction * velocityFromEnergy(energy, mass)) {
         if (element == nullptr) {
-            std::cout << "Particles SHALL spawn in elements" << std::endl;
+            std::cerr << "Particles SHALL spawn in elements" << std::endl;
             throw 1;
         }
     }

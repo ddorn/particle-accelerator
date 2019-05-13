@@ -20,12 +20,15 @@ private:
     double position_;
 public:
     Node(Particle_ptr particle, double position) : particle_(particle), position_(position) {}
+    virtual ~Node();
+
     Node* next() const { return next_; }
     Node* previous() const { return previous_; }
     Particle_ptr particle() const { return particle_; }
     double position() const { return position_; }
     bool isHead() const { return particle_ == nullptr; }
     void exchangePlace(int n);
+    void exchangePlace(Node* node);
     void insertNode(Particle_ptr particle, double position);
 
 };
