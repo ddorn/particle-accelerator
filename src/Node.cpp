@@ -20,10 +20,17 @@ void Node::exchangePlace(int n){
     exchangePlace(other);
 }
 void Node::exchangePlace(Node* other){
-    double otherPos(other->position());
-    other->position_ = this->position();
-    this->position_ = otherPos;
-    this->particle_.swap(other->particle_);
+    other->previous()->next_ = this;
+    other->next()->previous_ = this;
+    this->previous()->next_ = other;
+    this->next()->previous_ = other;
+
+    Node* otherNext(other->next());
+    Node* otherPrevious(other->previous());
+    other->next_ = this->next();
+    other->previous_ = this->previous();
+    this->next_ = otherNext;
+    this->previous_ = otherPrevious;
 }
 
 void Node::insertNode(Particle_ptr particle, double position) {

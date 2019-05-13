@@ -44,14 +44,11 @@ void Particle::evolve(double dt) {
 bool Particle::updateElement() {
     if (element()->collideBorder(position())) return false;
 
-    // [e3, pos, speed] is positive with right hand rule aka CCW motion
-    bool clockwise(Vector3D::e3.tripleProduct(position(), speed()) < 0);
-
-    if (element()->isOut(position(), clockwise)) {
+    if (element()->isOut(position(), clockwise())) {
         if (element()->nextElement() == nullptr) return false;
 
         // update to the correct next element
-        element_ = clockwise ? element()->nextElement()
+        element_ = clockwise() ? element()->nextElement()
                              : element()->previousElement();
         // Count a turn if again in the element it started
         if (element_ == spawn_) turns_ += 1;

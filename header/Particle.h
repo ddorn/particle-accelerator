@@ -77,6 +77,7 @@ public:
     }
 
     size_t nbrOfTurns() const { return turns_; }
+    bool clockwise() const { return Vector3D::e3.tripleProduct(position(), speed()) < 0; }
     double charge() const { return charge_; }
 
     /**

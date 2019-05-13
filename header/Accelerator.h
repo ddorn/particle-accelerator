@@ -144,6 +144,8 @@ private:
      */
     Element* elementFromPosition(Vector3D& position);
 
+    void updateParticles() const;
+
 
 };
 

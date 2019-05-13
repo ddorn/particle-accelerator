@@ -21,8 +21,10 @@ std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
     for (const auto &b : accelerator.beams()) {
         os << *b << endl;
     }
-    for (const auto &p : accelerator.particles()) {
-        os << *p << endl;
+    Node* p(accelerator.particles()->next());
+    while(p != nullptr){
+        os << *(p->particle()) << endl;
+        p = p->next();
     }
 //    for (const auto &e : accelerator.elements()) {
 //        os << *e << endl;
@@ -193,4 +195,29 @@ Element *Accelerator::elementFromPosition(Vector3D &position) {
         }
     }
     return nullptr;
+}
+
+void Accelerator::updateParticles() const {
+    Node* prevNode(particles()->previous());
+    Node* nextNode(particles()->next());
+    bool exchange(false);
+    if(prevNode->previousPosition() - prevNode->position() > length() / 2){
+        prevNode->exchangePlace(particles().get());
+        exchange = true;
+    }
+    if(nextNode->position() - nextNode->previousPosition() > length() / 2){
+        nextNode->exchangePlace(particles().get());
+        if(exchange){
+            particles()->exchangePlace(prevNode); // It's a bit ugly, but we will upgrade it later #TODO
+        }
+    }
+    Node* p(particles()->next());
+    while(!p->isHead()){
+        nextNode = p->next();
+        if(!nextNode->isHead() and nextNode->position() < p->position()){
+            p->exchangePlace(nextNode);
+        } else {
+            p = nextNode;
+        }
+    }
 }
