@@ -29,6 +29,7 @@ private:
     QMatrix4x4 view; // Camera
     GLSphere sphere;
     ViewMode viewMode;
+    bool viewInsideAccelerator_ = false;
     ThemeVector themes;
     size_t themeIndex = 0;
 public:
@@ -93,7 +94,8 @@ private:
     /**
      * Whether the eye is forced inside the accelerator by the ViewMode.
      */
-    bool viewInsideAccelerator() { return viewMode == FIRST_PERSON || viewMode == THIRD_PERSON; }
+    bool viewInsideAccelerator() { return viewInsideAccelerator_; }
+//    bool viewInsideAccelerator() { return viewMode == FIRST_PERSON || viewMode == THIRD_PERSON; }
 
     /**
      * Whether Elements drawn should be lit or not

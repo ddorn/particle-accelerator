@@ -84,6 +84,10 @@ QMatrix4x4 QtSupport::lookAt(const Vector3D &eyePosition, const Vector3D &center
     return m;
 }
 const QMatrix4x4 QtSupport::updateViewMatrix(const Accelerator &accelerator) {
+    // We update whether we are inside the accelerator
+    QVector3D qpos(view * QVector3D());
+    Vector3D p(qpos.x(), qpos.y(), qpos.z());
+    viewInsideAccelerator_ = accelerator.elementFromPosition(p)->isOut(p);
 
     const Particle *particle(nullptr);
     Vector3D pos, speed;
