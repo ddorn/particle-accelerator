@@ -42,10 +42,16 @@ void Particle::evolve(double dt) {
 }
 
 bool Particle::updateElement() {
-    if (element()->collideBorder(position())) return false;
+    if (element()->collideBorder(position())){
+        isAlive_ = false;
+        return false;
+    }
 
     if (element()->isOut(position(), clockwise())) {
-        if (element()->nextElement() == nullptr) return false;
+        if (element()->nextElement() == nullptr){
+            isAlive_ = false;
+            return false;
+        }
 
         // update to the correct next element
         element_ = clockwise() ? element()->nextElement()

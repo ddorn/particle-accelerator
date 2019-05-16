@@ -42,6 +42,7 @@ private:
     Element *element_;
     Vector3D color_;
     Vector3D speed_;
+    bool isAlive_;
 
     /**
      * This method is used at the creation of an instance, to obtain the speed from
@@ -74,6 +75,7 @@ public:
             std::cerr << "Particles SHALL spawn in elements" << std::endl;
             throw 1;
         }
+        isAlive_ = true;
     }
 
     size_t nbrOfTurns() const { return turns_; }
@@ -149,6 +151,7 @@ public:
      * @param dt Timestep during which the force applies.
      */
     void addMagneticForce(const Vector3D &b, double dt);
+    void addElementMagneticForce(double dt) { return addMagneticForce(element()->magneticForceAt(position()), dt); }
 
     /**
      * Move the particle according to the forces acting on it
@@ -178,6 +181,8 @@ public:
     double gamma() const { return 1.0 / sqrt(1.0 - velocitySquared() / constants::LIGHT_SPEED_SQUARED); }
 
     void draw(Support &support) const override { support.draw(*this); }
+
+    bool isAlive() const { return isAlive_; }
 };
 
 

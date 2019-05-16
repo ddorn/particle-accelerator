@@ -31,7 +31,9 @@ public:
     bool isHead() const { return particle_ == nullptr; }
     void exchangePlace(int n);
     void exchangePlace(Node* node);
-    void insertNode(Particle_ptr particle, double position);
+    void exchangeNext();
+    void insertNode(Particle_ptr particle);
+    void removeNextNode();
 
 };
 

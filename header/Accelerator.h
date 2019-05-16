@@ -116,12 +116,20 @@ public:
     */
     bool isClosed() const;
     double length() const;
+    /**
+     * return a ptr at the element in the direction of the position, ie.
+     * the element such that the vector position is between the start and the end.
+     * But the vector position can be out of the element. If no element is
+     * adequate, it will return a nullptr.
+     */
+    Element* elementFromPosition(Vector3D& position);
 private:
     /**
      * Add a new particle in the accelerator.
      * @param particle Particle to add.
      */
     Vector3D start_;
+
     /**
      * Link the two last elements
      * and control if the last element
@@ -135,14 +143,6 @@ private:
      * if the element is in the xy plane.
      */
     bool acceptableNextElement(const Vector3D& exit, double radius) const;
-
-    /**
-     * return a ptr at the element in the direction of the position, ie.
-     * the element such that the vector position is between the start and the end.
-     * But the vector position can be out of the element. If no element is
-     * adequate, it will return a nullptr.
-     */
-    Element* elementFromPosition(Vector3D& position);
 
     void updateParticles() const;
 

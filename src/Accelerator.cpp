@@ -33,6 +33,23 @@ std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
 }
 
 void Accelerator::evolve(double dt) {
+    Node* p(particles()->next());
+    while(!p->isHead()){
+        p->particle()->addElementMagneticForce(dt);
+        p = p->next();
+    }
+    p = p->next();
+    while(!p->isHead()){
+        p->particle()->evolve(dt);
+        if(!p->particle()->updateElement()){
+            p = p->previous();
+            p->removeNextNode();
+        }
+        p = p->next();
+    }
+
+
+    /*
     for (auto& mrBeam : beams_) {
         mrBeam->evolve(dt);
     }
@@ -47,6 +64,7 @@ void Accelerator::evolve(double dt) {
             ++i;
         }
     }
+
 
     // Update forces from the elements of the accelerator
     for (auto &p : particles_) {
@@ -69,7 +87,7 @@ void Accelerator::evolve(double dt) {
             ++i;
         }
     }
-
+*/
 
 }
 
