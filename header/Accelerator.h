@@ -110,7 +110,10 @@ public:
                                       size_t nbrMacroParticle, const Vector3D &color = Vector3D(1, 1, 1), double standardDeviation = 0.01);
     bool addCircularBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
                                       size_t nbrMacroParticle, const Vector3D &color, double standardDeviation, int rng);
-    void addParticle(const Particle &p) { particles_.push_back(std::make_unique<Particle>(p)); }
+
+    bool addParticle(double mass, double charge, double energy, const Vector3D &position, const Vector3D &direction,
+                                    const Vector3D &color = Vector3D(1, 1, 1));
+    bool addParticle(Particle_ptr particle);
     /**
     * @return if the last element ends where the first element begins.
     */
@@ -122,7 +125,7 @@ public:
      * But the vector position can be out of the element. If no element is
      * adequate, it will return a nullptr.
      */
-    Element* elementFromPosition(Vector3D& position);
+    Element* elementFromPosition(const Vector3D& position);
 private:
     /**
      * Add a new particle in the accelerator.

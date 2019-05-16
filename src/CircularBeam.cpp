@@ -32,5 +32,7 @@ void CircularBeam::generateParticles(double standardDeviation, int rng) {
                          element);
         s += ds;
     } while (macroParticles_.size() < nbrMacroParticles_);
+    for(auto p : macroParticles()){
 
+    }
 }

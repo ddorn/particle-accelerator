@@ -206,7 +206,7 @@ double Accelerator::length() const {
     return l;
 }
 
-Element *Accelerator::elementFromPosition(Vector3D &position) {
+Element *Accelerator::elementFromPosition(const Vector3D &position) {
     for(auto& e : elements()){
         if(Vector3D::e3.tripleProduct(position, e->exit()) < 0 and Vector3D::e3.tripleProduct(position, e->start()) > 0){
             return e.get();
@@ -238,4 +238,21 @@ void Accelerator::updateParticles() const {
             p = nextNode;
         }
     }
+}
+
+bool Accelerator::addParticle(double mass, double charge, double energy, const Vector3D &position,
+                            const Vector3D &direction, const Vector3D &color) {
+    Element* element(elementFromPosition(position));
+    if(element == nullptr) return false;
+    if (mass < 0) return false;
+
+    Particle_ptr p(new Particle(mass, charge, energy, position, direction, element, color));
+    particles()->insertNode(p);
+    return true;
+}
+
+bool Accelerator::addParticle(Particle_ptr particle) {
+    if(particle->element() == nullptr or particle->mass() < 0) return false;
+    particles()->insertNode(particle);
+    return true;
 }
