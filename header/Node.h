@@ -20,6 +20,7 @@ private:
     double position_;
     double previousPosition_;
 public:
+    Node() : next_(this), previous_(this), particle_(nullptr), position_(0), previousPosition_(0) {}
     Node(Particle_ptr particle, double position) : particle_(particle), position_(position), previousPosition_(position) {}
     virtual ~Node();
 

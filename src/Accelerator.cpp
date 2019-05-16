@@ -17,12 +17,12 @@ using namespace std;
 
 std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
     os << "Accelerator:" << endl
-        << " Beams:" << endl;
+       << " Beams:" << endl;
     for (const auto &b : accelerator.beams()) {
         os << *b << endl;
     }
-    Node* p(accelerator.particles()->next());
-    while(p != nullptr){
+    Node *p(accelerator.particles()->next());
+    while (!p->isHead()) {
         os << *(p->particle()) << endl;
         p = p->next();
     }
@@ -33,7 +33,7 @@ std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
 }
 
 void Accelerator::evolve(double dt) {
-    Node* p(particles()->next());
+    Node* p(particles_->next());
     while(!p->isHead()){
         p->particle()->addElementMagneticForce(dt);
         p = p->next();
@@ -219,23 +219,23 @@ Element *Accelerator::elementFromPosition(const Vector3D &position) const {
 }
 
 void Accelerator::updateParticles() const {
-    Node* prevNode(particles()->previous());
-    Node* nextNode(particles()->next());
+    Node *prevNode(particles_->previous());
+    Node *nextNode(particles_->next());
     bool exchange(false);
-    if(prevNode->previousPosition() - prevNode->position() > length() / 2){
-        prevNode->exchangePlace(particles().get());
+    if (prevNode->previousPosition() - prevNode->position() > length() / 2) {
+        prevNode->exchangePlace(particles_.get());
         exchange = true;
     }
-    if(nextNode->position() - nextNode->previousPosition() > length() / 2){
-        nextNode->exchangePlace(particles().get());
-        if(exchange){
-            particles()->exchangePlace(prevNode); // It's a bit ugly, but we will upgrade it later #TODO
+    if (nextNode->position() - nextNode->previousPosition() > length() / 2) {
+        nextNode->exchangePlace(particles_.get());
+        if (exchange) {
+            particles_->exchangePlace(prevNode); // It's a bit ugly, but we will upgrade it later #TODO
         }
     }
-    Node* p(particles()->next());
-    while(!p->isHead()){
+    Node *p(particles_->next());
+    while (!p->isHead()) {
         nextNode = p->next();
-        if(!nextNode->isHead() and nextNode->position() < p->position()){
+        if (!nextNode->isHead() and nextNode->position() < p->position()) {
             p->exchangePlace(nextNode);
         } else {
             p = nextNode;
@@ -250,12 +250,15 @@ bool Accelerator::addParticle(double mass, double charge, double energy, const V
     if (mass < 0) return false;
 
     Particle_ptr p(new Particle(mass, charge, energy, position, direction, element, color));
-    particles()->insertNode(p);
+    particles_->insertNode(p);
     return true;
 }
 
 bool Accelerator::addParticle(Particle_ptr particle) {
-    if(particle->element() == nullptr or particle->mass() < 0) return false;
-    particles()->insertNode(particle);
+    if (particle.get() == nullptr
+        or particle->element() == nullptr
+        or particle->mass() < 0)
+        return false;
+    particles_->insertNode(particle);
     return true;
 }

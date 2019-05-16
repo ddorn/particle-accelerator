@@ -41,15 +41,21 @@ typedef std::unique_ptr<Node> LinkedList;
 
 class Accelerator : public Content {
 private:
+    std::default_random_engine rng_;
+    /**
+     * Add a new particle in the accelerator.
+     * @param particle Particle to add.
+     */
+    Vector3D start_;
+
     ElementVector elements_;
     BeamVector beams_;
     LinkedList particles_;
-    std::default_random_engine rng_;
 
     const Vector3D nextStart() const { return elements().empty() ? start_ : elements().back()->exit(); }
 
 public:
-    explicit Accelerator(const Vector3D& start = Vector3D(), int rng = 42) : rng_(rng), start_(start){}
+    explicit Accelerator(const Vector3D& start = Vector3D(), int rng = 42) : rng_(rng), start_(start), particles_(std::make_unique<Node>()){}
     Accelerator(const Accelerator &other) = delete;
     void operator=(const Accelerator & other) = delete;
 
@@ -127,11 +133,6 @@ public:
      */
     Element* elementFromPosition(const Vector3D& position) const;
 private:
-    /**
-     * Add a new particle in the accelerator.
-     * @param particle Particle to add.
-     */
-    Vector3D start_;
 
     /**
      * Link the two last elements
