@@ -47,7 +47,7 @@ void Accelerator::evolve(double dt) {
         }
         p = p->next();
     }
-
+    updateParticles();
 
     /*
     for (auto& mrBeam : beams_) {
@@ -193,6 +193,9 @@ bool Accelerator::addCircularBeam(double mass, double charge, double energy, con
 
     Particle reference(mass, charge, energy, elements().front()->start(), direction, elements().front().get(), color);
     beams_.push_back(std::make_unique<CircularBeam>(reference, lambda, nbrMacroParticle, standardDeviation, rng));
+    for(const auto& p : beams_.back()->macroParticles()){
+        addParticle(p);
+    }
 
     return true;
 }

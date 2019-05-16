@@ -50,7 +50,7 @@ int main() {
 //    vector<Particle> particles{dipHole};
     //  ---------
 
-    bobLEponge.addParticle(p2);
+    bobLEponge.addParticle(make_shared<Particle>(p2));
 
     bobLEponge.draw(s);
 //    int i(0);
@@ -60,7 +60,7 @@ int main() {
 //    }
 //    cout <<i<< endl;
     int i = 0;
-    while (!bobLEponge.particles().empty()) {
+    while (!bobLEponge.particles()->isHead()) {
         bobLEponge.evolve(1e-11);
         ++i;
         if (i % 1000000 == 1

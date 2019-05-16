@@ -58,7 +58,7 @@ public:
     /**
      * Cleanup the dust in the Accelerator and remove all particles.
      */
-    void cleanBeam() { beams_.clear(); particles_.clear();}
+    void cleanParticles() { delete particles_.get(); particles_ = std::make_unique<Node>(nullptr, 0); beams_.clear(); }
     /**
      * Remove all the elements of the accelerator.
      * Warning: don't forget to recycle all this metal otherwise students will have good reasons to demonstrate
