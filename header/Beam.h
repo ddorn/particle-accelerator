@@ -77,6 +77,8 @@ public:
 
     void addMacroParticle(const Vector3D &position, const Vector3D &direction, Element *element);
 
+    void removeDeadParticles();
+
 private:
     /**
      * The number of real particles in a macroparticle

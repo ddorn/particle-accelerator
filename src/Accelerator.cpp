@@ -49,9 +49,9 @@ void Accelerator::evolve(double dt) {
     }
     updateParticles();
 
-    /*
+
     for (auto& mrBeam : beams_) {
-        mrBeam->evolve(dt);
+        mrBeam->removeDeadParticles();
     }
 
     // Remove beams with no particles
@@ -64,7 +64,7 @@ void Accelerator::evolve(double dt) {
             ++i;
         }
     }
-
+    /*
 
     // Update forces from the elements of the accelerator
     for (auto &p : particles_) {

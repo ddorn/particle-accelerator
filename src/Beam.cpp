@@ -2,6 +2,8 @@
 // Created by Gabin on 04.04.2019.
 //
 
+#include <Beam.h>
+
 #include "Beam.h"
 
 using namespace std;
@@ -136,6 +138,14 @@ void Beam::addMacroParticle(const Vector3D &position, const Vector3D &direction,
     }
 }
 
+void Beam::removeDeadParticles() {
+    for(size_t i(0); i < macroParticles().size(); ++i){
+        if(!macroParticles()[i]->isAlive()){
+            swap(macroParticles_[i], macroParticles_.back());
+            macroParticles_.pop_back();
+        }
+    }
+}
 
 
 std::ostream &operator<<(std::ostream &os, Beam const &beam) {
