@@ -206,7 +206,7 @@ double Accelerator::length() const {
     return l;
 }
 
-Element *Accelerator::elementFromPosition(const Vector3D &position) {
+Element *Accelerator::elementFromPosition(const Vector3D &position) const {
     for(auto& e : elements()){
         if(Vector3D::e3.tripleProduct(position, e->exit()) < 0 and Vector3D::e3.tripleProduct(position, e->start()) > 0){
             return e.get();

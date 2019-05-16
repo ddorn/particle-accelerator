@@ -125,7 +125,7 @@ public:
      * But the vector position can be out of the element. If no element is
      * adequate, it will return a nullptr.
      */
-    Element* elementFromPosition(const Vector3D& position);
+    Element* elementFromPosition(const Vector3D& position) const;
 private:
     /**
      * Add a new particle in the accelerator.
