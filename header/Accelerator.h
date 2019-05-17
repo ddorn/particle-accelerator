@@ -120,7 +120,7 @@ public:
 
     bool addParticle(double mass, double charge, double energy, const Vector3D &position, const Vector3D &direction,
                                     const Vector3D &color = Vector3D(1, 1, 1));
-    bool addParticle(Particle_ptr particle);
+    bool addParticle(particle_ptdr particle);
     /**
     * @return if the last element ends where the first element begins.
     */

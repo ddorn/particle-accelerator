@@ -49,7 +49,7 @@ void Node::exchangePlace(Node* other){
     this->previous_ = otherPrevious;
 }
 
-void Node::insertNode(Particle_ptr particle) {
+void Node::insertNode(particle_ptdr particle) {
     if(particle == nullptr){
         std::cerr << "Node.cpp : Tried to insert a new head" << std::endl;
         return;

@@ -123,7 +123,7 @@ public:
      * @param V value (0 to 1)
      * @return the RGB color with components between 0 and 1.
      */
-    static const Color HSVtoRGB(int H, double S, double V) const {
+    static const Color HSVtoRGB(int H, double S, double V) {
         double C = S * V;
         double X = C * (1 - abs(fmod(H / 60.0, 2) - 1));
         double m = V - C;

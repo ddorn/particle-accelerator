@@ -215,6 +215,8 @@ Element *Accelerator::elementFromPosition(const Vector3D &position) const {
 }
 
 void Accelerator::updateParticles() const {
+    for (auto &n : *particles_) n.updatePosition();
+
     Node *prevNode(particles_->previous());
     Node *nextNode(particles_->next());
     bool exchange(false);
@@ -228,14 +230,16 @@ void Accelerator::updateParticles() const {
             particles_->exchangePlace(prevNode); // It's a bit ugly, but we will upgrade it later #TODO
         }
     }
+
+
     Node *p(particles_->next());
     while (!p->isHead()) {
         nextNode = p->next();
         if (!nextNode->isHead() and nextNode->position() < p->position()) {
             p->exchangePlace(nextNode);
         } else {
-            p = nextNode;
         }
+        p = nextNode;
     }
 }
 
@@ -245,12 +249,12 @@ bool Accelerator::addParticle(double mass, double charge, double energy, const V
     if(element == nullptr) return false;
     if (mass < 0) return false;
 
-    Particle_ptr p(new Particle(mass, charge, energy, position, direction, element, color));
+    particle_ptdr p(new Particle(mass, charge, energy, position, direction, element, color));
     particles_->insertNode(p);
     return true;
 }
 
-bool Accelerator::addParticle(Particle_ptr particle) {
+bool Accelerator::addParticle(particle_ptdr particle) {
     if (particle.get() == nullptr
         or particle->element() == nullptr
         or particle->mass() < 0)

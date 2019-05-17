@@ -85,40 +85,42 @@ QMatrix4x4 QtSupport::lookAt(const Vector3D &eyePosition, const Vector3D &center
 }
 const QMatrix4x4 QtSupport::updateViewMatrix(const Accelerator &accelerator) {
     // We update whether we are inside the accelerator
-//    QVector3D qpos(view * QVector3D());
-//    Vector3D p(qpos.x(), qpos.y(), qpos.z());
-//    viewInsideAccelerator_ = accelerator.elementFromPosition(p)->collideBorder(p);
+    QVector3D qpos(view * QVector3D());
+    Vector3D p(qpos.x(), qpos.y(), qpos.z());
+    cout << p << endl;
+    Element *element = accelerator.elementFromPosition(p);
+    viewInsideAccelerator_ = element != nullptr && !element->collideBorder(p);
 //
-//    Particle *particle(nullptr);
-//    Vector3D pos, speed;
-//    cout << accelerator << endl;
-//    if (accelerator.particles()->empty()) {
-//        setViewMode(FREE_VIEW);
-//    } else {
-//        particle = accelerator.particles()->next()->particle().get();
-//        cout << particle << endl;
-//        pos = particle->position();
-//        speed = particle->speed();
-//    }
-//
-//    // We use the current view matrix only in free mode, otherwise
-//    // we determine it but don't save it so we can go back to where
-//    // we were looking before going in say, FPS
+    Vector3D pos, speed;
+    cout << accelerator << endl;
+    if (accelerator.particles()->empty()) {
+        setViewMode(FREE_VIEW);
+    } else {
+        if (followedParticle == nullptr or !followedParticle->isAlive()) {
+            followedParticle = accelerator.particles()->next()->particle();
+        }
+        pos = followedParticle->position();
+        speed = followedParticle->speed();
+    }
+
+    // We use the current view matrix only in free mode, otherwise
+    // we determine it but don't save it so we can go back to where
+    // we were looking before going in say, FPS
     QMatrix4x4 v;
-//    switch (viewMode) {
-//        case FREE_VIEW:
+    switch (viewMode) {
+        case FREE_VIEW:
             v = view;
-//            break;
-//        case FIRST_PERSON:
-//            v = lookAt(pos, pos + speed, Vector3D::e3);
-//            break;
-//        case THIRD_PERSON:
-//            v = lookAt(pos - ~speed * 0.15, pos, Vector3D::e3);
-//            break;
-//        case TOP_VIEW:
-//            v = lookAt(pos + Vector3D::e3, pos, Vector3D::e3 ^ speed);
-//            break;
-//    }
+            break;
+        case FIRST_PERSON:
+            v = lookAt(pos, pos + speed, Vector3D::e3);
+            break;
+        case THIRD_PERSON:
+            v = lookAt(pos - ~speed * 0.15, pos, Vector3D::e3);
+            break;
+        case TOP_VIEW:
+            v = lookAt(pos + Vector3D::e3, pos, Vector3D::e3 ^ speed);
+            break;
+    }
 
     prog.setUniformValue("view", v);
     return v;
@@ -427,9 +429,9 @@ void QtSupport::drawParticles(const Accelerator &accelerator) {
 //    for (const auto &p : accelerator.beams()) {
 //        p->draw(*this);
 //    }
-    double i(0);
+    int i(0);
     for (const auto &p : *accelerator.particles()) {
-        sendPoint()
+        sendColor(Rainbox::HSVtoRGB((5 * i) % 360, 1, 1));
         p.particle()->draw(*this);
         ++i;
     }

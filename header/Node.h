@@ -9,7 +9,7 @@
 #include <memory>
 #include <iterator>
 
-typedef std::shared_ptr<Particle> Particle_ptr;
+typedef std::shared_ptr<Particle> particle_ptdr;
 
 class Node;
 
@@ -17,12 +17,12 @@ class Node{
 private:
     Node* next_;
     Node* previous_;
-    Particle_ptr particle_;
+    particle_ptdr particle_;
     double position_;
     double previousPosition_;
 public:
     Node() : next_(this), previous_(this), particle_(nullptr), position_(0), previousPosition_(0) {}
-    Node(Particle_ptr particle, double position) : particle_(particle), position_(position), previousPosition_(position) {}
+    Node(particle_ptdr particle, double position) : particle_(particle), position_(position), previousPosition_(position) {}
     Node(const Node &) = delete;
     void operator=(const Node &) = delete;
     ~Node();
@@ -30,14 +30,15 @@ public:
     Node* next() const { return next_; }
     Node* previous() const { return previous_; }
     bool empty() const { return this == next_; }
-    Particle_ptr particle() const { return particle_; }
+    particle_ptdr particle() const { return particle_; }
     double position() const { return position_; }
     double previousPosition() const { return previousPosition_; }
+    void updatePosition() { previousPosition_ = position_; position_ = particle()->longitudinalPosition(); }
     bool isHead() const { return particle_ == nullptr; }
     void exchangePlace(int n);
     void exchangePlace(Node* node);
     void exchangeNext();
-    void insertNode(Particle_ptr particle);
+    void insertNode(particle_ptdr particle);
     void removeNextNode();
 
     class iterator : public std::iterator<std::forward_iterator_tag, Node> {

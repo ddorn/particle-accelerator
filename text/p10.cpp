@@ -52,6 +52,8 @@ int main() {
 
 //    bobLEponge.addParticle(make_shared<Particle>(p2));
     bobLEponge.cleanParticles();
+    cout << bobLEponge.particles()->empty();
+
     bobLEponge.addCircularBeam(mass, charge, 2, -Vector3D::e2, 1, 1, Vector3D(), 0);
 //    int i(0);
 //    while (!bobLEponge.particles()->empty()) {
@@ -68,7 +70,6 @@ int main() {
 //        if (i % 1000000 == 1
 //        ) cout << i << endl;
 //    }
-
     for (int j = 0; j < 10000; ++j) {
         bobLEponge.evolve(1e-11);
 //        if (bobLEponge.particles().front()->element() == bobLEponge.elements()[2].get())

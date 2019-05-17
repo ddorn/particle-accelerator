@@ -140,7 +140,7 @@ public:
 
     const RadialVec3D radialSpeed() const { return element()->radialSpeed(position(), speed()); }
 
-    double longitudinalPosition() const { return element()->radialPosition(position()).s(); }
+    double longitudinalPosition() const { return element()->longitudinalPosition() + element()->radialPosition(position()).s(); }
 
     /**
      * Add a magnetic force on the particle that is applied

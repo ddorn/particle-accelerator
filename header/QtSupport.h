@@ -25,11 +25,15 @@ typedef std::vector<std::unique_ptr<Theme>> ThemeVector;
 
 class QtSupport : public Support {
 private:
+    // GPU communication
     QOpenGLShaderProgram prog;
-    QMatrix4x4 view; // Camera
     GLSphere sphere;
+    // Camera
+    QMatrix4x4 view;
     ViewMode viewMode;
+    particle_ptdr followedParticle;
     bool viewInsideAccelerator_ = false;
+    // Themes
     ThemeVector themes;
     size_t themeIndex = 0;
 public:
