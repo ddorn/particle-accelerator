@@ -22,6 +22,8 @@ namespace constants {
     constexpr double C_ELECTRON(-1.60217653e-19);
     /// Kilogram. Unit : GeV / c^2
     constexpr double KG(LIGHT_SPEED_SQUARED / C_PROTON / 1e9);
+    /// vacuum permittivity : Farads / m
+    constexpr double VACUUM_PERMITTIVITY(8.854187817 * 1e-12);
 }
 
 #endif //PARTICLE_ACCELERATOR_CONSTANTS_H

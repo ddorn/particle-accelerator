@@ -151,7 +151,11 @@ public:
      * @param dt Timestep during which the force applies.
      */
     void addMagneticForce(const Vector3D &b, double dt);
+    void addElectricForce(const Vector3D &e);
+    void particleInteraction(Particle& p, double dt);
     void addElementMagneticForce(double dt) { return addMagneticForce(element()->magneticForceAt(position()), dt); }
+    const Vector3D magneticFieldAt(const Vector3D &pos) const;
+    const Vector3D electricFieldAt(const Vector3D &pos) const;
 
     /**
      * Move the particle according to the forces acting on it

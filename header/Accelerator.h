@@ -52,6 +52,7 @@ private:
     ElementVector elements_;
     BeamVector beams_;
     LinkedList particles_;
+    static double MIN_DIST;
 
     const Vector3D nextStart() const { return elements().empty() ? start_ : elements().back()->exit(); }
 

@@ -15,6 +15,8 @@
 
 using namespace std;
 
+double Accelerator::MIN_DIST(1e-3);
+
 std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
     os << "Accelerator:" << endl
        << " Beams:" << endl;
@@ -32,8 +34,15 @@ std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
 }
 
 void Accelerator::evolve(double dt) {
+
     for (auto& n : *particles_) {
         n.particle()->addElementMagneticForce(dt);
+        for (Node::iterator it(n.next()); it != Node::iterator(&n) and (fabs(it->position() - n.position()) < MIN_DIST or
+                                    fabs(it->position() + length() - n.position()) < MIN_DIST); ++it) {
+            if (!it->isHead()){
+                n.particle()->particleInteraction(*(it->particle()), dt);
+            }
+        }
     }
 
     for (Node::iterator it(particles_->begin()); it != particles_->end(); ++it) {

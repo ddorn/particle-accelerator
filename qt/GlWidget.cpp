@@ -206,8 +206,8 @@ void GlWidget::addBeam(bool clockwise) {
     //  ---------
 //    accelerator.addParticle(p0);
 
-    if (clockwise) accelerator.addCircularBeam(mass, -charge, energy, -direction, 1, 42);
-    else accelerator.addCircularBeam(mass, charge, energy, direction, 1, 42);
+    if (clockwise) accelerator.addCircularBeam(mass, -charge, energy, -direction, 1000, 42);
+    else accelerator.addCircularBeam(mass, charge, energy, direction, 1000, 42);
 }
 
 

@@ -8,7 +8,7 @@
 
 void CircularBeam::generateParticles(double standardDeviation, int rng) {
     std::default_random_engine gen(rng);
-    std::normal_distribution<double> distribution_(0, standardDeviation);
+    std::normal_distribution<double> distribution_(0, standardDeviation / 100000000);
     Element* element(refParticle_.element());
     double s(0);
     RadialVec3D radialPosition(refParticle_.radialPosition());

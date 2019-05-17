@@ -34,6 +34,11 @@ void Particle::addMagneticForce(const Vector3D &b, double dt) {
 
 }
 
+void Particle::addElectricForce(const Vector3D& e){
+    force_ += charge() * e;
+    std::cout << charge() * e << std::endl;
+}
+
 void Particle::evolve(double dt) {
     speed_ += dt * force_ / (gamma() * massSI());
     position_ += dt * speed_;
@@ -61,6 +66,23 @@ bool Particle::updateElement() {
     }
 
     return true;
+}
+
+const Vector3D Particle::magneticFieldAt(const Vector3D &pos) const {
+    return 1.0 / constants::LIGHT_SPEED_SQUARED * (speed() ^ electricFieldAt(pos));
+}
+
+const Vector3D Particle::electricFieldAt(const Vector3D &pos) const {
+    Vector3D d(pos - position());
+    double dist(d.norm());
+    return charge()/(4 * M_PI * constants::VACUUM_PERMITTIVITY * dist * dist * dist) * d;
+}
+
+void Particle::particleInteraction(Particle& p, double dt){
+    addMagneticForce(p.magneticFieldAt(position()), dt);
+    addElectricForce(p.electricFieldAt(position()));
+    p.addMagneticForce(magneticFieldAt(p.position()), dt);
+    p.addElectricForce(electricFieldAt(p.position()));
 }
 
 std::ostream& operator<<(std::ostream &os, const Particle &partic) {

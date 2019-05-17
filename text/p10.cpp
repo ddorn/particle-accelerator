@@ -70,10 +70,10 @@ int main() {
 //        if (i % 1000000 == 1
 //        ) cout << i << endl;
 //    }
-    for (int j = 0; j < 10000; ++j) {
+    for (int j = 0; j < 5; ++j) {
+        bobLEponge.draw(s);
         bobLEponge.evolve(1e-11);
 //        if (bobLEponge.particles().front()->element() == bobLEponge.elements()[2].get())
     }
-    bobLEponge.draw(s);
     return 0;
 }

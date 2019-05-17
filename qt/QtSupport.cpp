@@ -94,6 +94,7 @@ const QMatrix4x4 QtSupport::updateViewMatrix(const Accelerator &accelerator) {
     Vector3D pos, speed;
     if (accelerator.particles()->empty()) {
         setViewMode(FREE_VIEW);
+        followedParticle = nullptr;
     } else {
         if (followedParticle == nullptr or !followedParticle->isAlive()) {
             followedParticle = accelerator.particles()->next()->particle();
