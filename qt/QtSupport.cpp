@@ -132,7 +132,7 @@ void QtSupport::drawCube(const QMatrix4x4 &model = QMatrix4x4()) {
 
     glBegin(GL_QUADS);
     // face coté X = +1
-    prog.setAttributeValue(ColorId, 1.0, 0.0, 0.0); // rouge
+    sendColor(1, 0, 0);
     glNormal3f(1, 0, 0);
     prog.setAttributeValue(VertexId, +1.0, -1.0, -1.0);
     prog.setAttributeValue(VertexId, +1.0, +1.0, -1.0);
@@ -140,7 +140,7 @@ void QtSupport::drawCube(const QMatrix4x4 &model = QMatrix4x4()) {
     prog.setAttributeValue(VertexId, +1.0, -1.0, +1.0);
 
     // face coté X = -1
-    prog.setAttributeValue(ColorId, 0.0, 1.0, 0.0); // vert
+    sendColor(0, 1, 0);
     glNormal3f(-1, 0, 0);
     prog.setAttributeValue(VertexId, -1.0, -1.0, -1.0);
     prog.setAttributeValue(VertexId, -1.0, -1.0, +1.0);
@@ -149,7 +149,7 @@ void QtSupport::drawCube(const QMatrix4x4 &model = QMatrix4x4()) {
 
 
     // face coté Y = +1
-    prog.setAttributeValue(ColorId, 0.0, 0.0, 1.0); // bleu
+    sendColor(0, 0, 1);
     glNormal3f(0, 1, 0);
     prog.setAttributeValue(VertexId, -1.0, +1.0, -1.0);
     prog.setAttributeValue(VertexId, -1.0, +1.0, +1.0);
@@ -157,7 +157,7 @@ void QtSupport::drawCube(const QMatrix4x4 &model = QMatrix4x4()) {
     prog.setAttributeValue(VertexId, +1.0, +1.0, -1.0);
 
     // face coté Y = -1
-    prog.setAttributeValue(ColorId, 0.0, 1.0, 1.0); // cyan
+    sendColor(0, 1, 1);
     glNormal3f(0, -1, 0);
     prog.setAttributeValue(VertexId, -1.0, -1.0, -1.0);
     prog.setAttributeValue(VertexId, +1.0, -1.0, -1.0);
@@ -165,7 +165,7 @@ void QtSupport::drawCube(const QMatrix4x4 &model = QMatrix4x4()) {
     prog.setAttributeValue(VertexId, -1.0, -1.0, +1.0);
 
     // face coté Z = +1
-    prog.setAttributeValue(ColorId, 1.0, 1.0, 0.0); // jaune
+    sendColor(1, 1, 0);
     glNormal3f(0, 0, 1);
     prog.setAttributeValue(VertexId, -1.0, -1.0, +1.0);
     prog.setAttributeValue(VertexId, +1.0, -1.0, +1.0);
@@ -173,7 +173,7 @@ void QtSupport::drawCube(const QMatrix4x4 &model = QMatrix4x4()) {
     prog.setAttributeValue(VertexId, -1.0, +1.0, +1.0);
 
     // face coté Z = -1
-    prog.setAttributeValue(ColorId, 1.0, 0.0, 1.0); // magenta
+    sendColor(1, 0, 1);
     glNormal3f(0, 0, -1);
     prog.setAttributeValue(VertexId, -1.0, -1.0, -1.0);
     prog.setAttributeValue(VertexId, -1.0, +1.0, -1.0);
@@ -188,7 +188,7 @@ void QtSupport::drawCube(const Vector3D &position, double scale) {
 // Circle
 void QtSupport::drawCircle(const QMatrix4x4 &model, double r, double g, double b, size_t points) {
     prog.setUniformValue("model", model);
-    prog.setAttributeValue(ColorId, r, g, b);
+    sendColor(r, g, b);
 
     glBegin(GL_LINE_LOOP);  // draw closed lines
     glNormal3f(0, 2, 4);
@@ -204,7 +204,7 @@ void QtSupport::drawCircle(const Vector3D &position, double radius, const Vector
     model.translate(position.x(), position.y(), position.z());
 
     prog.setUniformValue("model", model);
-    prog.setAttributeValue(ColorId, color.x(), color.y(), color.z());
+    sendColor(color);
 
     // We calculate a vector orthogonal to radius. Either radius^e1 or radius^e2 is non zero
     Vector3D r(Vector3D::e1 ^ dir);
@@ -223,7 +223,7 @@ void QtSupport::drawSphere(const QMatrix4x4 &model, double r, double g, double b
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // passe en mode "fil de fer"
 
     prog.setUniformValue("model", model);
-    prog.setAttributeValue(ColorId, r, g, b, 1);
+//    sendColor(r, g b);
 
     sphere.draw(prog, VertexId);
 }
@@ -240,7 +240,7 @@ void QtSupport::drawSphere(const Vector3D &position, double scale, double r, dou
 void QtSupport::drawVector(const Vector3D &vec, const Vector3D &start) {
 
     prog.setUniformValue("model", QMatrix4x4());
-    prog.setAttributeValue(ColorId, 1, 1, 1, 1);
+    sendColor(1, 1, 1);
 
     glBegin(GL_LINES);
     sendNormal();  // This is the lights position
@@ -259,7 +259,7 @@ void QtSupport::drawTube(const Vector3D& start, const Vector3D &end, double radi
     QMatrix4x4 model(posToModel(start, 1));
     model.rotate(angle * 180 / M_PI, 0, 0, 1);
     prog.setUniformValue("model", model);
-    prog.setAttributeValue(ColorId, color.x(), color.y(), color.z(), 0.5);
+    sendColor(color, 0.5);
 
     const double length((end - start).norm());
     const int NB_CIRCLES(ceil(length / 0.2));
@@ -310,7 +310,7 @@ void QtSupport::drawCurvedTube(const Vector3D &start, const Vector3D &end, const
     model.translate(center.x(), center.y());
 
     prog.setUniformValue("model", model);
-    prog.setAttributeValue(ColorId, color.x(), color.y(), color.z(), 0.5);
+    sendColor(color, 0.5);
 
 
     constexpr int NB_SEGMENTS(8);
@@ -427,8 +427,11 @@ void QtSupport::drawParticles(const Accelerator &accelerator) {
 //    for (const auto &p : accelerator.beams()) {
 //        p->draw(*this);
 //    }
+    double i(0);
     for (const auto &p : *accelerator.particles()) {
+        sendPoint()
         p.particle()->draw(*this);
+        ++i;
     }
 }
 

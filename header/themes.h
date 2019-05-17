@@ -114,7 +114,8 @@ public:
 };
 
 class Rainbox : public Theme {
-private:
+public:
+
     /**
      * Converts aa HSV color to RGB
      * @param H hue in degres (0 to 360)
@@ -122,7 +123,7 @@ private:
      * @param V value (0 to 1)
      * @return the RGB color with components between 0 and 1.
      */
-    const Color HSVtoRGB(int H, double S, double V) const {
+    static const Color HSVtoRGB(int H, double S, double V) const {
         double C = S * V;
         double X = C * (1 - abs(fmod(H / 60.0, 2) - 1));
         double m = V - C;
@@ -159,8 +160,6 @@ private:
                 (Bs + m),
                 (Gs + m));
     }
-
-public:
     Rainbox() : Theme(true, false, 1, Color(), Color(1, 1, 1)*0.7) {}
 
     const Color getParticleColor() const override {

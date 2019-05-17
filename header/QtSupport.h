@@ -103,6 +103,8 @@ private:
     bool elementsLighting() { return theme()->isElementFilled() && !viewInsideAccelerator(); }
     void sendPoint(const Vector3D &point) { prog.setAttributeValue(VertexId, point.x(), point.y(), point.z()); };
     void sendNormal(const Vector3D &normal = Vector3D(2, 2, 4)) { glNormal3f(normal.x(), normal.y(), normal.z()); }
+    void sendColor(const Color &color, double a = 1) { prog.setAttributeValue(ColorId, color.x(), color.y(), color.z(), a); }
+    void sendColor(double r, double g, double b, double a = 1) { prog.setAttributeValue(ColorId, r, g, b, a); }
 
 };
 
