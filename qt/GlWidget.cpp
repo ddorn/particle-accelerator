@@ -127,7 +127,7 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
             build(intensity);
             break;
         case Qt::Key_Backspace:
-            accelerator.cleanBeam();
+            accelerator.cleanParticles();
             break;
         case Qt::Key_Escape:
             if (isShift) support.saveView(accelerator);
@@ -169,7 +169,7 @@ GlWidget::GlWidget(QWidget *parent)
 }
 
 void GlWidget::build(double coucou) {
-    accelerator.cleanBeam();
+    accelerator.cleanParticles();
     accelerator.cleanElements();
 //    double quadrupoleIntensity(1.2);
     double dipoleIntensity(5.891582055618276);

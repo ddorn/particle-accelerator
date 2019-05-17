@@ -38,6 +38,7 @@
 typedef std::vector<std::unique_ptr<Element>> ElementVector;
 typedef std::vector<std::unique_ptr<Beam>> BeamVector;
 typedef std::unique_ptr<Node> LinkedList;
+//typedef std::unique_ptr<Node> LinkedList;
 
 class Accelerator : public Content {
 private:
@@ -64,7 +65,7 @@ public:
     /**
      * Cleanup the dust in the Accelerator and remove all particles.
      */
-    void cleanParticles() { delete particles_.get(); particles_ = std::make_unique<Node>(nullptr, 0); beams_.clear(); }
+    void cleanParticles() { particles_ = std::make_unique<Node>(); beams_.clear(); }
     /**
      * Remove all the elements of the accelerator.
      * Warning: don't forget to recycle all this metal otherwise students will have good reasons to demonstrate

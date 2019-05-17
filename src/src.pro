@@ -20,6 +20,7 @@ SOURCES = \
     StraightElement.cpp \
 	Segment.cpp \
 	Sextupole.cpp \
-	Quadrupole.cpp
+	Quadrupole.cpp \
+	Node.cpp
 
 HEADERS += all.h

@@ -56,7 +56,7 @@ void Node::insertNode(Particle_ptr particle) {
     }
 
     double position(particle->longitudinalPosition());
-    if(position < next()->position() or next()->isHead()) {
+    if(next()->isHead() || position < next()->position()) {
         Node *newNode = new Node(particle, position);
         newNode->previous_ = this;
         newNode->next_ = this->next();
@@ -68,14 +68,13 @@ void Node::insertNode(Particle_ptr particle) {
 }
 
 Node::~Node() {
-    if(isHead()){
-        while(!next()->isHead()){
+    if (isHead()) {
+        while (!next()->isHead()) {
             delete next_;
         }
     } else {
         previous()->next_ = next();
         next()->previous_ = previous();
-        particle_.~shared_ptr();
     }
 }
 
@@ -85,4 +84,18 @@ void Node::removeNextNode() {
         return;
     }
     delete next_;
+}
+
+Node::iterator Node::begin() {
+    // We find the head if it's not already, but it should
+    // be called from the head most of the time anyway
+    Node* ptr = this;
+    while (!ptr->isHead()) ptr = ptr->next();
+    return Node::iterator(ptr->next());
+}
+
+Node::iterator Node::end() {
+    Node* ptr = this;
+    while (!ptr->isHead()) ptr = ptr->next();
+    return Node::iterator(ptr);
 }

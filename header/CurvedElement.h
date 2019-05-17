@@ -21,9 +21,9 @@ private:
     const Vector3D calculateCenterOfCurvature() const;
 
 public:
-    CurvedElement(const Vector3D &entree, const Vector3D &exit, double radius,
-                  double curvature) :
-                  Element(entree, exit, radius),
+    CurvedElement(const Vector3D &entree, const Vector3D &exit, double radius, double curvature,
+                  double longitudinalPosition) :
+            Element(entree, exit, radius, longitudinalPosition),
                   curvature_(curvature),
                   centerOfCurvature_(calculateCenterOfCurvature())
                   {}

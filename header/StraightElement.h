@@ -14,8 +14,8 @@ protected:
     const Vector3D direction;  // We store it as it shouldn't change and it simplifies expressions
     const Vector3D radial_direction;  // We store it as it shouldn't change and it simplifies expressions
 public:
-    StraightElement(const Vector3D &start, const Vector3D &exit, double radius)
-            : Element(start, exit, radius),
+    StraightElement(const Vector3D &start, const Vector3D &exit, double radius, double longitudinalPosition)
+            : Element(start, exit, radius, longitudinalPosition),
             direction(~(exit - start)),
             radial_direction(Vector3D::e3 ^ direction) {}
 

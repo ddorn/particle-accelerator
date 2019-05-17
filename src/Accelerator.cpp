@@ -21,10 +21,9 @@ std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
     for (const auto &b : accelerator.beams()) {
         os << *b << endl;
     }
-    Node *p(accelerator.particles()->next());
-    while (!p->isHead()) {
-        os << *(p->particle()) << endl;
-        p = p->next();
+    os << " Particles:" << endl;
+    for (const auto &p : *accelerator.particles()) {
+        cout << *p.particle() << endl;
     }
 //    for (const auto &e : accelerator.elements()) {
 //        os << *e << endl;
@@ -33,22 +32,19 @@ std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
 }
 
 void Accelerator::evolve(double dt) {
-    Node* p(particles_->next());
-    while(!p->isHead()){
-        p->particle()->addElementMagneticForce(dt);
-        p = p->next();
+    for (auto& n : *particles_) {
+        n.particle()->addElementMagneticForce(dt);
     }
-    p = p->next();
-    while(!p->isHead()){
-        p->particle()->evolve(dt);
-        if(!p->particle()->updateElement()){
-            p = p->previous();
-            p->removeNextNode();
-        }
-        p = p->next();
-    }
-    updateParticles();
 
+    for (Node::iterator it(particles_->begin()); it != particles_->end(); ++it) {
+        it->particle()->evolve(dt);
+        if (!it->particle()->updateElement()) {
+            --it;
+            it->removeNextNode();
+        }
+    }
+
+    updateParticles();
 
     for (auto& mrBeam : beams_) {
         mrBeam->removeDeadParticles();
@@ -94,7 +90,7 @@ void Accelerator::evolve(double dt) {
 bool Accelerator::addSegment(const Vector3D &exit, double radius) {
     if (!acceptableNextElement(exit, radius)) return false;
 
-    elements_.push_back(std::make_unique<Segment>(nextStart(), exit, radius));
+    elements_.push_back(std::make_unique<Segment>(nextStart(), exit, radius, length()));
     linkElements();
 
     return true;
@@ -105,7 +101,7 @@ bool Accelerator::addDipole(const Vector3D &exit, double radius, double curvatur
         || fabs(curvature) < Vector3D::getPrecision()) return false;
 
     elements_.push_back(std::make_unique<Dipole>(nextStart(), exit, radius, curvature,
-                                                 magneticFieldIntensity));
+                                                 magneticFieldIntensity, length()));
     linkElements();
     return true;
 }
@@ -119,7 +115,7 @@ bool Accelerator::addDipole(const Vector3D &exit, double radius, double curvatur
     if (energy <= 0) return false;
     if (charge == 0) return false;
 
-    elements_.push_back(std::make_unique<Dipole>(nextStart(), exit, radius,  curvature, mass, charge, energy));
+    elements_.push_back(std::make_unique<Dipole>(nextStart(), exit, radius,  curvature, mass, charge, energy, length()));
     linkElements();
     return true;
 }
@@ -127,7 +123,7 @@ bool Accelerator::addDipole(const Vector3D &exit, double radius, double curvatur
 bool Accelerator::addQuadrupole(const Vector3D &exit, double radius, double magneticFieldIntensity) {
     if (!acceptableNextElement(exit, radius)) return false;
 
-    elements_.push_back(std::make_unique<Quadrupole>(nextStart(), exit, radius,  magneticFieldIntensity));
+    elements_.push_back(std::make_unique<Quadrupole>(nextStart(), exit, radius,  magneticFieldIntensity, length()));
     linkElements();
     return true;
 }
@@ -135,7 +131,7 @@ bool Accelerator::addQuadrupole(const Vector3D &exit, double radius, double magn
 bool Accelerator::addSextupole(const Vector3D &exit, double radius, double magneticlFieldIntensity) {
     if (!acceptableNextElement(exit, radius)) return false;
 
-    elements_.push_back(std::make_unique<Sextupole>(nextStart(), exit, radius,  magneticlFieldIntensity));
+    elements_.push_back(std::make_unique<Sextupole>(nextStart(), exit, radius,  magneticlFieldIntensity, length()));
     linkElements();
     return true;
 }

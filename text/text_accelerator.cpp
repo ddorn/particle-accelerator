@@ -16,8 +16,8 @@ int main() {
     TextSupport support(std::cout);
     Accelerator accelerator(&support);
 
-    StraightElement* s = new Segment(Vector3D(1, 0, 0), Vector3D(2, 0, 0), 0.2, nullptr);
-    Dipole* d = new Dipole(Vector3D(), Vector3D(1, 0, 0), 0.2, s, 0.3, 1);
+    StraightElement* s = new Segment(Vector3D(1, 0, 0), Vector3D(2, 0, 0), 0.2, 0);
+    Dipole* d = new Dipole(Vector3D(), Vector3D(1, 0, 0), 0.2, s, 0.3, 0);
     accelerator.add(d);
 
 

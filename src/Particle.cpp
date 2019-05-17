@@ -65,12 +65,14 @@ bool Particle::updateElement() {
 
 std::ostream& operator<<(std::ostream &os, const Particle &partic) {
     os << "Particle :" << std::endl
-        << " - mass [GeV/c²]: " << partic.mass() << std::endl
-        << " - charge [C]: " << partic.charge() << std::endl
-        << " - position [m]: " << partic.position() << std::endl
-        << " - gamma : " << partic.gamma() << std::endl
-        << " - energy [GeV]: " << partic.energy() << std::endl
-        << " - speed [m/s]: " << partic.speed() << std::endl
-        << " - corrected force [N]: " << partic.lastForce() << std::endl;
+       << " - mass [GeV/c²]: " << partic.mass() << std::endl
+       << " - charge [C]: " << partic.charge() << std::endl
+       << " - position [m]: " << partic.position() << std::endl
+       << " - longitudinal position [m]: " << partic.longitudinalPosition() << std::endl
+       << " - gamma : " << partic.gamma() << std::endl
+       << " - energy [GeV]: " << partic.energy() << std::endl
+       << " - speed [m/s]: " << partic.speed() << std::endl
+       << " - corrected force [N]: " << partic.lastForce() << std::endl
+       << " - Number of turns: " << partic.nbrOfTurns() << std::endl;
     return os;
 }

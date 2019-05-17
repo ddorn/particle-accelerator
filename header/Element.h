@@ -16,11 +16,13 @@ private:
     Vector3D start_;
     Vector3D exit_;
     double radius_;
+    double longitudinalPosition_;
     Element* nextElement_;
     Element* previousElement_;
 public:
-    Element(const Vector3D &entree, const Vector3D &exit, double radius)
-    : start_(entree), exit_(exit), radius_(radius), nextElement_(nullptr), previousElement_(nullptr) {}
+    Element(const Vector3D &entree, const Vector3D &exit, double radius, double longitudinalPosition)
+    : start_(entree), exit_(exit), radius_(radius), longitudinalPosition_(longitudinalPosition),
+    nextElement_(nullptr), previousElement_(nullptr) {}
 
     /**
      * Get the magnetic fields at a given point in space.
@@ -93,6 +95,7 @@ public:
     const Vector3D &exit() const { return exit_; }
     Element* nextElement() const { return nextElement_; }
     Element* previousElement() const { return previousElement_; }
+    double longitudinalPosition() const { return longitudinalPosition_; };
 
     void setNextElement(Element* e) { nextElement_ = e; }
     void setPreviousElement(Element* e) { previousElement_ = e; }

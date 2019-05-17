@@ -50,26 +50,29 @@ int main() {
 //    vector<Particle> particles{dipHole};
     //  ---------
 
-    bobLEponge.addParticle(make_shared<Particle>(p2));
-
-    bobLEponge.draw(s);
+//    bobLEponge.addParticle(make_shared<Particle>(p2));
+    bobLEponge.cleanParticles();
+    bobLEponge.addCircularBeam(mass, charge, 2, -Vector3D::e2, 1, 1, Vector3D(), 0);
 //    int i(0);
-//    while (!bobLEponge.particles().empty()) {
+//    while (!bobLEponge.particles()->empty()) {
 //        bobLEponge.evolve(1e-11);
+//        bobLEponge.draw(s);
 //        ++i;
 //    }
 //    cout <<i<< endl;
-    int i = 0;
-    while (!bobLEponge.particles()->isHead()) {
-        bobLEponge.evolve(1e-11);
-        ++i;
-        if (i % 1000000 == 1
-        ) cout << i << endl;
-    }
-//    for (int j = 0; j < 10000000; ++j) {
-//        bobLEponge.evolve(1e-12);
-//        if (bobLEponge.particles().front()->element() == bobLEponge.elements()[2].get())
-//            bobLEponge.draw(s);
+
+//    int i = 0;
+//    while (!bobLEponge.particles()->isHead()) {
+//        bobLEponge.evolve(1e-11);
+//        ++i;
+//        if (i % 1000000 == 1
+//        ) cout << i << endl;
 //    }
+
+    for (int j = 0; j < 10000; ++j) {
+        bobLEponge.evolve(1e-11);
+//        if (bobLEponge.particles().front()->element() == bobLEponge.elements()[2].get())
+    }
+    bobLEponge.draw(s);
     return 0;
 }

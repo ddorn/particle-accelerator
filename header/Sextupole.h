@@ -11,8 +11,9 @@ class Sextupole : public StraightElement {
 private:
     double intensity_;
 public:
-    Sextupole(const Vector3D &start, const Vector3D &exit, double radius, double intensity) :
-    StraightElement(start, exit, radius), intensity_(intensity) {}
+    Sextupole(const Vector3D &start, const Vector3D &exit, double radius, double intensity,
+              double longitudinalPosition) :
+            StraightElement(start, exit, radius, longitudinalPosition), intensity_(intensity) {}
 
     const Vector3D magneticForceAt(const Vector3D &position) const override;
     void draw(Support &support) const override { support.draw(*this); }
