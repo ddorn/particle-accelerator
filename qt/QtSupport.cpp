@@ -42,14 +42,17 @@ void QtSupport::init() {
 //    glBlendFunc(GL_SRC_ALPHA, GL_ONE);  // best
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glLineWidth(2);  // The size doesn't matter, but the width definitely does.
-    
+
     sphere.initialize();
     initPosition();
 
     initThemes();
 }
+
 void QtSupport::initPosition() {
+    position *= 0;
     view.setToIdentity();
+
     view.translate(0, 0, -6);
     prog.setUniformValue("view", view);
     prog.setUniformValue("model", QMatrix4x4());
@@ -58,22 +61,25 @@ void QtSupport::initPosition() {
 // Move view
 
 void QtSupport::translate(double x, double y, double z) {
-  /* Multiplie la matrice de vue par LA GAUCHE.
-   * Cela fait en sorte que la dernière modification apportée
-   * à la matrice soit appliquée en dernier (composition de fonctions).
-   */
-  QMatrix4x4 translation_supplementaire;
-  translation_supplementaire.translate(x, y, z);
-  view = translation_supplementaire * view;
-  prog.setUniformValue("view", view);
+    /* Multiplie la matrice de vue par LA GAUCHE.
+     * Cela fait en sorte que la dernière modification apportée
+     * à la matrice soit appliquée en dernier (composition de fonctions).
+     */
+    QMatrix4x4 translation_supplementaire;
+    translation_supplementaire.translate(x, y, z);
+    view = translation_supplementaire * view;
+    prog.setUniformValue("view", view);
+    position += Vector3D(x, y, z);
 }
+
 void QtSupport::rotate(double angle, double dir_x, double dir_y, double dir_z) {
-  // Multiplie la matrice de vue par LA GAUCHE
-  QMatrix4x4 rotation_supplementaire;
-  rotation_supplementaire.rotate(angle, dir_x, dir_y, dir_z);
-  view = rotation_supplementaire * view;
-  prog.setUniformValue("view", view);
+    // Multiplie la matrice de vue par LA GAUCHE
+    QMatrix4x4 rotation_supplementaire;
+    rotation_supplementaire.rotate(angle, dir_x, dir_y, dir_z);
+    view = rotation_supplementaire * view;
+    prog.setUniformValue("view", view);
 }
+
 QMatrix4x4 QtSupport::lookAt(const Vector3D &eyePosition, const Vector3D &center, const Vector3D &up) {
     QMatrix4x4 m;
     m.lookAt(
@@ -83,16 +89,9 @@ QMatrix4x4 QtSupport::lookAt(const Vector3D &eyePosition, const Vector3D &center
     );
     return m;
 }
+
 const QMatrix4x4 QtSupport::updateViewMatrix(const Accelerator &accelerator) {
-    // We update whether we are inside the accelerator
-    QVector3D qpos(view * QVector3D());
-    Vector3D p(qpos.x(), qpos.y(), qpos.z());
-    cout << p << endl;
-    Element *element = accelerator.elementFromPosition(p);
-    viewInsideAccelerator_ = element != nullptr && !element->collideBorder(p);
-//
     Vector3D pos, speed;
-    cout << accelerator << endl;
     if (accelerator.particles()->empty()) {
         setViewMode(FREE_VIEW);
     } else {
@@ -102,6 +101,16 @@ const QMatrix4x4 QtSupport::updateViewMatrix(const Accelerator &accelerator) {
         pos = followedParticle->position();
         speed = followedParticle->speed();
     }
+
+    // We update whether we are inside the accelerator
+    Element *element = accelerator.elementFromPosition(position);
+    viewInsideAccelerator_ = viewMode == FIRST_PERSON
+                             || viewMode == THIRD_PERSON
+                             || (element != nullptr
+                                 && !element->collideBorder(position));
+    QVector3D p(view.inverted() * QVector3D());
+    position = Vector3D(p.x(), p.y(), p.z());
+
 
     // We use the current view matrix only in free mode, otherwise
     // we determine it but don't save it so we can go back to where
@@ -184,9 +193,11 @@ void QtSupport::drawCube(const QMatrix4x4 &model = QMatrix4x4()) {
 
     glEnd();
 }
+
 void QtSupport::drawCube(const Vector3D &position, double scale) {
     drawCube(posToModel(position, scale));
 }
+
 // Circle
 void QtSupport::drawCircle(const QMatrix4x4 &model, double r, double g, double b, size_t points) {
     prog.setUniformValue("model", model);
@@ -201,6 +212,7 @@ void QtSupport::drawCircle(const QMatrix4x4 &model, double r, double g, double b
     }
     glEnd();
 }
+
 void QtSupport::drawCircle(const Vector3D &position, double radius, const Vector3D &dir, const Vector3D &color) {
     QMatrix4x4 model;
     model.translate(position.x(), position.y(), position.z());
@@ -220,6 +232,7 @@ void QtSupport::drawCircle(const Vector3D &position, double radius, const Vector
     }
     glEnd();
 }
+
 // Sphere
 void QtSupport::drawSphere(const QMatrix4x4 &model, double r, double g, double b) {
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // passe en mode "fil de fer"
@@ -229,15 +242,19 @@ void QtSupport::drawSphere(const QMatrix4x4 &model, double r, double g, double b
 
     sphere.draw(prog, VertexId);
 }
-void QtSupport::drawSphere(const QMatrix4x4 &model, const Vector3D &color)  {
+
+void QtSupport::drawSphere(const QMatrix4x4 &model, const Vector3D &color) {
     drawSphere(model, color.x(), color.y(), color.z());
 }
+
 void QtSupport::drawSphere(const Vector3D &position, double scale, const Vector3D &color) {
     drawSphere(position, scale, color.x(), color.y(), color.z());
 }
+
 void QtSupport::drawSphere(const Vector3D &position, double scale, double r, double g, double b) {
     drawSphere(posToModel(position, scale), r, g, b);
 }
+
 // Vector
 void QtSupport::drawVector(const Vector3D &vec, const Vector3D &start) {
 
@@ -250,8 +267,9 @@ void QtSupport::drawVector(const Vector3D &vec, const Vector3D &start) {
     sendPoint(vec + start);
     glEnd();
 }
+
 // Tube
-void QtSupport::drawTube(const Vector3D& start, const Vector3D &end, double radius, const Vector3D& color) {
+void QtSupport::drawTube(const Vector3D &start, const Vector3D &end, double radius, const Vector3D &color) {
     // This supposes start and end are in the XY plane.
 
     Vector3D dir(~(end - start));
@@ -301,6 +319,7 @@ void QtSupport::drawTube(const Vector3D& start, const Vector3D &end, double radi
     }
     glEnd();
 }
+
 // Curved Tube
 void QtSupport::drawCurvedTube(const Vector3D &start, const Vector3D &end, const Vector3D &center, double radius,
                                const Vector3D &color) {
@@ -328,7 +347,7 @@ void QtSupport::drawCurvedTube(const Vector3D &start, const Vector3D &end, const
 
     Vector3D c(relEntree);
     Vector3D axis1(relEntree ^ Vector3D::e3);
-    for (int i = 0; i <= NB_CIRCLES ; ++i) {
+    for (int i = 0; i <= NB_CIRCLES; ++i) {
         Vector3D next(relEntree.rotate(Vector3D::e3, -angle * i));
         Vector3D axis2(next ^ Vector3D::e3);
         Vector3D dir1(Vector3D::e3 * radius);
@@ -363,9 +382,11 @@ void QtSupport::drawCurvedTube(const Vector3D &start, const Vector3D &end, const
 void QtSupport::draw(const Vector3D &d) {
     drawVector(d);
 }
+
 void QtSupport::draw(const Particle &particle) {
     drawSphere(particle.position(), viewInsideAccelerator() ? 0.005 : 0.03, theme()->getParticleColor());
 }
+
 void QtSupport::draw(const Accelerator &accelerator) {
     updateViewMatrix(accelerator);
 
@@ -382,36 +403,45 @@ void QtSupport::draw(const Accelerator &accelerator) {
         drawElements(accelerator);
     }
 }
+
 void QtSupport::draw(const Element &element) {
     // This just draw a cube at the start and end of the element
     drawCube(element.start(), 0.05);
     drawCube(element.exit(), 0.05);
 }
+
 void QtSupport::draw(const StraightElement &/*element*/) {
 //    drawVector(element.exit() - element.start(), element.start());
 }
-void QtSupport::draw(const Quadrupole &element  ) {
+
+void QtSupport::draw(const Quadrupole &element) {
     element.StraightElement::draw(*this);
     drawTube(element.start(), element.exit(), element.radius(), theme()->getQuadrupoleColor());
 }
+
 void QtSupport::draw(const Segment &element) {
     element.StraightElement::draw(*this);
     drawTube(element.start(), element.exit(), element.radius(), theme()->getSegmentColor());
 }
+
 void QtSupport::draw(const CurvedElement &/*element*/) {
 //    drawCircle(element.centerOfCurvature(), 1 / element.curvature(), Vector3D::e3, Vector3D(1, 1, 1));
 }
+
 void QtSupport::draw(const Dipole &element) {
     element.CurvedElement::draw(*this);
-    drawCurvedTube(element.start(), element.exit(), element.centerOfCurvature(), element.radius(), theme()->getDipoleColor());
+    drawCurvedTube(element.start(), element.exit(), element.centerOfCurvature(), element.radius(),
+                   theme()->getDipoleColor());
 }
+
 void QtSupport::draw(const Sextupole &element) {
     element.StraightElement::draw(*this);
     drawTube(element.start(), element.exit(), element.radius(), theme()->getSextupoleColor());
 
 }
+
 void QtSupport::draw(const Beam &beam) {
-    for (auto const& p : beam.macroParticles()) {
+    for (auto const &p : beam.macroParticles()) {
         draw(*p);
     }
 }
@@ -495,7 +525,7 @@ void QtSupport::initThemes() {
 
 void QtSupport::nextTheme(int n) {
     // size_t arithmetic apparently works differently...
-    n %= (int)themes.size();
+    n %= (int) themes.size();
     cout << n << endl;
     //  So it's always positive
     if (n < 0) n += themes.size();

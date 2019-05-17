@@ -31,6 +31,7 @@ private:
     // Camera
     QMatrix4x4 view;
     ViewMode viewMode;
+    Vector3D position;
     particle_ptdr followedParticle;
     bool viewInsideAccelerator_ = false;
     // Themes

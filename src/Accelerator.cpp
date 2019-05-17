@@ -53,7 +53,7 @@ void Accelerator::evolve(double dt) {
     // Remove beams with no particles
     size_t i(0);
     while (i < beams_.size()) {
-        if (beams_[i]->nbrParticles() == 0) {
+        if (beams_[i]->macroParticles().empty()) {
             swap(beams_[i], beams_.back());
             beams_.pop_back();
         } else {

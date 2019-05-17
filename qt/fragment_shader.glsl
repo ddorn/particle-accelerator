@@ -6,7 +6,7 @@ void main()
 {
     vec3 light_color = vec3(1, 0.9, 0.8);
 
-    float ambiant = 0.1;
+    float ambiant = 0.2;
     vec3 light_source = vec3(0, 2, 4);
 
 
