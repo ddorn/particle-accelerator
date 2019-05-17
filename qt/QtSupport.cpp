@@ -103,13 +103,13 @@ const QMatrix4x4 QtSupport::updateViewMatrix(const Accelerator &accelerator) {
     }
 
     // We update whether we are inside the accelerator
+    QVector3D p(view.inverted() * QVector3D());
+    position = Vector3D(p.x(), p.y(), p.z());
     Element *element = accelerator.elementFromPosition(position);
     viewInsideAccelerator_ = viewMode == FIRST_PERSON
                              || viewMode == THIRD_PERSON
                              || (element != nullptr
                                  && !element->collideBorder(position));
-    QVector3D p(view.inverted() * QVector3D());
-    position = Vector3D(p.x(), p.y(), p.z());
 
 
     // We use the current view matrix only in free mode, otherwise
