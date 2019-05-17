@@ -99,8 +99,7 @@ void Accelerator::evolve(double dt) {
 bool Accelerator::addSegment(const Vector3D &exit, double radius) {
     if (!acceptableNextElement(exit, radius)) return false;
 
-    elements_.push_back(std::make_unique<Segment>(nextStart(), exit, radius, length()));
-    linkElements();
+    addElement(std::make_unique<Segment>(nextStart(), exit, radius, length()));
 
     return true;
 }
@@ -109,9 +108,8 @@ bool Accelerator::addDipole(const Vector3D &exit, double radius, double curvatur
     if (!acceptableNextElement(exit, radius)
         || fabs(curvature) < Vector3D::getPrecision()) return false;
 
-    elements_.push_back(std::make_unique<Dipole>(nextStart(), exit, radius, curvature,
+    addElement(std::make_unique<Dipole>(nextStart(), exit, radius, curvature,
                                                  magneticFieldIntensity, length()));
-    linkElements();
     return true;
 }
 
@@ -124,24 +122,21 @@ bool Accelerator::addDipole(const Vector3D &exit, double radius, double curvatur
     if (energy <= 0) return false;
     if (charge == 0) return false;
 
-    elements_.push_back(std::make_unique<Dipole>(nextStart(), exit, radius,  curvature, mass, charge, energy, length()));
-    linkElements();
+    addElement(std::make_unique<Dipole>(nextStart(), exit, radius,  curvature, mass, charge, energy, length()));
     return true;
 }
 
 bool Accelerator::addQuadrupole(const Vector3D &exit, double radius, double magneticFieldIntensity) {
     if (!acceptableNextElement(exit, radius)) return false;
 
-    elements_.push_back(std::make_unique<Quadrupole>(nextStart(), exit, radius,  magneticFieldIntensity, length()));
-    linkElements();
+    addElement(std::make_unique<Quadrupole>(nextStart(), exit, radius,  magneticFieldIntensity, length()));
     return true;
 }
 
 bool Accelerator::addSextupole(const Vector3D &exit, double radius, double magneticlFieldIntensity) {
     if (!acceptableNextElement(exit, radius)) return false;
 
-    elements_.push_back(std::make_unique<Sextupole>(nextStart(), exit, radius,  magneticlFieldIntensity, length()));
-    linkElements();
+    addElement(std::make_unique<Sextupole>(nextStart(), exit, radius,  magneticlFieldIntensity, length()));
     return true;
 }
 
@@ -205,15 +200,6 @@ bool Accelerator::addCircularBeam(double mass, double charge, double energy, con
     return true;
 }
 
-
-double Accelerator::length() const {
-    double l(0);
-    for(auto &e : elements()){
-        l += e->length();
-    }
-    return l;
-}
-
 Element *Accelerator::elementFromPosition(const Vector3D &position) const {
     for(auto& e : elements()){
         if(Vector3D::e3.tripleProduct(position, e->exit()) < 0 and Vector3D::e3.tripleProduct(position, e->start()) > 0){
@@ -270,4 +256,10 @@ bool Accelerator::addParticle(particle_ptdr particle) {
         return false;
     particles_->insertNode(particle);
     return true;
+}
+
+void Accelerator::addElement(std::unique_ptr<Element> &&pdtr) {
+    length_ += pdtr->length();
+    elements_.push_back(std::move(pdtr));
+    linkElements();
 }

@@ -48,16 +48,17 @@ private:
      * @param particle Particle to add.
      */
     Vector3D start_;
-
+    double length_;
     ElementVector elements_;
     BeamVector beams_;
     LinkedList particles_;
     static double MIN_DIST;
 
     const Vector3D nextStart() const { return elements().empty() ? start_ : elements().back()->exit(); }
-
+    void addElement(std::unique_ptr<Element>&& pdtr);
 public:
-    explicit Accelerator(const Vector3D& start = Vector3D(), int rng = 42) : rng_(rng), start_(start), particles_(std::make_unique<Node>()){}
+    explicit Accelerator(const Vector3D& start = Vector3D(), int rng = 42)
+        : rng_(rng), start_(start), length_(0), particles_(std::make_unique<Node>()) {}
     Accelerator(const Accelerator &other) = delete;
     void operator=(const Accelerator & other) = delete;
 
@@ -71,11 +72,11 @@ public:
      * Remove all the elements of the accelerator.
      * Warning: don't forget to recycle all this metal otherwise students will have good reasons to demonstrate
      */
-    void cleanElements() { elements_.clear(); }
+    void cleanElements() { elements_.clear(); length_ = 0; }
 
     /**
      * One small step for the accelerator, one giant leap for mankind.
-     * Small is exactly 0.01 seconds.
+     * Small is exactly 0.00000000001 seconds.
      */
     void evolve(double dt = 1e-11);
 
@@ -126,7 +127,7 @@ public:
     * @return if the last element ends where the first element begins.
     */
     bool isClosed() const;
-    double length() const;
+    double length() const { return length_; };
     /**
      * return a ptr at the element in the direction of the position, ie.
      * the element such that the vector position is between the start and the end.

@@ -16,8 +16,6 @@ void Particle::addMagneticForce(const Vector3D &b, double dt) {
     if (dt <= 0) return;
 
     Vector3D force(charge() * speed() ^ b);
-//    cout << b << endl;
-//    cout << "Champ: " << force << endl;
 
     if (force.isZero()) return;
 
@@ -36,7 +34,6 @@ void Particle::addMagneticForce(const Vector3D &b, double dt) {
 
 void Particle::addElectricForce(const Vector3D& e){
     force_ += charge() * e;
-    std::cout << charge() * e << std::endl;
 }
 
 void Particle::evolve(double dt) {
