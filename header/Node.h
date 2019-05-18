@@ -83,6 +83,11 @@ public:
      */
     void exchangeNext();
     /**
+     * Move the node of n places. If n is negative,
+     * the node will step back from n places.
+     */
+    void move(int n);
+    /**
      * Insert a node in the right position
      * in the list and attach the particle in
      * argument to that new node.

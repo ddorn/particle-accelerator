@@ -49,6 +49,28 @@ void Node::exchangePlace(Node* other){
     this->previous_ = otherPrevious;
 }
 
+void Node::move(int n){
+    if(n == 0) return;
+
+    previous()->next_ = next();
+    next()->previous_ = previous();
+
+    Node* newPreviousNode(previous());
+    if(n < 0){
+        for(int i(0); i < -n; ++i){
+            newPreviousNode = newPreviousNode->previous();
+        }
+    } else{
+        for(int i(0); i < n; ++i){
+            newPreviousNode = newPreviousNode->next();
+        }
+    }
+    next_ = newPreviousNode->next();
+    next_->previous_ = this;
+    previous_ = newPreviousNode;
+    previous_->next_ = this;
+}
+
 void Node::insertNode(particle_ptdr particle) {
     if(particle == nullptr){
         std::cerr << "Node.cpp : Tried to insert a new head" << std::endl;

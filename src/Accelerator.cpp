@@ -213,18 +213,17 @@ Element *Accelerator::elementFromPosition(const Vector3D &position) const {
 void Accelerator::updateParticles() const {
     for (auto &n : *particles_) n.updatePosition();
 
-    Node *prevNode(particles_->previous());
     Node *nextNode(particles_->next());
-    bool exchange(false);
-    if (prevNode->previousPosition() - prevNode->position() > length() / 2) {
-        prevNode->exchangePlace(particles_.get());
-        exchange = true;
+    int exchangesCount(0);
+    while (particles_->previous()->previousPosition() - particles_->previous()->position() > length() / 2) { //TODO control that we don't do an infinite boucle de rétroaction
+        particles_->move(-1);
+        ++exchangesCount;
     }
-    if (nextNode->position() - nextNode->previousPosition() > length() / 2) {
-        nextNode->exchangePlace(particles_.get());
-        if (exchange) {
-            particles_->exchangePlace(prevNode); // It's a bit ugly, but we will upgrade it later #TODO
-        }
+
+    while (nextNode->position() - nextNode->previousPosition() > length() / 2) { //TODO pareil que juste au-dessus
+        Node* nextNextNode(nextNode->next());
+        nextNode->move(-exchangesCount - 1);
+        nextNode = nextNextNode;
     }
 
 
