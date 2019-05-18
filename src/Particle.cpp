@@ -78,6 +78,9 @@ const Vector3D Particle::electricFieldAt(const Vector3D &pos) const {
 }
 
 void Particle::particleInteraction(Particle& p, double dt){
+    if(p.position() == position()){
+        // TODO On fait quoi ? On pourrait juste les mettre mortes, mais elles seraient pas enlevées de la liste de l'accélérateur
+    }
     addMagneticForce(p.magneticFieldAt(position()), dt);
     addElectricForce(p.electricFieldAt(position()));
     p.addMagneticForce(magneticFieldAt(p.position()), dt);

@@ -63,6 +63,8 @@ void Beam::removeDeadParticles() {
 
 void Beam::updateEmittance() {
     if (nbrMacroParticles_ == 0) return;
+
+    // Calculate emittance in relation to the z-axis
     double zPositions(0);
     double zSpeeds(0);
     double zProductPosSpeeds(0);
@@ -76,6 +78,7 @@ void Beam::updateEmittance() {
     A12Z_ = zProductPosSpeeds / nbrMacroParticles_ / emittanceZ_;
     A22Z_ = zPositions / nbrMacroParticles_ / emittanceZ_;
 
+    //calculate emittance in relation to the radial-xy-axis
     double rPositions(0);
     double rSpeeds(0);
     double rProductPosSpeeds(0);
