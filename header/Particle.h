@@ -5,7 +5,7 @@
  * anything that will move inside the accelerator
  * and has a mass, charge, position and momentum.
  *
- * Use the methods addMagneticForce and evolve to
+ * Use the methods addMagneticForce, AddElectricForce and evolve to
  * actualize the force acting on the particle and
  * move it.
  *

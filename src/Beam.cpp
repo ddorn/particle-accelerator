@@ -8,28 +8,6 @@
 
 using namespace std;
 
-void Beam::evolve(double dt) {
-
-    // Update forces from the elements of the accelerator
-    for (auto &p : macroParticles_) {
-        p->addMagneticForce(p->element()->magneticForceAt(p->position()), dt);
-    }
-
-    // Move particles between elements and remove them if needed
-    size_t i(0);
-    while (i < macroParticles_.size()) {
-        if (!macroParticles_[i]->updateElement()) {
-            removeMacroParticle(i);
-        } else {
-            ++i;
-        }
-    }
-
-    // And then compute the new position, speed and everything
-    for (auto& p : macroParticles_) {
-        p->evolve(dt);
-    }
-}
 
 void Beam::removeMacroParticle(size_t i) {
     nbrMacroParticles_ -= 1;

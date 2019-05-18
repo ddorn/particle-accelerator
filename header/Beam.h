@@ -20,7 +20,10 @@ typedef std::vector<std::shared_ptr<Particle>> ParticleVector;
  * to analyze their evolution in the accelerator.
  * To diminish the number of computations, the beam
  * contains macroparticles, each one representing a group
- * of particles.
+ * of particles. The particle of reference, given at the
+ * creation of the beam, represents the mean characteristics
+ * of the particles in the beam : energy, radial position and speed,
+ * charge, mass.
  *
  */
 class Beam : public Content {
@@ -65,8 +68,6 @@ public:
     size_t lambda() const { return lambda_; };
 
     int nbrParticles() const { return int(ceil(lambda() * macroParticles_.size())); }
-
-    void evolve(double dt = 0.01);
 
     void draw(Support &support) const override { support.draw(*this); }
 
