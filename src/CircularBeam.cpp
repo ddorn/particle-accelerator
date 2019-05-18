@@ -23,7 +23,7 @@ void CircularBeam::generateParticles(double standardDeviation, int rng) {
     double ds(totalLength / nbrMacroParticles_);
 
     do {
-        if (s >= element->length()) {
+        while (s >= element->length()) {
             s -= element->length();
             element = element->nextElement();
         }

@@ -57,6 +57,7 @@ void Accelerator::evolve(double dt) {
 
     for (auto& mrBeam : beams_) {
         mrBeam->removeDeadParticles();
+        mrBeam->updateEmittance();
     }
 
     // Remove beams with no particles

@@ -28,13 +28,10 @@ public:
     Beam(const Particle &refParticle_, size_t lambda_, size_t nbrMacroParticles) : lambda_(lambda_),
                                                                                    nbrMacroParticles_(
                                                                                            nbrMacroParticles),
-                                                                                   refParticle_(refParticle_) {}
+                                                                                   refParticle_(refParticle_)
+                                                                                   { updateEmittance(); }
    ParticleVector const& macroParticles() const { return macroParticles_; }
 
-    /**
-     * @return the mean energy between the real particles. Unit : GeV
-     */
-    double meanEnergy() const;
 
     /**
      * It is a measure for
@@ -42,24 +39,24 @@ public:
      * in position-and-momentum phase space
      * @return emittance. Unit : m²/s
      */
-    double emittanceZ() const;
-    double emittanceR() const;
+    double emittanceZ() const { return emittanceZ_; }
+    double emittanceR() const { return emittanceR_; }
 
     /**
      * A11, A12 and A22 are coefficients which describe the ellipsis
      * of the beam in position-and-momentum phase space.
      */
-    double A11R() const;
+    double A11R() const { return A11R_; }
 
-    double A12R() const;
+    double A12R() const { return A12R_; }
 
-    double A22R() const;
+    double A22R() const { return A22R_; }
 
-    double A11Z() const;
+    double A11Z() const { return A11Z_; }
 
-    double A12Z() const;
+    double A12Z() const { return A12Z_; }
 
-    double A22Z() const;
+    double A22Z() const { return A22Z_; }
 
     /**
      * @return the ratio between the real particles and the macroparticles,
@@ -79,11 +76,14 @@ public:
 
     void removeDeadParticles();
 
+    void updateEmittance();
+
 private:
     /**
      * The number of real particles in a macroparticle
      */
     size_t lambda_;
+
 
 protected:
     size_t nbrMacroParticles_;
@@ -92,6 +92,21 @@ protected:
      */
     ParticleVector macroParticles_;
     Particle refParticle_;
+
+    double emittanceZ_;
+    double emittanceR_;
+
+    double A11R_;
+
+    double A12R_;
+
+    double A22R_;
+
+    double A11Z_;
+
+    double A12Z_;
+
+    double A22Z_;
 
 
 };

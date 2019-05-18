@@ -8,92 +8,6 @@
 
 using namespace std;
 
-
-double Beam::meanEnergy() const {
-    double sum(0);
-    for(const auto& particle : macroParticles_){
-        sum += particle->energy();
-    }
-    return sum / nbrParticles();
-}
-
-
-double Beam::emittanceZ() const {
-    double zPositions(0);
-    double zSpeeds(0);
-    double productPosSpeeds(0);
-    for(const auto& p : macroParticles_){
-        zPositions += p->position().z() * p->position().z();
-        zSpeeds += p->speed().z() * p->speed().z();
-        productPosSpeeds += p->position().z() * p->speed().z();
-    }
-    return sqrt((zPositions * zSpeeds - productPosSpeeds * productPosSpeeds) / nbrMacroParticles_ / nbrMacroParticles_);
-}
-
-double Beam::emittanceR() const {
-    double rPositions(0);
-    double rSpeeds(0);
-    double productPosSpeeds(0);
-    for(const auto& p : macroParticles_){
-        RadialVec3D pos(p->radialPosition());
-        RadialVec3D speed(p->radialSpeed());
-        rPositions += pos.r() * pos.r();
-        rSpeeds += speed.r() * speed.r();
-        productPosSpeeds += pos.r() * speed.r();
-    }
-    return sqrt((rPositions * rSpeeds - productPosSpeeds * productPosSpeeds) / nbrMacroParticles_ / nbrMacroParticles_);
-}
-
-double Beam::A11R() const {
-    double rSpeeds(0);
-    for(const auto& p : macroParticles_){
-        RadialVec3D speed(p->radialSpeed());
-        rSpeeds += speed.r() * speed.r();
-    }
-    return rSpeeds / nbrMacroParticles_ / emittanceR();
-}
-
-double Beam::A12R() const {
-    double productPosSpeeds(0);
-    for(const auto& p : macroParticles_){
-        productPosSpeeds += p->radialPosition().r() * p->radialSpeed().r();
-    }
-    return productPosSpeeds / nbrMacroParticles_ / emittanceR();
-}
-
-double Beam::A22R() const {
-    double zPositions(0);
-    for(const auto& p : macroParticles_){
-        RadialVec3D pos(p->radialPosition());
-        zPositions += pos.r() * pos.r();
-    }
-    return zPositions / nbrMacroParticles_ / emittanceR();
-}
-
-double Beam::A11Z() const {
-    double zSpeeds(0);
-    for(const auto& p : macroParticles_){
-        zSpeeds += p->speed().z() * p->speed().z();
-    }
-    return zSpeeds / nbrMacroParticles_ / emittanceZ();
-}
-
-double Beam::A12Z() const {
-    double productPosSpeeds(0);
-    for(const auto& p : macroParticles_){
-        productPosSpeeds += p->speed().z() * p->position().z();
-    }
-    return productPosSpeeds / nbrMacroParticles_ / emittanceZ();
-}
-
-double Beam::A22Z() const {
-    double rPositions(0);
-    for(const auto& p : macroParticles_){
-        rPositions += p->position().z() * p->position().z();
-    }
-    return rPositions / nbrMacroParticles_ / emittanceZ();
-}
-
 void Beam::evolve(double dt) {
 
     // Update forces from the elements of the accelerator
@@ -147,12 +61,42 @@ void Beam::removeDeadParticles() {
     }
 }
 
+void Beam::updateEmittance() {
+    if (nbrMacroParticles_ == 0) return;
+    double zPositions(0);
+    double zSpeeds(0);
+    double zProductPosSpeeds(0);
+    for(const auto& p : macroParticles_){
+        zPositions += p->position().z() * p->position().z();
+        zSpeeds += p->speed().z() * p->speed().z();
+        zProductPosSpeeds += p->position().z() * p->speed().z();
+    }
+    emittanceZ_ = sqrt((zPositions * zSpeeds - zProductPosSpeeds * zProductPosSpeeds) / nbrMacroParticles_ / nbrMacroParticles_);
+    A11Z_ = zSpeeds / nbrMacroParticles_ / emittanceZ_;
+    A12Z_ = zProductPosSpeeds / nbrMacroParticles_ / emittanceZ_;
+    A22Z_ = zPositions / nbrMacroParticles_ / emittanceZ_;
+
+    double rPositions(0);
+    double rSpeeds(0);
+    double rProductPosSpeeds(0);
+    for(const auto& p : macroParticles_){
+        RadialVec3D pos(p->radialPosition());
+        RadialVec3D speed(p->radialSpeed());
+        rPositions += pos.r() * pos.r();
+        rSpeeds += speed.r() * speed.r();
+        rProductPosSpeeds += pos.r() * speed.r();
+    }
+    emittanceR_ = sqrt((rPositions * rSpeeds - rProductPosSpeeds * rProductPosSpeeds) / nbrMacroParticles_ / nbrMacroParticles_);
+    A11R_ = rSpeeds / nbrMacroParticles_ / emittanceR_;
+    A12R_ = rProductPosSpeeds / nbrMacroParticles_ / emittanceR_;
+    A22R_ = rPositions / nbrMacroParticles_ / emittanceR_;
+}
+
 
 std::ostream &operator<<(std::ostream &os, Beam const &beam) {
+    os << " number of particles : " << beam.nbrParticles() << endl;
     os << " Beam emittance r : " << beam.emittanceR() << endl;
     os << " Beam emittance z : " << beam.emittanceZ() << endl;
-    for (auto const& macro : beam.macroParticles()) {
-        os << *macro << endl;
-    }
+
     return os;
 }
