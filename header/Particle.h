@@ -37,6 +37,8 @@ private:
     size_t turns_ = 0;
     const Element* spawn_;  // Used to count number of turns
     Vector3D position_;
+    RadialVec3D radialPosition_;
+    RadialVec3D radialSpeed_;
     Vector3D force_;
     Vector3D lastForce_;
     Element *element_;
@@ -76,6 +78,9 @@ public:
             throw 1;
         }
         isAlive_ = true;
+        radialPosition_ = element_->radialPosition(position_);
+        radialSpeed_ = element_->radialSpeed(position_, speed_);
+
     }
 
     size_t nbrOfTurns() const { return turns_; }
@@ -123,24 +128,11 @@ public:
      */
     double velocitySquared() const { return speed().normSquared(); }
 
-    /**
-     * Return the norm squared of the component of the speed radial
-     * relative to the ideal trajectory. This is the squared norm of the speed
-     * in the SZ plane. Unit : m²/s²
-     */
-    double radialVelocitySqrd() const { return element()->radialVelocitySqrd(position(), speed()); }
+    const RadialVec3D radialPosition() const { return radialPosition_; }
 
-    /**
-     * Return the norm squared of the radial distance of the particle
-     * relative to the ideal trajectory. Unit : m/s
-     */
-    double radialDistanceSqrd() const { return element()->radialDistanceSqrd(position()); }
+    const RadialVec3D radialSpeed() const { return radialSpeed_; }
 
-    const RadialVec3D radialPosition() const { return element()->radialPosition(position()); }
-
-    const RadialVec3D radialSpeed() const { return element()->radialSpeed(position(), speed()); }
-
-    double longitudinalPosition() const { return element()->longitudinalPosition() + element()->radialPosition(position()).s(); }
+    double longitudinalPosition() const { return element()->longitudinalPosition() + radialPosition().s(); }
 
     /**
      * Add a magnetic force on the particle that is applied

@@ -41,6 +41,8 @@ void Particle::evolve(double dt) {
     position_ += dt * speed_;
     lastForce_ = force_;  // for printing
     force_ *= 0;  // We reuse the same object
+    radialPosition_ = element()->radialPosition(position());
+    radialSpeed_ = element()->radialSpeed(position(), speed());
 }
 
 bool Particle::updateElement() {
