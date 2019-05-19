@@ -8,6 +8,8 @@ uniform mat4 model;
 varying vec4 base_color;
 varying vec3 world_pos;
 varying vec3 normal;
+varying vec2 texturePos;
+
 
 void main()
 {
@@ -19,7 +21,9 @@ void main()
   if (gl_Normal == vec3(0, 0, 0)) {
     // Case of a sphere
     // Note that this works only because we don't rotate spheres
+    // And that we pass a 0 normal before drawing spheres
     normal = vertex;
+    texturePos = 0.5 * vertex.yz + vec2(.5, .5);
   } else {
     // Case of something I somewhat control
 

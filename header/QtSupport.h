@@ -7,6 +7,7 @@
 
 #include <QOpenGLShaderProgram> // Classe qui regroupe les fonctions OpenGL liées aux shaders
 #include <QMatrix4x4>
+#include <QOpenGLFunctions>
 #include "Support.h"
 #include "GlSphere.h"
 #include "all.h"
@@ -23,11 +24,12 @@ enum ViewMode {
 
 typedef std::vector<std::unique_ptr<Theme>> ThemeVector;
 
-class QtSupport : public Support {
+class QtSupport : public Support, protected QOpenGLFunctions {
 private:
     // GPU communication
     QOpenGLShaderProgram prog;
     GLSphere sphere;
+    GLuint epflTexture;
     // Camera
     QMatrix4x4 view;
     ViewMode viewMode;
@@ -44,6 +46,9 @@ public:
     void init();
     void initPosition();
     void initThemes();
+
+    virtual ~QtSupport();
+
     void setViewMode(ViewMode v) { viewMode = v; }
     void nextTheme(int n = 1);
     const Theme* theme() const { return themes[themeIndex].get(); }

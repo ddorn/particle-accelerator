@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>fragment_shader.glsl</file>
         <file>vertex_shader.glsl</file>
+        <file>epfl.png</file>
     </qresource>
 </RCC>

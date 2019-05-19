@@ -3,7 +3,7 @@
 //
 
 #include <iostream>
-
+#include <QGLContext>
 #include "all.h"
 #include "QtSupport.h"
 #include "vertex_shader.h"
@@ -14,6 +14,7 @@ using namespace std;
 // Initialisation
 
 void QtSupport::init() {
+    initializeOpenGLFunctions();
 
     // We create a almost basic shader that can do a bit of lighting
     prog.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/vertex_shader.glsl");
@@ -29,6 +30,12 @@ void QtSupport::init() {
     if (!prog.link()) throw "Shader failed compilation";
     // And activate it
     if (!prog.bind()) throw "Unable to bind the shader";
+
+    // Préparation d'une première texture à partir d'une image (cat.jpeg).
+    auto* context =  const_cast<QGLContext*>(QGLContext::currentContext());
+    epflTexture = context->bindTexture(QPixmap(":/epfl.png"), GL_TEXTURE_2D);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
 
     // We activate the depth test and backface culling for now, as we
     // do not want to draw faces that are hidden
@@ -240,6 +247,11 @@ void QtSupport::drawSphere(const QMatrix4x4 &model, const Color& color) {
 
     prog.setUniformValue("model", model);
     sendColor(color);
+    /// Attribut la texture 'textureDeChat' à la texture numéro 0 du shader
+    prog.setUniformValue("textureId", 0);
+    QOpenGLFunctions *glFuncs = QOpenGLContext::currentContext()->functions();
+    glFuncs->glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, epflTexture);
 
     sphere.draw(prog, VertexId);
 }
@@ -526,6 +538,11 @@ void QtSupport::nextTheme(int n) {
     if (n < 0) n += themes.size();
     themeIndex += n;
     themeIndex %= themes.size();
+}
+
+QtSupport::~QtSupport() {
+    QGLContext* context =  const_cast<QGLContext*>(QGLContext::currentContext());
+    context->deleteTexture(epflTexture);
 }
 
 
