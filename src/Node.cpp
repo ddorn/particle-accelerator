@@ -65,9 +65,16 @@ void Node::move(int n){
             newPreviousNode = newPreviousNode->next();
         }
     }
-    next_ = newPreviousNode->next();
+    move(newPreviousNode);
+}
+
+void Node::move(Node* node) {
+    previous()->next_ = next();
+    next()->previous_ = previous();
+
+    next_ = node->next();
     next_->previous_ = this;
-    previous_ = newPreviousNode;
+    previous_ = node;
     previous_->next_ = this;
 }
 

@@ -87,6 +87,7 @@ public:
      * the node will step back from n places.
      */
     void move(int n);
+    void move(Node* node);
     /**
      * Insert a node in the right position
      * in the list and attach the particle in

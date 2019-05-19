@@ -213,16 +213,22 @@ Element *Accelerator::elementFromPosition(const Vector3D &position) const {
 void Accelerator::updateParticles() const {
     for (auto &n : *particles_) n.updatePosition();
 
-    Node *nextNode(particles_->next());
-    int exchangesCount(0);
-    while (particles_->previous()->previousPosition() - particles_->previous()->position() > length() / 2) { //TODO control that we don't do an infinite boucle de rétroaction
+    Node* firstPreviousNode(particles_->previous());
+    Node* firstNextNode(particles_->next());
+
+    if(firstPreviousNode->previousPosition() - firstPreviousNode->position() > length() / 2) particles_->move(-1);
+    while (particles_->previous()->previousPosition() - particles_->previous()->position() > length() / 2 and particles_->previous() != firstPreviousNode) {
         particles_->move(-1);
-        ++exchangesCount;
     }
 
-    while (nextNode->position() - nextNode->previousPosition() > length() / 2) { //TODO pareil que juste au-dessus
+    Node* nextNode(firstNextNode);
+    if(nextNode->position() - nextNode->previousPosition() > length() / 2){
+        nextNode = nextNode->next();
+        firstNextNode->move(particles_->previous());
+    }
+    while (nextNode->position() - nextNode->previousPosition() > length() / 2 and nextNode != firstNextNode) {
         Node* nextNextNode(nextNode->next());
-        nextNode->move(-exchangesCount - 1);
+        nextNode->move(particles_->previous());
         nextNode = nextNextNode;
     }
 
@@ -232,6 +238,7 @@ void Accelerator::updateParticles() const {
         nextNode = p->next();
         if (!nextNode->isHead() and nextNode->position() < p->position()) {
             p->exchangePlace(nextNode);
+            if(!nextNode->previous()->isHead()) p = nextNode->previous();
         } else {
         }
         p = nextNode;
