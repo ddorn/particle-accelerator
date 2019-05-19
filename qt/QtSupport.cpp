@@ -195,8 +195,8 @@ void QtSupport::drawCube(const QMatrix4x4 &model = QMatrix4x4()) {
     glEnd();
 }
 
-void QtSupport::drawCube(const Vector3D &position, double scale) {
-    drawCube(posToModel(position, scale));
+void QtSupport::drawCube(const Vector3D &pos, double scale) {
+    drawCube(posToModel(pos, scale));
 }
 
 // Circle
@@ -214,9 +214,9 @@ void QtSupport::drawCircle(const QMatrix4x4 &model, double r, double g, double b
     glEnd();
 }
 
-void QtSupport::drawCircle(const Vector3D &position, double radius, const Vector3D &dir, const Vector3D &color) {
+void QtSupport::drawCircle(const Vector3D &pos, double radius, const Vector3D &dir, const Color &color) {
     QMatrix4x4 model;
-    model.translate(position.x(), position.y(), position.z());
+    model.translate(pos.x(), pos.y(), pos.z());
 
     prog.setUniformValue("model", model);
     sendColor(color);
@@ -235,26 +235,19 @@ void QtSupport::drawCircle(const Vector3D &position, double radius, const Vector
 }
 
 // Sphere
-void QtSupport::drawSphere(const QMatrix4x4 &model, double r, double g, double b) {
+void QtSupport::drawSphere(const QMatrix4x4 &model, const Color& color) {
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // passe en mode "fil de fer"
 
     prog.setUniformValue("model", model);
-//    sendColor(r, g b);
+    sendColor(color);
 
     sphere.draw(prog, VertexId);
 }
 
-void QtSupport::drawSphere(const QMatrix4x4 &model, const Vector3D &color) {
-    drawSphere(model, color.x(), color.y(), color.z());
+void QtSupport::drawSphere(const Vector3D &pos, double scale, const Color &color) {
+    drawSphere(posToModel(pos, scale), color);
 }
 
-void QtSupport::drawSphere(const Vector3D &position, double scale, const Vector3D &color) {
-    drawSphere(position, scale, color.x(), color.y(), color.z());
-}
-
-void QtSupport::drawSphere(const Vector3D &position, double scale, double r, double g, double b) {
-    drawSphere(posToModel(position, scale), r, g, b);
-}
 
 // Vector
 void QtSupport::drawVector(const Vector3D &vec, const Vector3D &start) {
@@ -270,7 +263,7 @@ void QtSupport::drawVector(const Vector3D &vec, const Vector3D &start) {
 }
 
 // Tube
-void QtSupport::drawTube(const Vector3D &start, const Vector3D &end, double radius, const Vector3D &color) {
+void QtSupport::drawTube(const Vector3D &start, const Vector3D &end, double radius, const Color &color) {
     // This supposes start and end are in the XY plane.
 
     Vector3D dir(~(end - start));
@@ -280,7 +273,7 @@ void QtSupport::drawTube(const Vector3D &start, const Vector3D &end, double radi
     QMatrix4x4 model(posToModel(start, 1));
     model.rotate(angle * 180 / M_PI, 0, 0, 1);
     prog.setUniformValue("model", model);
-    sendColor(color, 0.5);
+    sendColor(color);
 
     const double length((end - start).norm());
     const int NB_CIRCLES(ceil(length / 0.2));
@@ -323,7 +316,7 @@ void QtSupport::drawTube(const Vector3D &start, const Vector3D &end, double radi
 
 // Curved Tube
 void QtSupport::drawCurvedTube(const Vector3D &start, const Vector3D &end, const Vector3D &center, double radius,
-                               const Vector3D &color) {
+                               const Color &color) {
 
     Vector3D relEntree(start - center);
     Vector3D relExit(end - center);
@@ -332,7 +325,7 @@ void QtSupport::drawCurvedTube(const Vector3D &start, const Vector3D &end, const
     model.translate(center.x(), center.y());
 
     prog.setUniformValue("model", model);
-    sendColor(color, 0.5);
+    sendColor(color);
 
 
     constexpr int NB_SEGMENTS(8);
@@ -385,7 +378,7 @@ void QtSupport::draw(const Vector3D &d) {
 }
 
 void QtSupport::draw(const Particle &particle) {
-    drawSphere(particle.position(), viewInsideAccelerator() ? 0.005 : 0.03, theme()->getParticleColor());
+    drawSphere(particle.position(), viewInsideAccelerator() ? 0.005 : 0.03, theme()->particleColor());
 }
 
 void QtSupport::draw(const Accelerator &accelerator) {
@@ -417,12 +410,12 @@ void QtSupport::draw(const StraightElement &/*element*/) {
 
 void QtSupport::draw(const Quadrupole &element) {
     element.StraightElement::draw(*this);
-    drawTube(element.start(), element.exit(), element.radius(), theme()->getQuadrupoleColor());
+    drawTube(element.start(), element.exit(), element.radius(), theme()->quadrupoleColor());
 }
 
 void QtSupport::draw(const Segment &element) {
     element.StraightElement::draw(*this);
-    drawTube(element.start(), element.exit(), element.radius(), theme()->getSegmentColor());
+    drawTube(element.start(), element.exit(), element.radius(), theme()->segmentColor());
 }
 
 void QtSupport::draw(const CurvedElement &/*element*/) {
@@ -432,12 +425,12 @@ void QtSupport::draw(const CurvedElement &/*element*/) {
 void QtSupport::draw(const Dipole &element) {
     element.CurvedElement::draw(*this);
     drawCurvedTube(element.start(), element.exit(), element.centerOfCurvature(), element.radius(),
-                   theme()->getDipoleColor());
+                   theme()->dipoleColor());
 }
 
 void QtSupport::draw(const Sextupole &element) {
     element.StraightElement::draw(*this);
-    drawTube(element.start(), element.exit(), element.radius(), theme()->getSextupoleColor());
+    drawTube(element.start(), element.exit(), element.radius(), theme()->sextupoleColor());
 
 }
 
@@ -462,7 +455,7 @@ void QtSupport::drawParticles(const Accelerator &accelerator) {
 //    }
     int i(0);
     for (const auto &p : *accelerator.particles()) {
-        sendColor(Rainbox::HSVtoRGB((5 * i) % 360, 1, 1));
+        sendColor(Color(5 * i % 360, 1.0, 1.0));
         p.particle()->draw(*this);
         ++i;
     }
@@ -493,13 +486,13 @@ void QtSupport::drawElements(const Accelerator &accelerator) {
     } else {
         glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         if (!viewInsideAccelerator()) {
-            // Lines are a bit to big in to view so we make them smaller
+            // Lines are a bit to big in top view so we make them smaller
             glLineWidth(1);
         }
     }
 
     // Activate transparency if needed
-    if (theme()->getElementTransparency() != 1) glEnable(GL_BLEND);
+    if (theme()->segmentColor().a() != 1) glEnable(GL_BLEND);
     else glDisable(GL_BLEND);
 
     for (const auto &e : accelerator.elements()) {
@@ -507,9 +500,9 @@ void QtSupport::drawElements(const Accelerator &accelerator) {
     }
 }
 
-QMatrix4x4 QtSupport::posToModel(const Vector3D &position, double scale) {
+QMatrix4x4 QtSupport::posToModel(const Vector3D &pos, double scale) {
     QMatrix4x4 model;
-    model.translate(position.x(), position.y(), position.z());
+    model.translate(pos.x(), pos.y(), pos.z());
     model.scale(scale);
     return model;
 }
@@ -518,16 +511,17 @@ void QtSupport::initThemes() {
     themes.clear();
     themes.push_back(make_unique<Theme>(Theme::Classix()));
     themes.push_back(make_unique<Theme>(Theme::Matrix()));
-    themes.push_back(make_unique<Rainbox>());
-    themes.push_back(make_unique<Theme>(Theme::SteamPunx()));
+    themes.push_back(make_unique<Theme>(Theme::RouteArcEnCiel()));
     themes.push_back(make_unique<Theme>(Theme::Pinx()));
+    themes.push_back(make_unique<Theme>(Theme::EPFL()));
+    themes.push_back(make_unique<Theme>(Theme::CurseOfDarkRainbow()));
     themes.push_back(make_unique<Theme>(Theme::Classix(false)));
+
 }
 
 void QtSupport::nextTheme(int n) {
     // size_t arithmetic apparently works differently...
     n %= (int) themes.size();
-    cout << n << endl;
     //  So it's always positive
     if (n < 0) n += themes.size();
     themeIndex += n;

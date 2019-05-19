@@ -24,8 +24,8 @@ void GlWidget::resizeGL(int width, int height) {
 }
 void GlWidget::paintGL() {
     // Clear the screen
-    const Color& color(support.theme()->getBgColor());
-    glClearColor(color.x(), color.y(), color.z(), 1);
+    const Color& color(support.theme()->bgColor());
+    glClearColor(color.r(), color.g(), color.b(), 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // And then draw the accelerator
     support.draw(accelerator);

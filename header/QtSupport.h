@@ -54,16 +54,15 @@ public:
     // Draw objects
 
     void drawCube(const QMatrix4x4 &model);
-    void drawCube(const Vector3D &position, double scale);
-    void drawSphere(const QMatrix4x4 &model, double r = 1, double g = 1, double b = 1);
-    void drawSphere(const QMatrix4x4 &model, const Vector3D &color);
-    void drawSphere(const Vector3D& position, double scale, const Vector3D &color);
-    void drawSphere(const Vector3D& position, double scale, double r = 1, double g = 1, double b = 1);
+    void drawCube(const Vector3D &pos, double scale);
+    void drawSphere(const QMatrix4x4 &model, const Color &color);
+    void drawSphere(const Vector3D &pos, double scale, const Color &color);
     void drawCircle(const QMatrix4x4 &model, double r=1, double g=1, double b=1, size_t points=30);
-    void drawCircle(const Vector3D &position, double radius, const Vector3D &dir, const Vector3D &color);
+    void drawCircle(const Vector3D &pos, double radius, const Vector3D &dir, const Color &color);
     void drawVector(const Vector3D &vec, const Vector3D &start = Vector3D());
-    void drawTube(const Vector3D& start, const Vector3D& end, double radius, const Vector3D& color = Vector3D(0.2, 0.6, 1));
-    void drawCurvedTube(const Vector3D &start, const Vector3D &end, const Vector3D &center, double radius, const Vector3D &color);
+    void drawTube(const Vector3D &start, const Vector3D &end, double radius, const Color &color);
+    void drawCurvedTube(const Vector3D &start, const Vector3D &end, const Vector3D &center, double radius,
+                        const Color &color);
 
 
     void draw(const Accelerator &accelerator) override;
@@ -91,16 +90,15 @@ public:
 private:
     /**
      * Convert a position and a scale to the corresponding matrix
-     * @param position Position of the object
+     * @param pos Position of the object
      * @param scale Scale of the object
      * @return
      */
-    QMatrix4x4 posToModel(const Vector3D &position, double scale);
+    QMatrix4x4 posToModel(const Vector3D &pos, double scale);
     /**
      * Whether the eye is forced inside the accelerator by the ViewMode.
      */
     bool viewInsideAccelerator() { return viewInsideAccelerator_; }
-//    bool viewInsideAccelerator() { return viewMode == FIRST_PERSON || viewMode == THIRD_PERSON; }
 
     /**
      * Whether Elements drawn should be lit or not
@@ -108,7 +106,7 @@ private:
     bool elementsLighting() { return theme()->isElementFilled() && !viewInsideAccelerator(); }
     void sendPoint(const Vector3D &point) { prog.setAttributeValue(VertexId, point.x(), point.y(), point.z()); };
     void sendNormal(const Vector3D &normal = Vector3D(2, 2, 4)) { glNormal3f(normal.x(), normal.y(), normal.z()); }
-    void sendColor(const Color &color, double a = 1) { prog.setAttributeValue(ColorId, color.x(), color.y(), color.z(), a); }
+    void sendColor(const Color &color) { prog.setAttributeValue(ColorId, color.r(), color.g(), color.b(), color.a()); }
     void sendColor(double r, double g, double b, double a = 1) { prog.setAttributeValue(ColorId, r, g, b, a); }
 
 };
