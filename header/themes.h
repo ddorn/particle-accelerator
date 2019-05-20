@@ -165,7 +165,7 @@ public:
     }
     static Theme EPFL() {
         return Theme(true, true, 0.7,
-                Color(),
+                Color(0,0,0,0),
                 Color(1., 0., 0.),
                 Color(0,0,0));
     }
@@ -175,7 +175,11 @@ public:
     };
 
     static Theme CurseOfDarkRainbow() {
-        return Theme(true, true, 0.7, Color(0, 0, 0), Color(0, 0, 0), Color(5));
+        return Theme(true, true, 0.7, Color(1), Color(3), Color(5));
+    }
+
+    static Theme Zloopix() {
+        return Theme(true, true, 0, Color(), Color(1.0, 1.0, 1.0));
     }
 
     bool isParticleFilled() const { return particleFilled_; }
