@@ -1,4 +1,4 @@
-CONFIG += c++17
+CONFIG += c++14
 QT += core gui opengl widgets
 
 TARGET = qt_accelerator

@@ -2,7 +2,7 @@ QT =
 TEMPLATE = lib
 TARGET = src
 
-CONFIG = staticlib c++17
+CONFIG += staticlib c++14
 INCLUDEPATH = ../header
 
 DESTDIR = ../bin
