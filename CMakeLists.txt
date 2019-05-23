@@ -27,7 +27,8 @@ set(TEXT_SOURCES
 set(QT_SOURCES
         qt/GlWidget.cpp
         qt/QtSupport.cpp
-        qt/GlSphere.cpp header/Beam.h)
+        qt/GlSphere.cpp
+		qt/ScatterPlot.cpp)
 
 
 add_executable(test_vector3d test/test_vector3d.cpp ${SOURCE_FILES})
@@ -43,7 +44,9 @@ if (NOT WIN32)  # So Gabin can use cmake without problems with qt
 	find_package(Qt5Core REQUIRED)
 	find_package(Qt5Widgets REQUIRED)
 	find_package(Qt5Gui REQUIRED)
+	find_package(Qt5Charts REQUIRED)
 	find_package(Qt5OpenGL REQUIRED)
 	target_link_libraries(qt_accelerator Qt5::Widgets)
+	target_link_libraries(qt_accelerator Qt5::Charts)
 	target_link_libraries(qt_accelerator Qt5::OpenGL)
 endif()

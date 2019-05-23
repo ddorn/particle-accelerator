@@ -2,8 +2,6 @@
 // Created by Gabin on 12.05.2019.
 //
 
-#include <Node.h>
-
 #include "Node.h"
 
 void Node::exchangeNext() {

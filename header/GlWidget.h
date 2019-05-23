@@ -13,10 +13,8 @@
 #include "Accelerator.h"
 #include "Particle.h"
 #include "constants.h"
+#include "ScatterPlot.h"
 
-
-
-using namespace constants;
 
 class GlWidget : public QOpenGLWidget {
 private:
@@ -26,6 +24,7 @@ private:
     int steps = 5;
     Accelerator accelerator;
     QtSupport support;
+    ScatterPlot* scatterPlot;
 public:
     GlWidget(QWidget *parent = nullptr);
 

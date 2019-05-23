@@ -4,9 +4,11 @@
 
 #include <QKeyEvent>
 #include <vector>
+#include "ScatterPlot.h"
 #include "Segment.h"
 #include "GlWidget.h"
 #include "Dipole.h"
+
 
 // Methods needed by QOpenGLWidget
 void GlWidget::initializeGL() {
@@ -30,6 +32,7 @@ void GlWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // And then draw the accelerator
     support.draw(accelerator);
+    if (!scatterPlot->isHidden()) scatterPlot->update(accelerator.particles().get());
 }
 
 void GlWidget::timerEvent(QTimerEvent *event) {
@@ -159,6 +162,11 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
         case Qt::Key_F11:
             if (isFullScreen()) showNormal();
             else showFullScreen();
+            break;
+        case Qt::Key_G:
+            if (scatterPlot->isHidden()) scatterPlot->show();
+            else scatterPlot->hide();
+            break;
         default:
             return;
     }
@@ -167,7 +175,7 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
 }
 
 GlWidget::GlWidget(QWidget *parent)
-        : QOpenGLWidget(parent), counter(0), accelerator(Vector3D(3, 2, 0)) {
+        : QOpenGLWidget(parent), counter(0), accelerator(Vector3D(3, 2, 0)), scatterPlot(new ScatterPlot()) {
 
     build(intensity);
 }
@@ -192,10 +200,6 @@ void GlWidget::build(double coucou) {
         pFODO = pFODO ^ Vector3D::e3;
         pd = pd ^ Vector3D::e3;
     }
-
-
-
-//    addBeam();
 }
 
 void GlWidget::addBeam(bool clockwise) {
@@ -213,7 +217,5 @@ void GlWidget::addBeam(bool clockwise) {
     if (clockwise) accelerator.addCircularBeam(mass, -charge, energy, -direction, 1000, 42);
     else accelerator.addCircularBeam(mass, charge, energy, direction, 1000, 42);
 }
-
-
 
 

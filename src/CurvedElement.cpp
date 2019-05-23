@@ -59,7 +59,7 @@ const RadialVec3D CurvedElement::radialPosition(Vector3D pos) const {
     // but because we suppose no Element makes more than a half turn, it is
     // just the acos of the projection of dir over the start
     double angle(acos(dir * dirEntree));
-    return RadialVec3D(pos * dir - radiusCircle(), radiusCircle() * angle, pos.z());
+    return RadialVec3D(X.norm() - radiusCircle(), radiusCircle() * angle, pos.z());
 }
 
 const RadialVec3D CurvedElement::radialSpeed(const Vector3D &absolutePosition, const Vector3D &absoluteSpeed) const {
