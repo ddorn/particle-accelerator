@@ -10,6 +10,7 @@
 
 // Methods needed by QOpenGLWidget
 void GlWidget::initializeGL() {
+    showFullScreen();
     support.init();
     timerId = startTimer(1);
 }
@@ -51,7 +52,7 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
     bool isShift = event->modifiers() & Qt::Modifier::SHIFT;
     double factor(isShift ? 0.1 : 1);
 
-    const double petit_angle(5.0 * factor); // en degrés
+    const double petit_angle(4.5 / factor); // en degrés
     const double petit_pas(1.0 * factor);
 
     switch (event->key()) {
@@ -155,6 +156,9 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
             steps -= isShift ? 10 : 1;
             if (steps < 0) steps = 0;
             break;
+        case Qt::Key_F11:
+            if (isFullScreen()) showNormal();
+            else showFullScreen();
         default:
             return;
     }
