@@ -523,12 +523,12 @@ void QtSupport::initThemes() {
     themes.clear();
     themes.push_back(make_unique<Theme>(Theme::Classix()));
     themes.push_back(make_unique<Theme>(Theme::Matrix()));
-    themes.push_back(make_unique<Theme>(Theme::RouteArcEnCiel()));
-    themes.push_back(make_unique<Theme>(Theme::Pinx()));
     themes.push_back(make_unique<Theme>(Theme::EPFL()));
+    themes.push_back(make_unique<Theme>(Theme::Pinx()));
+    themes.push_back(make_unique<Theme>(Theme::Zloopix()));
+    themes.push_back(make_unique<Theme>(Theme::RouteArcEnCiel()));
     themes.push_back(make_unique<Theme>(Theme::CurseOfDarkRainbow()));
     themes.push_back(make_unique<Theme>(Theme::Classix(false)));
-
 }
 
 void QtSupport::nextTheme(int n) {

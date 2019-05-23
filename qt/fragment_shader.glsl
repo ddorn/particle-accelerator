@@ -5,6 +5,7 @@ varying vec4 base_color;
 varying vec3 normal;
 varying vec2 texturePos;
 
+
 void main()
 {
     vec4 color;

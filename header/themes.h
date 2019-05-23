@@ -141,7 +141,6 @@ public:
     static Theme Matrix() {
         return Theme(true, false, 1, Color(), Color(0., 0.23, 0.));
     }
-
     static Theme Classix(bool dark = true) {
 
         Theme classix = Theme(true, true, 0.5,
@@ -153,7 +152,6 @@ public:
         if (!dark) classix.bgColor_ = Color();
         return classix;
     }
-
     static Theme Pinx() {
         return Theme(true, true, 0.5,
                      Color(1.0, 0.749, 0.827),
@@ -165,17 +163,18 @@ public:
     }
     static Theme EPFL() {
         return Theme(true, true, 0.7,
-                Color(),
+                Color(0,0,0,0),
                 Color(1., 0., 0.),
                 Color(0,0,0));
     }
-
     static Theme RouteArcEnCiel() {
         return Theme(true, true, 0.7, Color(0, 1., 1.), Color(5));
     };
-
     static Theme CurseOfDarkRainbow() {
-        return Theme(true, true, 0.7, Color(0, 0, 0), Color(0, 0, 0), Color(5));
+        return Theme(true, true, 0.7, Color(1), Color(3), Color(5));
+    }
+    static Theme Zloopix() {
+        return Theme(true, true, 0, Color(1., 1., 1., 0), Color(1.0, 1.0, 1.0));
     }
 
     bool isParticleFilled() const { return particleFilled_; }
