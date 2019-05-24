@@ -141,4 +141,7 @@ private:
     component s_;
     component z_;
 };
+std::ostream& operator<<(std::ostream &os, const RadialVec3D &vec);
+
+
 #endif //PARTICLE_ACCELERATOR_VECTOR3D_H

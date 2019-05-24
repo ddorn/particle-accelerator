@@ -113,6 +113,10 @@ std::ostream& operator<<(std::ostream &os, const Vector3D &d) {
     return os;
 }
 
+std::ostream &operator<<(std::ostream &os, const RadialVec3D &vec) {
+    return os << "RSZ(" << vec.r() << ", " << vec.s() << ", " << vec.z() << ")";
+}
+
 // Norm
 
 

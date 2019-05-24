@@ -66,9 +66,9 @@ const RadialVec3D CurvedElement::radialSpeed(const Vector3D &absolutePosition, c
     Vector3D planePosition(absolutePosition.x(), absolutePosition.y(), 0);
     Vector3D planeSpeed(absoluteSpeed.x(), absoluteSpeed.y(), 0);
     Vector3D dir(~(planePosition - centerOfCurvature()));
-    double r(absoluteSpeed * dir);
+    double r(planeSpeed * dir);
     double s((planeSpeed - r * dir).norm());
-
+//    std::cout << absoluteSpeed << absolutePosition << Vector3D(r, s, absoluteSpeed.z()) << std::endl;
     return RadialVec3D(r, s, absoluteSpeed.z());
 }
 

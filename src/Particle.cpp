@@ -39,27 +39,25 @@ void Particle::addElectricForce(const Vector3D& e){
 void Particle::evolve(double dt) {
     speed_ += dt * force_ / (gamma() * massSI());
     position_ += dt * speed_;
-    lastForce_ = force_;  // for printing
+    updateCachedAttributes();  // Position, speed and force changed
     force_ *= 0;  // We reuse the same object
-    radialPosition_ = element()->radialPosition(position());
-    radialSpeed_ = element()->radialSpeed(position(), speed());
 }
 
 bool Particle::updateElement() {
-    if (element()->collideBorder(position())){
+    if (element()->collideBorder(position())) {
         isAlive_ = false;
         return false;
     }
 
     if (element()->isOut(position(), clockwise())) {
-        if (element()->nextElement() == nullptr){
+        if (element()->nextElement() == nullptr) {
             isAlive_ = false;
             return false;
         }
 
         // update to the correct next element
         element_ = clockwise() ? element()->nextElement()
-                             : element()->previousElement();
+                               : element()->previousElement();
         // Count a turn if again in the element it started
         if (element_ == spawn_) turns_ += 1;
     }
@@ -80,11 +78,18 @@ const Vector3D Particle::electricFieldAt(const Vector3D &pos) const {
 void Particle::particleInteraction(Particle& p, double dt){
     if(p.position() == position()){
         // TODO On fait quoi ? On pourrait juste les mettre mortes, mais elles seraient pas enlevées de la liste de l'accélérateur
+        return;
     }
     addMagneticForce(p.magneticFieldAt(position()), dt);
     addElectricForce(p.electricFieldAt(position()));
     p.addMagneticForce(magneticFieldAt(p.position()), dt);
     p.addElectricForce(electricFieldAt(p.position()));
+}
+
+void Particle::updateCachedAttributes() {
+    radialPosition_ = element_->radialPosition(position_);
+    radialSpeed_ = element_->radialSpeed(position_, speed_);
+    lastForce_ = force_;
 }
 
 std::ostream& operator<<(std::ostream &os, const Particle &partic) {

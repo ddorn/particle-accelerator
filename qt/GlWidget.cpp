@@ -208,11 +208,6 @@ void GlWidget::addBeam(bool clockwise) {
     double charge(constants::C_PROTON);
     double energy(2);
     Vector3D direction(0, -1, 0);
-//    Vector3D position2(2.99, 2, 0);
-//    Particle p2(mass, charge, 2, position2, Vector3D(0, -1, 0), accelerator.elements()[18].get(), Vector3D(1, 1, 1));
-//    Particle p0(mass, charge, 2, Vector3D(2.99, 0, 0), Vector3D(0, -1, 0), accelerator.elements()[0].get(), Vector3D(1, 1, 1));
-    //  ---------
-//    accelerator.addParticle(p0);
 
     if (clockwise) accelerator.addCircularBeam(mass, -charge, energy, -direction, 1000, 42);
     else accelerator.addCircularBeam(mass, charge, energy, direction, 1000, 42);
