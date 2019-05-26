@@ -93,6 +93,7 @@ std::ostream& operator<<(std::ostream &os, const Particle &partic) {
        << " - charge [C]: " << partic.charge() << std::endl
        << " - position [m]: " << partic.position() << std::endl
        << " - longitudinal position [m]: " << partic.longitudinalPosition() << std::endl
+       << " - radial position [m] " << partic.radialPosition().r() << std::endl
        << " - gamma : " << partic.gamma() << std::endl
        << " - energy [GeV]: " << partic.energy() << std::endl
        << " - speed [m/s]: " << partic.speed() << std::endl

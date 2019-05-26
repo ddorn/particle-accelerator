@@ -140,7 +140,9 @@ public:
 
     const RadialVec3D radialSpeed() const { return radialSpeed_; }
 
-    // Give the longitudinal position in the accelerator
+    /**
+     * Give the longitudinal position in the accelerator
+     */
     double longitudinalPosition() const { return element()->longitudinalPosition() + radialPosition().s(); }
 
     /**

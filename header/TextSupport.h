@@ -15,6 +15,8 @@ private:
 public:
     explicit TextSupport(std::ostream &ostream) : ostream_(ostream) {}
 
+    std::ostream& ostream() const { return ostream_; }
+
     void draw(const Particle &particle) override;
     void draw(const Element &element) override;
     void draw(const Vector3D &d) override;

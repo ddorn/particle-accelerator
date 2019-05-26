@@ -52,7 +52,7 @@ private:
     ElementVector elements_;
     BeamVector beams_;
     LinkedList particles_;
-    static double MIN_DIST;
+    static double MIN_DIST; // minimal distance for the application of the force between particles
 
     const Vector3D nextStart() const { return elements().empty() ? start_ : elements().back()->exit(); }
     void addElement(std::unique_ptr<Element>&& pdtr);
@@ -138,6 +138,8 @@ public:
      * adequate, it will return a nullptr.
      */
     Element* elementFromPosition(const Vector3D& position) const;
+
+    void showElements(std::ostream& os) const;
 private:
 
     /**

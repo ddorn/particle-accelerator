@@ -33,6 +33,16 @@ std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
     return os;
 }
 
+void Accelerator::showElements(ostream& os) const {
+    os << " Elements :" << endl;
+    for(const auto& e : elements_){
+        os << *e << endl;
+    }
+
+}
+
+
+
 void Accelerator::evolve(double dt) {
 
     for (auto& n : *particles_) {

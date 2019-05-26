@@ -13,15 +13,19 @@ int main() {
 
 // THIS VERSION MUST BE CONSERVED WITHOUT MODIFICATION
 
+// --- PARAMETRISATION OF PARTICLES ---
     double mass(constants::M_PROTON);
     double charge(constants::C_PROTON);
     double energy(2);
+// ------------------------------------
+
+// --- PARAMETRISATION OF ELEMENTS ---
     double quadrupoleIntensity(1.2);
     double sextupoleIntensity(1);
     double curvatureDipole(1);
-    TextSupport s(cout);
-    Accelerator bobLEponge(Vector3D(3, 0, 0));
     double radius(0.1);
+// ------------------------------------
+
     Vector3D endQuad1(3, 1.5, 0);
     Vector3D endSex1(3, 1, 0);
     Vector3D endSeg1(3, 0, 0);
@@ -30,14 +34,22 @@ int main() {
     Vector3D endSeg2(3, -2, 0);
     Vector3D endDip(2, -3, 0);
 
+// --- PARAMETRISATION OF ACCELERATOR ---
+    TextSupport s(cout);
+    double dt(1e-11);
+    double duration(1e-8);
+    Accelerator accelerator(Vector3D(3, 2, 0));
+// ------------------------------------
+
+// --- CREATION OF ELEMENTS ---
     for (int i = 0; i < 4; ++i) {
-        bobLEponge.addQuadrupole(endQuad1, radius, -quadrupoleIntensity);
-        bobLEponge.addSextupole(endSex1, radius, sextupoleIntensity);
-        bobLEponge.addSegment(endSeg1, radius);
-        bobLEponge.addQuadrupole(endQuad2, radius, quadrupoleIntensity);
-        bobLEponge.addSextupole(endSex2, radius, sextupoleIntensity);
-        bobLEponge.addSegment(endSeg2, radius);
-        bobLEponge.addDipole(endDip, radius, curvatureDipole, mass, charge, energy);
+        accelerator.addQuadrupole(endQuad1, radius, -quadrupoleIntensity);
+        accelerator.addSextupole(endSex1, radius, sextupoleIntensity);
+        accelerator.addSegment(endSeg1, radius);
+        accelerator.addQuadrupole(endQuad2, radius, quadrupoleIntensity);
+        accelerator.addSextupole(endSex2, radius, sextupoleIntensity);
+        accelerator.addSegment(endSeg2, radius);
+        accelerator.addDipole(endDip, radius, curvatureDipole, mass, charge, energy);
 
         endQuad1 = endQuad1 ^ Vector3D::e3;
         endSex1 = endSex1 ^ Vector3D::e3;
@@ -47,36 +59,22 @@ int main() {
         endSeg2 = endSeg2 ^ Vector3D::e3;
         endDip = endDip ^ Vector3D::e3;
     }
+    accelerator.showElements(s.ostream());
+// ------------------------------------
 
-    // ---- Parametrisation of the particles ----
-    Vector3D position2(2.99, 2, 0);
-    Particle p2(mass, -charge, 2, position2, Vector3D(0, 1, 0), bobLEponge.elements()[18].get(), Vector3D());
-    Particle p0(mass, charge, 2, Vector3D(2.99, 0, 0), Vector3D(0, -1, 0), bobLEponge.elements()[0].get());
-    Particle dipHole(constants::M_PROTON, constants::C_PROTON, 2, Vector3D(3.01318, -2.01213, 0),
-            Vector3D(-139591, -2.64754e+08, 0), bobLEponge.elements()[2].get());
-//    vector<Particle> particles{dipHole};
-    //  ---------
+// --- CREATION OF PARTICLES ---
+    accelerator.addCircularBeam(mass, charge, energy, Vector3D(0,-1,0), 1, 10, Vector3D(1, 1, 1), 0.0001);
+// ------------------------------------
 
-    bobLEponge.addParticle(p2);
-
-    bobLEponge.draw(s);
-//    int i(0);
-//    while (!bobLEponge.particles().empty()) {
-//        bobLEponge.evolve(1e-11);
-//        ++i;
-//    }
-//    cout <<i<< endl;
-    int i = 0;
-    while (!bobLEponge.particles().empty()) {
-        bobLEponge.evolve(1e-11);
-        ++i;
-        if (i % 1000000 == 1
-        ) cout << i << endl;
+// --- SIMULATION ---
+    for(size_t i(0); i < size_t(duration / dt) ; ++i){
+        accelerator.evolve(dt);
+        if(i % 100 == 0) {
+            accelerator.draw(s);
+        }
     }
-//    for (int j = 0; j < 10000000; ++j) {
-//        bobLEponge.evolve(1e-12);
-//        if (bobLEponge.particles().front()->element() == bobLEponge.elements()[2].get())
-//            bobLEponge.draw(s);
-//    }
+// ------------------------------------
+
+
     return 0;
 }
