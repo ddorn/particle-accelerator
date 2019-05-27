@@ -17,6 +17,7 @@ public:
 
     const Vector3D magneticForceAt(const Vector3D &position) const override;
     void draw(Support &support) const override { support.draw(*this); }
+    std::ostream &print(std::ostream &os) const override;
 
 };
 

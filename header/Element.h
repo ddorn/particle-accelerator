@@ -91,11 +91,33 @@ public:
      * Radius of the tube of the element.
      */
     double radius() const { return radius_; }
+
+    /**
+     * Return the position of the beginning of the element
+     */
     const Vector3D &start() const { return start_; }
+
+    /**
+     * Return the position of the end of the element.
+     */
     const Vector3D &exit() const { return exit_; }
+
+    /**
+     * return a pointer to the next element
+     */
     Element* nextElement() const { return nextElement_; }
+
+    /**
+     * return a pointer to the previous element
+     */
     Element* previousElement() const { return previousElement_; }
+
+    /**
+     * Give the longitudinal position of the beginning of the element,
+     * in the accelerator
+     */
     double longitudinalPosition() const { return longitudinalPosition_; };
+
 
     void setNextElement(Element* e) { nextElement_ = e; }
     void setPreviousElement(Element* e) { previousElement_ = e; }

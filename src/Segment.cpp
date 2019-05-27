@@ -6,6 +6,6 @@
 
 std::ostream& Segment::print(std::ostream &os) const {
     StraightElement::print(os);
-    os << "- Magnetic force : 0" << std::endl;
+    os << " type : segment" << std::endl;
     return os;
 }

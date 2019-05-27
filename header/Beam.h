@@ -33,7 +33,7 @@ public:
                                                                                            nbrMacroParticles),
                                                                                    refParticle_(refParticle_)
                                                                                    { updateEmittance(); }
-   ParticleVector const& macroParticles() const { return macroParticles_; }
+   ParticleVector const& macroParticles() const { return macroParticles_; } //TODO : give a list of particles
 
 
     /**
@@ -67,16 +67,31 @@ public:
      */
     size_t lambda() const { return lambda_; };
 
+    /**
+     * @return the number of real particles
+     */
     int nbrParticles() const { return int(ceil(lambda() * macroParticles_.size())); }
 
     void draw(Support &support) const override { support.draw(*this); }
 
+    /**
+     * Remove the macroparticle in the list at the place i.
+     */
     void removeMacroParticle(size_t i);
 
+    /**
+     * Add a macroparticle
+     */
     void addMacroParticle(const Vector3D &position, const Vector3D &direction, Element *element);
 
+    /**
+     * Remove all the macroparticles which collided with the border
+     */
     void removeDeadParticles();
 
+    /**
+     * Update the value of the emittance, and of the coefficients A11, A12 and A22
+     */
     void updateEmittance();
 
 private:

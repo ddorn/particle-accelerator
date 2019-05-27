@@ -90,10 +90,12 @@ public:
      * Add a dipole. It begins where the last added element ends.
      * @return false if it cannot add this element.
      */
-    bool addDipole(const Vector3D& exit, double radius, double curveture, double magneticFieldIntensity);
+    bool addDipole(const Vector3D& exit, double radius, double curvature, double magneticFieldIntensity);
     /**
      * This method will create a dipole with the perfect magnetic field intensity, in function of
-     * the mean mass, charge and energy of the particles.
+     * the mean mass, charge and energy of the particles. The particles must turn in the clockwise
+     * direction. If it isn't the case, the charge must be the opposite of the charge of the
+     * particles.
      */
     bool addDipole(const Vector3D& exit, double radius, double curvature, double mass, double charge, double energy);
     /**
@@ -127,6 +129,17 @@ public:
     */
     bool isClosed() const;
     double length() const { return length_; };
+    void showElements(std::ostream& os) const;
+    void showParticles(std::ostream& os) const;
+    void showBeams(std::ostream& os) const;
+private:
+    /**
+     * Link the two last elements
+     * and control if the last element
+     * must be linked to the first.
+     */
+    void linkElements();
+
     /**
      * return a ptr at the element in the direction of the position, ie.
      * the element such that the vector position is between the start and the end.
@@ -134,18 +147,6 @@ public:
      * adequate, it will return a nullptr.
      */
     Element* elementFromPosition(const Vector3D& position) const;
-
-    void showElements(std::ostream& os) const;
-    void showParticles(std::ostream& os) const;
-    void showBeams(std::ostream& os) const;
-private:
-
-    /**
-     * Link the two last elements
-     * and control if the last element
-     * must be linked to the first.
-     */
-    void linkElements();
 
     /**
      * @return if the element can be added to the accelerator, i.e.

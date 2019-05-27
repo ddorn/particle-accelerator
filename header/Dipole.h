@@ -28,6 +28,9 @@ public:
     /**
      * This constructor takes the mean characteristics of
      * the particles and calculates the ideal magnetic field.
+     * The particles are supposedly turning in the clockwise direction ;
+     * if it's not the case, the charge must be the opposite of the charge
+     * of the particles.
      */
     Dipole(const Vector3D &start, const Vector3D &exit, double radius, double curvature, double mass, double charge,
            double energy, double longitudinalPosition) :

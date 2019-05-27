@@ -12,7 +12,7 @@ using namespace std;
 std::ostream &Element::print(std::ostream &os) const {
     // typeid(...).name() gives the name of an object so we don't
     // have to change this line when overriding
-    os << typeid(*this).name() << " :" << std::endl
+    os << "Element :" << std::endl
        << " - start : " << start() << std::endl
        << " - exit : " << exit() << std::endl
        << " - radius : " << radius() << std::endl;

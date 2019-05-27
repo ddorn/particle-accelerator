@@ -8,6 +8,7 @@
 
 std::ostream &Dipole::print(std::ostream &os) const {
     CurvedElement::print(os);
+    os << " - type : dipole" << std::endl;
     os << " - Magnetic field : " << magneticField_ << std::endl;
     return os;
 }

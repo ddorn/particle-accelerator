@@ -22,6 +22,8 @@ public:
 
     void draw(Support &support) const override { support.draw(*this); }
 
+    virtual std::ostream& print(std::ostream &os) const override;
+
 private:
     /**
      * Magnetic intensity. Unit : tesla.
