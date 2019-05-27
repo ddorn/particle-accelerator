@@ -7,19 +7,6 @@
 using namespace std;
 
 
-bool StraightElement::isOut(Vector3D pos, bool clockwise) const {
-    if (clockwise) return Vector3D::e3.tripleProduct(pos, exit()) > 0;
-    else return Vector3D::e3.tripleProduct(pos, start()) < 0;
-
-    cout << "------------" << endl;
-    cout << pos << endl;
-    pos -= start();
-    cout << pos << endl;
-    Vector3D L(exit() - start());
-    cout << L << endl;
-    return (pos - start()) * L > L.normSquared();
-}
-
 double StraightElement::radialDistanceSqrd(Vector3D pos) const {
     pos -= start();
     return (pos - (pos * direction) * direction).normSquared();

@@ -34,13 +34,6 @@ double CurvedElement::radialVelocitySqrd(const Vector3D &position, const Vector3
 }
 
 
-bool CurvedElement::isOut(Vector3D pos, bool clockwise) const {
-//    return Vector3D::e3.tripleProduct(pos - centerOfCurvature(), exit() - centerOfCurvature()) > 0;
-    if (clockwise) return Vector3D::e3.tripleProduct(pos, exit()) > 0;
-    else return Vector3D::e3.tripleProduct(pos, start()) < 0;
-}
-
-
 std::ostream &CurvedElement::print(std::ostream &os) const {
     Element::print(os);
     os << " - curvature : " << curvature() << std::endl
@@ -59,6 +52,8 @@ const RadialVec3D CurvedElement::radialPosition(Vector3D pos) const {
     // but because we suppose no Element makes more than a half turn, it is
     // just the acos of the projection of dir over the start
     double angle(acos(dir * dirEntree));
+    // This take into account when particles are before the start
+    if (Vector3D::e3.tripleProduct(dir, dirEntree) < 0) angle *= -1;
     return RadialVec3D(X.norm() - radiusCircle(), radiusCircle() * angle, pos.z());
 }
 

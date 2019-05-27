@@ -19,4 +19,11 @@ std::ostream &Element::print(std::ostream &os) const {
     return os;
 }
 
+bool Element::isOut(const Vector3D& pos, bool clockwise) const {
+//    if (clockwise) return Vector3D::e3.tripleProduct(pos, exit()) > 0;
+//    else return Vector3D::e3.tripleProduct(pos, start()) < 0;
+    if (clockwise) return radialPosition(pos).s() > length();
+    else return radialPosition(pos).s() < 0;
+}
+
 std::ostream &operator<<(std::ostream &os, const Element &elem) { return elem.print(os); }

@@ -42,8 +42,6 @@ public:
     const Vector3D absolutePosition(const RadialVec3D &radialPos) const override;
     const Vector3D absoluteSpeed(const RadialVec3D &relativePosition, const RadialVec3D &relativeSpeed) const override;
 
-    bool isOut(Vector3D pos, bool clockwise) const override;
-
     std::ostream &print(std::ostream &os) const override;
     void draw(Support &support) const override { support.draw(*this); }
 

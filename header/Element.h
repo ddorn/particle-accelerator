@@ -34,10 +34,8 @@ public:
      * Test whether or not the particle is in
      * the next element.
      * @param pos of the particle
-     *
-     * TODO: Define this in Element or make it work wherever the elements are.
      */
-    virtual bool isOut(Vector3D pos, bool clockwise) const = 0;
+    bool isOut(const Vector3D& pos, bool clockwise) const;
     /**
      * Return the norm squared of the radial distance of the particle
      * relative to the ideal trajectory. Unit : m
