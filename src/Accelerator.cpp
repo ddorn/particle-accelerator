@@ -188,7 +188,7 @@ bool Accelerator::addCircularBeam(double mass, double charge, double energy, con
     return true;
 }
 
-Element *Accelerator::elementFromPosition(const Vector3D &position) const {
+const Element * Accelerator::elementFromPosition(const Vector3D &position) const {
     for(auto& e : elements_){
         if(Vector3D::e3.tripleProduct(position, e->exit()) < 0 and Vector3D::e3.tripleProduct(position, e->start()) > 0){
             return e.get();
@@ -234,20 +234,19 @@ void Accelerator::updateParticles() const {
 
 bool Accelerator::addParticle(double mass, double charge, double energy, const Vector3D &position,
                             const Vector3D &direction, const Vector3D &color) {
-    Element* element(elementFromPosition(position));
+    const Element* element(elementFromPosition(position));
     if(element == nullptr) return false;
     if (mass < 0) return false;
 
-    particle_ptr p(new Particle(mass, charge, energy, position, direction, element, color));
-    particles_->insertNode(p);
+    particles_->insertNode(make_shared<Particle>(mass, charge, energy, position, direction, element, color));
     return true;
 }
 
-bool Accelerator::addParticle(particle_ptr particle) {
+bool Accelerator::addParticle(const particle_ptr& particle) {
     if (particle.get() == nullptr
         or particle->element() == nullptr
-        or particle->mass() < 0)
-        return false;
+        or particle->mass() < 0) return false;
+
     particles_->insertNode(particle);
     return true;
 }

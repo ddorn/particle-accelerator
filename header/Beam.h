@@ -82,7 +82,7 @@ public:
     /**
      * Add a macroparticle
      */
-    void addMacroParticle(const Vector3D &position, const Vector3D &direction, Element *element);
+    void addMacroParticle(const Vector3D &position, const Vector3D &direction, const Element *element);
 
     /**
      * Remove all the macroparticles which collided with the border

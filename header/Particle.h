@@ -41,7 +41,7 @@ private:
     RadialVec3D radialSpeed_;
     Vector3D force_;
     Vector3D lastForce_;
-    Element *element_;
+    const Element *element_;
     Vector3D color_;
     Vector3D speed_;
     bool isAlive_;
@@ -69,7 +69,7 @@ public:
      * @param element A c-like pointer to the element containing the particle
      */
     Particle(double mass, double charge, double energy, const Vector3D &position, const Vector3D &direction,
-             Element *element, const Vector3D &color = Vector3D(1, 1, 1))
+             const Element *element, const Vector3D &color = Vector3D(1, 1, 1))
             : mass_(mass),
               charge_(charge),
               spawn_(element),
@@ -120,7 +120,7 @@ public:
 
     const Vector3D &color() const { return color_; }
 
-    Element *element() const { return element_; }
+    const Element *element() const { return element_; }
 
     /**
      * Speed vector of the particle. Unit: m/s

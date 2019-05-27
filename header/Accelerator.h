@@ -62,6 +62,8 @@ public:
     Accelerator(const Accelerator &other) = delete;
     void operator=(const Accelerator & other) = delete;
 
+    const LinkedList& particles() const { if (!particles_->isHead()) std::cout << 1; return particles_; }
+    const ElementVector& elements() const { return elements_; }
 
     /**
      * Cleanup the dust in the Accelerator and remove all particles.
@@ -123,7 +125,7 @@ public:
 
     bool addParticle(double mass, double charge, double energy, const Vector3D &position, const Vector3D &direction,
                                     const Vector3D &color = Vector3D(1, 1, 1));
-    bool addParticle(particle_ptr particle);
+    bool addParticle(const particle_ptr& particle);
     /**
     * @return if the last element ends where the first element begins.
     */
@@ -132,21 +134,22 @@ public:
     void showElements(std::ostream& os) const;
     void showParticles(std::ostream& os) const;
     void showBeams(std::ostream& os) const;
-private:
-    /**
-     * Link the two last elements
-     * and control if the last element
-     * must be linked to the first.
-     */
-    void linkElements();
-
     /**
      * return a ptr at the element in the direction of the position, ie.
      * the element such that the vector position is between the start and the end.
      * But the vector position can be out of the element. If no element is
      * adequate, it will return a nullptr.
      */
-    Element* elementFromPosition(const Vector3D& position) const;
+    const Element* elementFromPosition(const Vector3D& position) const;
+
+private:
+
+    /**
+     * Link the two last elements
+     * and control if the last element
+     * must be linked to the first.
+     */
+    void linkElements();
 
     /**
      * @return if the element can be added to the accelerator, i.e.

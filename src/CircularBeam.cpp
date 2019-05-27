@@ -9,7 +9,7 @@
 void CircularBeam::generateParticles(double standardDeviation, int rng) {
     std::default_random_engine gen(rng);
     std::normal_distribution<double> distribution_(0, standardDeviation);
-    Element* element(refParticle_.element());
+    const Element* element(refParticle_.element());
     double s(0);
     RadialVec3D radialPosition(refParticle_.radialPosition());
     RadialVec3D radialSpeed(refParticle_.radialSpeed());
