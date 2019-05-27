@@ -10,7 +10,6 @@
 #include "Sextupole.h"
 #include "CircularBeam.h"
 #include <chrono>
-#include <Accelerator.h>
 
 
 using namespace std;

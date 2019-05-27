@@ -2,8 +2,6 @@
 // Created by diego on 3/28/19.
 //
 
-#include <Dipole.h>
-
 #include "Dipole.h"
 
 std::ostream &Dipole::print(std::ostream &os) const {

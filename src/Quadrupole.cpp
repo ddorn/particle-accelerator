@@ -2,8 +2,6 @@
 // Created by Gabin on 31.03.2019.
 //
 
-#include <Quadrupole.h>
-
 #include "Quadrupole.h"
 
 const Vector3D Quadrupole::magneticForceAt(const Vector3D & position) const {

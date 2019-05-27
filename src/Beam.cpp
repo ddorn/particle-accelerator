@@ -2,8 +2,6 @@
 // Created by Gabin on 04.04.2019.
 //
 
-#include <Beam.h>
-
 #include "Beam.h"
 
 using namespace std;

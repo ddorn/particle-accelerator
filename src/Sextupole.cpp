@@ -2,8 +2,6 @@
 // Created by diego on 5/8/19.
 //
 
-#include <Sextupole.h>
-
 #include "Sextupole.h"
 
 
