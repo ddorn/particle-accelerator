@@ -18,18 +18,9 @@ using namespace std;
 double Accelerator::MIN_DIST(1e-3);
 
 std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
-    os << "Accelerator:" << endl
-       << " Beams:" << endl;
-    for (const auto &b : accelerator.beams()) {
-        os << *b << endl;
-    }
-    os << " Particles:" << endl;
-    for (const auto &p : *accelerator.particles()) {
-        cout << *p.particle() << endl;
-    }
-//    for (const auto &e : accelerator.elements()) {
-//        os << *e << endl;
-//    }
+    os << "Accelerator:" << endl;
+    accelerator.showBeams(os);
+    accelerator.showParticles(os);
     return os;
 }
 
@@ -41,7 +32,19 @@ void Accelerator::showElements(ostream& os) const {
 
 }
 
+void Accelerator::showBeams(std::ostream &os) const {
+    os << " Beams :" << endl;
+    for(const auto& b : beams_){
+        os << *b << endl;
+    }
+}
 
+void Accelerator::showParticles(std::ostream &os) const {
+    os << " Particles :" << endl;
+    for(const auto& p : *particles_) {
+        os << *(p.particle()) << endl;
+    }
+}
 
 void Accelerator::evolve(double dt) {
 
@@ -80,31 +83,6 @@ void Accelerator::evolve(double dt) {
             ++i;
         }
     }
-    /*
-
-    // Update forces from the elements of the accelerator
-    for (auto &p : particles_) {
-        p->addMagneticForce(p->element()->magneticForceAt(p->position()), dt);
-    }
-
-    // And then compute the new position, speed and everything
-    for (auto& p : particles_) {
-        p->evolve(dt);
-    }
-
-    // Move particles_ between elements and remove them if needed
-    i = 0;
-    while (i < particles_.size()) {
-        if (!particles_[i]->updateElement()) {
-            cout << particles_[i]->nbrOfTurns() << endl;
-            swap(particles_[i], particles_.back());
-            particles_.pop_back();
-        } else {
-            ++i;
-        }
-    }
-*/
-
 }
 
 bool Accelerator::addSegment(const Vector3D &exit, double radius) {
@@ -167,10 +145,10 @@ bool Accelerator::addFODO(const Vector3D &exit, double quadrupoleLength, double 
 }
 
 void Accelerator::linkElements() {
-    if (elements().size() < 2) return;
+    if (elements_.size() < 2) return;
 
-    auto last = elements().back().get();
-    auto second = elements_[elements().size() - 2].get();
+    auto last = elements_.back().get();
+    auto second = elements_[elements_.size() - 2].get();
 
     second->setNextElement(last);
     last->setPreviousElement(second);
@@ -181,7 +159,7 @@ void Accelerator::linkElements() {
 }
 
 bool Accelerator::isClosed() const {
-    return not(elements().empty()) and elements().back()->exit() == start_;
+    return not(elements_.empty()) and elements_.back()->exit() == start_;
 }
 
 bool Accelerator::acceptableNextElement(const Vector3D &exit, double radius) const {
@@ -198,11 +176,11 @@ bool Accelerator::addCircularBeam(double mass, double charge, double energy, con
 
 bool Accelerator::addCircularBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
                                   size_t nbrMacroParticle, const Vector3D &color, double standardDeviation, int rng) {
-    if (elements().empty()) return false;
+    if (elements_.empty()) return false;
     if (mass < 0) return false;
     if (lambda < 1) return false;
 
-    Particle reference(mass, charge, energy, elements().front()->start(), direction, elements().front().get(), color);
+    Particle reference(mass, charge, energy, elements_.front()->start(), direction, elements_.front().get(), color);
     beams_.push_back(std::make_unique<CircularBeam>(reference, lambda, nbrMacroParticle, standardDeviation, rng));
     for(const auto& p : beams_.back()->macroParticles()){
         addParticle(p);
@@ -212,7 +190,7 @@ bool Accelerator::addCircularBeam(double mass, double charge, double energy, con
 }
 
 Element *Accelerator::elementFromPosition(const Vector3D &position) const {
-    for(auto& e : elements()){
+    for(auto& e : elements_){
         if(Vector3D::e3.tripleProduct(position, e->exit()) < 0 and Vector3D::e3.tripleProduct(position, e->start()) > 0){
             return e.get();
         }
@@ -261,12 +239,12 @@ bool Accelerator::addParticle(double mass, double charge, double energy, const V
     if(element == nullptr) return false;
     if (mass < 0) return false;
 
-    particle_ptdr p(new Particle(mass, charge, energy, position, direction, element, color));
+    particle_ptr p(new Particle(mass, charge, energy, position, direction, element, color));
     particles_->insertNode(p);
     return true;
 }
 
-bool Accelerator::addParticle(particle_ptdr particle) {
+bool Accelerator::addParticle(particle_ptr particle) {
     if (particle.get() == nullptr
         or particle->element() == nullptr
         or particle->mass() < 0)
@@ -275,8 +253,8 @@ bool Accelerator::addParticle(particle_ptdr particle) {
     return true;
 }
 
-void Accelerator::addElement(std::unique_ptr<Element> &&pdtr) {
-    length_ += pdtr->length();
-    elements_.push_back(std::move(pdtr));
+void Accelerator::addElement(unique_ptr<Element> &&ptr) {
+    length_ += ptr->length();
+    elements_.push_back(std::move(ptr));
     linkElements();
 }

@@ -19,20 +19,20 @@
  * The head is at the beginning of the accelerator.
  */
 
-typedef std::shared_ptr<Particle> particle_ptdr;
+typedef std::shared_ptr<Particle> particle_ptr;
 
 class Node;
 
 class Node{
 private:
-    Node* next_;
-    Node* previous_;
-    particle_ptdr particle_;
-    double position_;
-    double previousPosition_;
+    Node* next_; // next node
+    Node* previous_; // previous node
+    particle_ptr particle_; // particle represented by this node
+    double position_; // longitudinal position of the particle in the accelerator
+    double previousPosition_; // previous longitudinal position
 public:
     Node() : next_(this), previous_(this), particle_(nullptr), position_(0), previousPosition_(0) {}
-    Node(particle_ptdr particle, double position) : particle_(particle), position_(position), previousPosition_(position) {}
+    Node(particle_ptr particle, double position) : particle_(particle), position_(position), previousPosition_(position) {}
     Node(const Node &) = delete;
     void operator=(const Node &) = delete;
     virtual ~Node();
@@ -53,7 +53,7 @@ public:
      * Give a pointer to the particle represented by
      * this node.
      */
-    particle_ptdr particle() const { return particle_; }
+    particle_ptr particle() const { return particle_; }
     /**
      * Give the longitudinal position of the particle
      * represented by this node.
@@ -93,7 +93,7 @@ public:
      * in the list and attach the particle in
      * argument to that new node.
      */
-    void insertNode(particle_ptdr particle);
+    void insertNode(particle_ptr particle);
     /**
      * Remove the next node of the list
      */

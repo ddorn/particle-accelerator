@@ -76,7 +76,7 @@ void Node::move(Node* node) {
     previous_->next_ = this;
 }
 
-void Node::insertNode(particle_ptdr particle) {
+void Node::insertNode(particle_ptr particle) {
     if(particle == nullptr){
         std::cerr << "Node.cpp : Tried to insert a new head" << std::endl;
         return;

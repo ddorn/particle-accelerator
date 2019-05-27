@@ -54,15 +54,14 @@ private:
     LinkedList particles_;
     static double MIN_DIST; // minimal distance for the application of the force between particles
 
-    const Vector3D nextStart() const { return elements().empty() ? start_ : elements().back()->exit(); }
-    void addElement(std::unique_ptr<Element>&& pdtr);
+    const Vector3D nextStart() const { return elements_.empty() ? start_ : elements_.back()->exit(); }
+    void addElement(std::unique_ptr<Element>&& ptr);
 public:
     explicit Accelerator(const Vector3D& start = Vector3D(), int rng = 42)
         : rng_(rng), start_(start), length_(0), particles_(std::make_unique<Node>()) {}
     Accelerator(const Accelerator &other) = delete;
     void operator=(const Accelerator & other) = delete;
 
-    const LinkedList &particles() const { return particles_; }
 
     /**
      * Cleanup the dust in the Accelerator and remove all particles.
@@ -79,9 +78,6 @@ public:
      * Small is exactly 0.00000000001 seconds.
      */
     void evolve(double dt = 1e-11);
-
-    const BeamVector &beams() const { return beams_; }
-    const ElementVector &elements() const { return elements_; }
 
     void draw(Support &support) const override { support.draw(*this); }
 
@@ -125,7 +121,7 @@ public:
 
     bool addParticle(double mass, double charge, double energy, const Vector3D &position, const Vector3D &direction,
                                     const Vector3D &color = Vector3D(1, 1, 1));
-    bool addParticle(particle_ptdr particle);
+    bool addParticle(particle_ptr particle);
     /**
     * @return if the last element ends where the first element begins.
     */
@@ -140,6 +136,8 @@ public:
     Element* elementFromPosition(const Vector3D& position) const;
 
     void showElements(std::ostream& os) const;
+    void showParticles(std::ostream& os) const;
+    void showBeams(std::ostream& os) const;
 private:
 
     /**
