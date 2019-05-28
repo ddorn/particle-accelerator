@@ -38,7 +38,6 @@
 typedef std::vector<std::unique_ptr<Element>> ElementVector;
 typedef std::vector<std::unique_ptr<Beam>> BeamVector;
 typedef std::unique_ptr<Node> LinkedList;
-//typedef std::unique_ptr<Node> LinkedList;
 
 class Accelerator : public Content {
 private:
@@ -52,7 +51,7 @@ private:
     ElementVector elements_;
     BeamVector beams_;
     LinkedList particles_;
-    static double MIN_DIST; // minimal distance for the application of the force between particles
+    static const double MIN_DIST; // minimal distance for the application of the force between particles
 
     const Vector3D nextStart() const { return elements_.empty() ? start_ : elements_.back()->exit(); }
     void addElement(std::unique_ptr<Element>&& ptr);

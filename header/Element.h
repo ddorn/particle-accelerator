@@ -13,12 +13,12 @@ class Particle;
 
 class Element : public Content {
 private:
-    Vector3D start_;
-    Vector3D exit_;
-    double radius_;
-    double longitudinalPosition_;
-    Element* nextElement_;
-    Element* previousElement_;
+    const Vector3D start_;
+    const Vector3D exit_;
+    const double radius_;
+    const double longitudinalPosition_;
+    const Element* nextElement_;
+    const Element* previousElement_;
 public:
     Element(const Vector3D &entree, const Vector3D &exit, double radius, double longitudinalPosition)
     : start_(entree), exit_(exit), radius_(radius), longitudinalPosition_(longitudinalPosition),
@@ -97,12 +97,12 @@ public:
     /**
      * return a pointer to the next element
      */
-    Element* nextElement() const { return nextElement_; }
+    const Element* nextElement() const { return nextElement_; }
 
     /**
      * return a pointer to the previous element
      */
-    Element* previousElement() const { return previousElement_; }
+    const Element* previousElement() const { return previousElement_; }
 
     /**
      * Give the longitudinal position of the beginning of the element,
@@ -111,8 +111,8 @@ public:
     double longitudinalPosition() const { return longitudinalPosition_; };
 
 
-    void setNextElement(Element* e) { nextElement_ = e; }
-    void setPreviousElement(Element* e) { previousElement_ = e; }
+    void setNextElement(const Element* e) { nextElement_ = e; }
+    void setPreviousElement(const Element* e) { previousElement_ = e; }
 
     /**
      * Print info of the element on the stream.
