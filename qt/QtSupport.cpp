@@ -444,12 +444,6 @@ void QtSupport::draw(const Sextupole &element) {
 
 }
 
-void QtSupport::draw(const Beam &beam) {
-    for (auto const &p : beam.macroParticles()) {
-        draw(*p);
-    }
-}
-
 
 void QtSupport::drawParticles(const Accelerator &accelerator) {
     // We can never see through particles

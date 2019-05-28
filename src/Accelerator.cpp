@@ -75,7 +75,7 @@ void Accelerator::evolve(double dt) {
     // Remove beams with no particles
     size_t i(0);
     while (i < beams_.size()) {
-        if (beams_[i]->macroParticles().empty()) {
+        if (!beams_[i]->isAlive()) {
             swap(beams_[i], beams_.back());
             beams_.pop_back();
         } else {
@@ -181,9 +181,7 @@ bool Accelerator::addCircularBeam(double mass, double charge, double energy, con
 
     Particle reference(mass, charge, energy, elements_.front()->start(), direction, elements_.front().get(), color);
     beams_.push_back(std::make_unique<CircularBeam>(reference, lambda, nbrMacroParticle, standardDeviation, rng));
-    for(const auto& p : beams_.back()->macroParticles()){
-        addParticle(p);
-    }
+    beams_.back()->generateParticles(*this);
 
     return true;
 }

@@ -181,7 +181,7 @@ GlWidget::GlWidget(QWidget *parent)
 }
 
 void GlWidget::build(double coucou) {
-    // TODO: move it ouside the class
+    // TODO: move it ouside the classupdateParticles
     accelerator.cleanParticles();
     accelerator.cleanElements();
 //    double quadrupoleIntensity(1.2);

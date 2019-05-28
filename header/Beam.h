@@ -31,18 +31,26 @@ public:
     Beam(const Particle &refParticle_, size_t lambda_, size_t nbrMacroParticles) : lambda_(lambda_),
                                                                                    nbrMacroParticles_(
                                                                                            nbrMacroParticles),
-                                                                                   refParticle_(refParticle_)
-                                                                                   { updateEmittance(); }
-   ParticleVector const& macroParticles() const { return macroParticles_; } //TODO : give a list of particles
-
+                                                                                   refParticle_(
+                                                                                           refParticle_) { updateEmittance(); }
+    /**
+     * @return whether the beam is done with this world.
+     */
+    bool isAlive() const { return nbrMacroParticles_ > 0; }
 
     /**
      * It is a measure for
      * the average spread of particle coordinates
-     * in position-and-momentum phase space
+     * in position-and-momentum vertical phase space.
      * @return emittance. Unit : m²/s
      */
     double emittanceZ() const { return emittanceZ_; }
+    /**
+     * It is a measure for
+     * the average spread of particle coordinates
+     * in position-and-momentum radial phase space.
+     * @return emittance. Unit : m²/s
+     */
     double emittanceR() const { return emittanceR_; }
 
     /**
@@ -50,15 +58,10 @@ public:
      * of the beam in position-and-momentum phase space.
      */
     double A11R() const { return A11R_; }
-
     double A12R() const { return A12R_; }
-
     double A22R() const { return A22R_; }
-
     double A11Z() const { return A11Z_; }
-
     double A12Z() const { return A12Z_; }
-
     double A22Z() const { return A22Z_; }
 
     /**
@@ -75,14 +78,10 @@ public:
     void draw(Support &support) const override { support.draw(*this); }
 
     /**
-     * Remove the macroparticle in the list at the place i.
-     */
-    void removeMacroParticle(size_t i);
-
-    /**
      * Add a macroparticle
      */
-    void addMacroParticle(const Vector3D &position, const Vector3D &direction, const Element *element);
+    void addMacroParticle(const Vector3D &position, const Vector3D &direction, const Element *element,
+                          Accelerator &accelerator);
 
     /**
      * Remove all the macroparticles which collided with the border
@@ -94,6 +93,8 @@ public:
      */
     void updateEmittance();
 
+    virtual void generateParticles(Accelerator &) = 0;
+
 private:
     /**
      * The number of real particles in a macroparticle
@@ -103,26 +104,14 @@ private:
 
 protected:
     size_t nbrMacroParticles_;
-    /**
-     * One macroparticle simulates lambda real particles
-     */
     ParticleVector macroParticles_;
     Particle refParticle_;
 
     double emittanceZ_;
     double emittanceR_;
 
-    double A11R_;
-
-    double A12R_;
-
-    double A22R_;
-
-    double A11Z_;
-
-    double A12Z_;
-
-    double A22Z_;
+    double A11R_, A12R_, A22R_;
+    double A11Z_, A12Z_, A22Z_;
 
 
 };

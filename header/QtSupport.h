@@ -79,7 +79,7 @@ public:
     void draw(const Element &element) override;
     void draw(const Dipole &) override;
     void draw(const Sextupole &) override;
-    void draw(const Beam &beam) override;
+    void draw(const Beam &) override {};
 
     void drawParticles(const Accelerator &accelerator);
     void drawElements(const Accelerator &accelerator);

@@ -3,20 +3,12 @@
 //
 
 #include "Beam.h"
-
+#include "Accelerator.h"
 using namespace std;
 
 
-void Beam::removeMacroParticle(size_t i) {
-    nbrMacroParticles_ -= 1;
-    // The order of particles doesn't matter,
-    // so we put the particle we need to delete at the end
-    // and then remove it
-    swap(macroParticles_[i], macroParticles_.back());
-    macroParticles_.pop_back();
-}
-
-void Beam::addMacroParticle(const Vector3D &position, const Vector3D &direction, const Element* element) {
+void Beam::addMacroParticle(const Vector3D &position, const Vector3D &direction, const Element *element,
+                            Accelerator &accelerator) {
     if (nbrMacroParticles_ > macroParticles_.size()) {
         macroParticles_.push_back(make_unique<Particle>(refParticle_.mass(),
                                                         refParticle_.charge(),
@@ -25,12 +17,14 @@ void Beam::addMacroParticle(const Vector3D &position, const Vector3D &direction,
                                                         direction,
                                                         element,
                                                         refParticle_.color()));
+        accelerator.addParticle(macroParticles_.back());
     }
 }
 
 void Beam::removeDeadParticles() {
-    for(size_t i(0); i < macroParticles().size(); ++i){
-        if(!macroParticles()[i]->isAlive()){
+    for(size_t i(0); i < macroParticles_.size(); ++i){
+        if(!macroParticles_[i]->isAlive()){
+            nbrMacroParticles_ -= 1;
             swap(macroParticles_[i], macroParticles_.back());
             macroParticles_.pop_back();
         }
