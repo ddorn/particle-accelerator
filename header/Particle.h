@@ -42,7 +42,6 @@ private:
     Vector3D force_;
     Vector3D lastForce_;
     const Element *element_;
-    Vector3D color_;
     Vector3D speed_;
     bool isAlive_;
 
@@ -69,13 +68,12 @@ public:
      * @param element A c-like pointer to the element containing the particle
      */
     Particle(double mass, double charge, double energy, const Vector3D &position, const Vector3D &direction,
-             const Element *element, const Vector3D &color = Vector3D(1, 1, 1))
+             const Element *element)
             : mass_(mass),
               charge_(charge),
               spawn_(element),
               position_(position),
               element_(element),
-              color_(color),
               speed_(direction.isZero() ? Vector3D()
                                         : ~direction * velocityFromEnergy(energy, mass)),
               isAlive_(true) {
@@ -117,8 +115,6 @@ public:
     const Vector3D momentum() const { return massSI() * gamma() * speed(); }
 
     const Vector3D &position() const { return position_; }
-
-    const Vector3D &color() const { return color_; }
 
     const Element *element() const { return element_; }
 

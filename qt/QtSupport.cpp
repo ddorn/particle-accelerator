@@ -115,7 +115,8 @@ const QMatrix4x4 QtSupport::updateViewMatrix(const Accelerator &accelerator) {
     position = Vector3D(p.x(), p.y(), p.z());
     viewInsideAccelerator_ = viewMode == FIRST_PERSON
                              || viewMode == THIRD_PERSON
-                             || accelerator.isInside(position);
+                             || (viewMode == FREE_VIEW
+                                 && accelerator.isInside(position));
 
 
     // We use the current view matrix only in free mode, otherwise
@@ -342,7 +343,7 @@ void QtSupport::drawCurvedTube(const Vector3D &start, const Vector3D &end, const
     constexpr int NB_CIRCLES(6);
     constexpr double CIRCLE_ANGLE(2 * M_PI / NB_SEGMENTS);
 
-    double a = acos(~relExit * ~relEntree);  // TODO: This supposes clockwise turn definition of accelerator
+    double a = acos(~relExit * ~relEntree);
     double angle(a / NB_CIRCLES);
 
 
@@ -388,7 +389,8 @@ void QtSupport::draw(const Vector3D &d) {
 }
 
 void QtSupport::draw(const Particle &particle) {
-    drawSphere(particle.position(), viewInsideAccelerator() ? 0.005 : 0.03, theme()->particleColor());
+    drawSphere(particle.position(), viewInsideAccelerator() ? 0.005 : 0.03,
+            particle.isAlive() ? theme()->particleColor() : Color(1));
 }
 
 void QtSupport::draw(const Accelerator &accelerator) {
@@ -454,14 +456,8 @@ void QtSupport::drawParticles(const Accelerator &accelerator) {
     else glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
-//    for (const auto &p : accelerator.beams()) {
-//        p->draw(*this);
-//    }
-    int i(0);
     for (const auto &p : *accelerator.particles()) {
-        sendColor(Color(5 * i % 360, 1.0, 1.0));
         p.particle()->draw(*this);
-        ++i;
     }
 }
 
@@ -536,6 +532,7 @@ QtSupport::~QtSupport() {
     QGLContext* context =  const_cast<QGLContext*>(QGLContext::currentContext());
     context->deleteTexture(epflTexture);
 }
+
 
 
 

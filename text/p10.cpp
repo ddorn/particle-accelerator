@@ -14,6 +14,8 @@ int main() {
     double mass(constants::M_PROTON);
     double charge(constants::C_PROTON);
     double energy(2);
+    Vector3D position1(2.99, 0, 0);
+    Vector3D position2(3.01, 0, 0);
 
     // Creation of the accelerator
     TextSupport s(cout);
@@ -34,19 +36,16 @@ int main() {
         pFodo = pFodo ^ Vector3D::e3;
     }
 
-    Vector3D position1(2.99, 0, 0);
-    Vector3D position2(3.01, 0, 0);
-
-    bobLEponge.addParticle(mass, charge, energy, position1, Vector3D::e2);
-    bobLEponge.addParticle(mass, charge, energy, position2, Vector3D::e2);
+    bobLEponge.addParticle(mass, charge, energy, position1, -Vector3D::e2);
+    bobLEponge.addParticle(mass, charge, energy, position2, -Vector3D::e2);
 
     int i(0);
-    while (!bobLEponge.particles()->empty() and i < 4) {
+    while (!bobLEponge.particles()->empty()) {
         bobLEponge.evolve(1e-11);
         bobLEponge.draw(s);
         ++i;
     }
-    cout <<i<< endl;
+    cout << "Number of turns: " << i << endl;
 
     return 0;
 }

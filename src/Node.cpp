@@ -16,20 +16,6 @@ void Node::exchangeNext() {
     this->previous_ = other;
 }
 
-void Node::exchangePlace(int n){
-    Node* other(this);
-    if(n > 0){
-        for(int i(0); i < n; ++i){
-            other = other->next();
-        }
-    } else{
-        for(int i(0); i < -n; ++i){
-            other = other->previous();
-        }
-    }
-    exchangePlace(other);
-}
-
 void Node::exchangePlace(Node* other){
     if(other->next() == this) return other->exchangeNext();
     if(this->next() == other) return exchangeNext();

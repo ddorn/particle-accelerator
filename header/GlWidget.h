@@ -26,12 +26,11 @@ private:
     QtSupport support;
     ScatterPlot* scatterPlot;
 public:
-    GlWidget(QWidget *parent = nullptr);
+    GlWidget(Accelerator &accelerator, QWidget *parent = nullptr);
 
     virtual ~GlWidget() = default;
 
 private:
-    void build(double quadrupole_intensity = 1.2);
     void addBeam(bool clockwise = true);
     // The 3 key methods of QOpenGLWidget to reimplement
     void initializeGL() override;

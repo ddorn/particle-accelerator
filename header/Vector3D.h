@@ -52,8 +52,6 @@ public:
     /**
      * The triple product between three vectors
      * @return The signed volume covered by the three vectors.
-     * @todo Should this be a class method that we would call Vector3D::tripleProduct(a, b, c)
-     *        I think it would make more sense as it's not the particularity of a vector
      */
     component tripleProduct(const Vector3D&, const Vector3D&) const;
 

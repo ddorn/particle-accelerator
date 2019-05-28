@@ -123,12 +123,10 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
         case Qt::Key_Plus:
             intensity *= 1 + 0.4 * factor;
             std::cout << intensity << std::endl;
-            build(intensity);
             break;
         case Qt::Key_Minus:
             intensity /= 1 + 0.4 * factor;
             std::cout << intensity << std::endl;
-            build(intensity);
             break;
         case Qt::Key_Backspace:
             accelerator.cleanParticles();
@@ -174,44 +172,17 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
     update(); // redessine
 }
 
-GlWidget::GlWidget(QWidget *parent)
-        : QOpenGLWidget(parent), counter(0), accelerator(Vector3D(3, 2, 0)), scatterPlot(new ScatterPlot()) {
-
-    build(intensity);
-}
-
-void GlWidget::build(double coucou) {
-    // TODO: move it ouside the classupdateParticles
-    accelerator.cleanParticles();
-    accelerator.cleanElements();
-//    double quadrupoleIntensity(1.2);
-    double dipoleIntensity(5.891582055618276);
-
-    double radius(0.1);
-    Vector3D pd(2, -3, 0);
-    Vector3D pSex(3, 2 - coucou, 0);
-    Vector3D pFODO(3, -2, 0);
-
-    for (int i = 0; i < 4; ++i) {
-        accelerator.addSextupole(pSex, radius, 0);
-        accelerator.addFODO(pFODO, 0.5, radius, 1.2);
-        accelerator.addDipole(pd, radius, 1, dipoleIntensity);
-
-        pSex = pSex ^ Vector3D::e3;
-        pFODO = pFODO ^ Vector3D::e3;
-        pd = pd ^ Vector3D::e3;
-    }
-}
+GlWidget::GlWidget(Accelerator &accelerator, QWidget *parent)
+        : QOpenGLWidget(parent), counter(0), accelerator(std::move(accelerator)), scatterPlot(new ScatterPlot()) {}
 
 void GlWidget::addBeam(bool clockwise) {
     // ---- Parametrisation of the particles ----
     double mass(constants::M_PROTON);
     double charge(constants::C_PROTON);
     double energy(2);
-    Vector3D direction(0, -1, 0);
 
-    if (clockwise) accelerator.addCircularBeam(mass, -charge, energy, -direction, 1000, 42);
-    else accelerator.addCircularBeam(mass, charge, energy, direction, 1000, 42);
+    if (clockwise) accelerator.addCircularBeam(mass, charge, energy, RadialVec3D(0, 1, 0), 1000, 42, 0.01);
+    else accelerator.addCircularBeam(mass, -charge, energy, RadialVec3D(0, -1, 0), 1000, 42, 0.01);
 }
 
 

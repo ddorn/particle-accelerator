@@ -9,20 +9,20 @@
 
 class Proton : public Particle{
 public:
-    Proton(double energy, Vector3D &position, Vector3D &direction, Element* element, const Vector3D &color = Vector3D(1, 0, 0))
-    : Particle(constants::M_PROTON, constants::C_PROTON, energy, position, direction, element, color) {}
+    Proton(double energy, Vector3D &position, Vector3D &direction, Element* element)
+    : Particle(constants::M_PROTON, constants::C_PROTON, energy, position, direction, element) {}
 };
 
 class Electron : public Particle{
 public:
-    Electron(double energy, Vector3D &position, Vector3D &direction, Element* element, const Vector3D &color = Vector3D(0.98, 0.83, 0.03))
-    : Particle(constants::M_ELECTRON, constants::C_ELECTRON, energy, position, direction, element, color) {}
+    Electron(double energy, Vector3D &position, Vector3D &direction, Element* element)
+    : Particle(constants::M_ELECTRON, constants::C_ELECTRON, energy, position, direction, element) {}
 };
 
 class Antiproton : public Particle{
 public:
-    Antiproton(double energy, Vector3D &position, Vector3D &direction, Element* element, const Vector3D &color = Vector3D(0, 0, 1))
-    : Particle(constants::M_PROTON, -constants::C_PROTON, energy, position, direction, element, color) {}
+    Antiproton(double energy, Vector3D &position, Vector3D &direction, Element* element)
+    : Particle(constants::M_PROTON, -constants::C_PROTON, energy, position, direction, element) {}
 };
 
 #endif //PARTICLEACCELERATOR_PROTON_H

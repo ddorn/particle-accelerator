@@ -41,8 +41,7 @@ private:
     size_t themeIndex = 0;
 public:
     // Initialisation
-    // TODO: Why not put those two in the constructor ? Isn't it its purpose ?
-    // Answer: because it simply doesn't work... but why ?
+    QtSupport() : viewMode(FREE_VIEW) {};
     void init();
     void initPosition();
     void initThemes();

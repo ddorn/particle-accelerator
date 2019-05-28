@@ -71,7 +71,6 @@ public:
      * Tell whether or not this node is the head
      */
     bool isHead() const { return particle_ == nullptr; }
-    void exchangePlace(int n);
     /**
      * Exchange the place of this node with the node
      * given in argument in the list.

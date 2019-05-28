@@ -63,7 +63,7 @@ int main() {
 // ------------------------------------
 
 // --- CREATION OF PARTICLES ---
-    accelerator.addCircularBeam(mass, charge, energy, Vector3D(0,-1,0), 1, 10, Vector3D(1, 1, 1), 0.0001);
+    accelerator.addCircularBeam(mass, charge, energy, RadialVec3D(0, 1, 0), 1, 10, 0.0001);
 // ------------------------------------
 
 // --- SIMULATION ---

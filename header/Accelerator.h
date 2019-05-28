@@ -60,6 +60,7 @@ public:
     explicit Accelerator(const Vector3D& start = Vector3D(), int rng = 42)
         : rng_(rng), start_(start), length_(0), particles_(std::make_unique<Node>()) {}
     Accelerator(const Accelerator &other) = delete;
+    Accelerator(Accelerator &&other) = default;
     void operator=(const Accelerator & other) = delete;
 
     const LinkedList& particles() const { if (!particles_->isHead()) std::cout << 1; return particles_; }
@@ -118,13 +119,13 @@ public:
     /**
      * Add a circular beam.
      */
-    bool addCircularBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
-                                      size_t nbrMacroParticle, const Vector3D &color = Vector3D(1, 1, 1), double standardDeviation = 1e-9);
-    bool addCircularBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
-                                      size_t nbrMacroParticle, const Vector3D &color, double standardDeviation, int rng);
+    bool addCircularBeam(double mass, double charge, double energy, const RadialVec3D &direction, size_t lambda,
+                         size_t nbrMacroParticle, double standardDeviation = 1e-8);
+    bool addCircularBeam(double mass, double charge, double energy, const RadialVec3D &direction, size_t lambda,
+                         size_t nbrMacroParticle, double standardDeviation, int rng);
 
-    bool addParticle(double mass, double charge, double energy, const Vector3D &position, const Vector3D &direction,
-                                    const Vector3D &color = Vector3D(1, 1, 1));
+    bool addParticle(double mass, double charge, double energy, const Vector3D &position,
+                     const Vector3D &direction);
     bool addParticle(const particle_ptr& particle);
     /**
     * @return if the last element ends where the first element begins.

@@ -168,18 +168,22 @@ bool Accelerator::acceptableNextElement(const Vector3D &exit, double radius) con
     return !isClosed();
 }
 
-bool Accelerator::addCircularBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
-                                  size_t nbrMacroParticle, const Vector3D &color, double standardDeviation){
-    return addCircularBeam(mass, charge, energy, direction, lambda, nbrMacroParticle, color, standardDeviation, int(std::chrono::system_clock::now().time_since_epoch().count() % 1000000));
+bool
+Accelerator::addCircularBeam(double mass, double charge, double energy, const RadialVec3D &direction, size_t lambda,
+                             size_t nbrMacroParticle, double standardDeviation) {
+    return addCircularBeam(mass, charge, energy, direction, lambda, nbrMacroParticle, standardDeviation,
+                           int(std::chrono::system_clock::now().time_since_epoch().count() % 1000000));
 }
 
-bool Accelerator::addCircularBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
-                                  size_t nbrMacroParticle, const Vector3D &color, double standardDeviation, int rng) {
+bool
+Accelerator::addCircularBeam(double mass, double charge, double energy, const RadialVec3D &direction, size_t lambda,
+                             size_t nbrMacroParticle, double standardDeviation, int rng) {
     if (elements_.empty()) return false;
     if (mass < 0) return false;
     if (lambda < 1) return false;
 
-    Particle reference(mass, charge, energy, elements_.front()->start(), direction, elements_.front().get(), color);
+    Vector3D dir(elements_.front()->absoluteSpeed(RadialVec3D(0, 0, 0), direction));
+    Particle reference(mass, charge, energy, elements_.front()->start(), dir, elements_.front().get());
     beams_.push_back(std::make_unique<CircularBeam>(reference, lambda, nbrMacroParticle, standardDeviation, rng));
     beams_.back()->generateParticles(*this);
 
@@ -225,18 +229,18 @@ void Accelerator::reorderParticleList() const {
             p->exchangePlace(nextNode);
             if(!nextNode->previous()->isHead()) p = nextNode->previous();
         } else {
+            p = nextNode;
         }
-        p = nextNode;
     }
 }
 
 bool Accelerator::addParticle(double mass, double charge, double energy, const Vector3D &position,
-                            const Vector3D &direction, const Vector3D &color) {
+                              const Vector3D &direction) {
     const Element* element(elementFromPosition(position));
     if(element == nullptr) return false;
     if (mass < 0) return false;
 
-    particles_->insertNode(make_shared<Particle>(mass, charge, energy, position, direction, element, color));
+    particles_->insertNode(make_shared<Particle>(mass, charge, energy, position, direction, element));
     return true;
 }
 
