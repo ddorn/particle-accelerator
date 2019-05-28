@@ -162,7 +162,7 @@ private:
      */
     bool acceptableNextElement(const Vector3D& exit, double radius) const;
 
-    void updateParticles() const;
+    void reorderParticleList() const;
 
 
 };

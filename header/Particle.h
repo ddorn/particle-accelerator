@@ -200,8 +200,9 @@ public:
      * `addMagneticForce`.
      *
      * @param dt Timestep for the integrator
+     * @returns whether the particle is dead
      */
-    void evolve(double dt);
+    bool evolve(double dt);
 
     /**
      * If the is outside of the accelerator (aka dead), it returns false.

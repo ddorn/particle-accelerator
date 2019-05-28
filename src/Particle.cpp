@@ -36,11 +36,14 @@ void Particle::addElectricForce(const Vector3D& e){
     force_ += charge() * e;
 }
 
-void Particle::evolve(double dt) {
+bool Particle::evolve(double dt) {
     speed_ += dt * force_ / (gamma() * massSI());
     position_ += dt * speed_;
     updateCachedAttributes();  // Position, speed and force changed
     force_ *= 0;  // We reuse the same object
+
+    updateElement();
+    return !isAlive();
 }
 
 bool Particle::updateElement() {

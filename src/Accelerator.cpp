@@ -47,6 +47,7 @@ void Accelerator::showParticles(std::ostream &os) const {
 
 void Accelerator::evolve(double dt) {
 
+    // Add the magnetic and electric forces
     for (auto& n : *particles_) {
         n.particle()->addElementMagneticForce(dt);
         for (Node::iterator it(n.next()); it != Node::iterator(&n) and (fabs(it->position() - n.position()) < MIN_DIST or
@@ -57,15 +58,14 @@ void Accelerator::evolve(double dt) {
         }
     }
 
+    // Evolve particles and check whether they are dead
     for (Node::iterator it(particles_->begin()); it != particles_->end(); ++it) {
-        it->particle()->evolve(dt);
-        if (!it->particle()->updateElement()) {
-            --it;
-            it->removeNextNode();
+        if (it->particle()->evolve(dt)) {
+            (--it)->removeNextNode();
         }
     }
 
-    updateParticles();
+    reorderParticleList();
 
     for (auto& mrBeam : beams_) {
         mrBeam->removeDeadParticles();
@@ -197,7 +197,7 @@ const Element * Accelerator::elementFromPosition(const Vector3D &position) const
     return nullptr;
 }
 
-void Accelerator::updateParticles() const {
+void Accelerator::reorderParticleList() const {
     for (auto &n : *particles_) n.updatePosition();
 
     Node* firstPreviousNode(particles_->previous());
