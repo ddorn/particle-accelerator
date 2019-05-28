@@ -40,6 +40,10 @@ deux vecteurs avec un certain degré de précision, car les coordonnées sont de
 > Comment avez-vous implémenté gamma : comme attribut ou comme méthode ? Même question pour l'énergie.
 	Répondez et discutez les avantages/inconvénients de chaque possibilité dans votre fichier REPONSES. Argumentez ensuite votre choix.
 
+Nous avons mis gamma en tant qu'attribut. En effet, gamma est utilisée deux à trois fois par tour, nous évitons
+ainsi des calculs superflus. En contrepartie, nous utilisons plus de mémoire.
+L'énergie, a contrario, n'est appelée qu'une fois par tour, et uniquement en mode texte, pour l'affichage
+des particules. La garder en mémoire est donc inutile.
 
 ### Question P7.2 
 > Pourquoi fait-on cela ? Pourquoi qualifier ces deux méthodes de « deleted » ? 
@@ -72,9 +76,8 @@ C'est un cas de double dispatch.
 
 
 ### Question P9.2
-> Quelle est la bonne façon de le faire dans un cadre de programmation orientée-objet ?
+> Quelle est la bonne façon de le faire dans un cadre de programmation orientée-objet ? (en ce qui concerne les collections de particules et d'éléments de l'accélérateur)
 
-(en ce qui concerne les collections de particules et d'éléments de l'accélérateur)
 Pour garder les spécificités, il faut créer une collection hétérogène. On va mettre en place
 un vector de unique_ptr, afin de garder le polymorphisme.
 
@@ -84,8 +87,8 @@ un vector de unique_ptr, afin de garder le polymorphisme.
 > A quoi faut-il faire attention pour les classes contenant des pointeurs ? Quelles solutions peut-on envisager ?
 
 Il faut faire attention à ce que les zones mémoire allouées soient
-bien libérées après utilisation. Comme nous utilisons des unique_ptr,
-cela se fait automatiquement. Il faut également faire attention lors de la
+bien libérées après utilisation, et une seule fois. Comme nous utilisons des unique_ptr,
+cela se fait automatiquement (note du futur : et des `shared_ptr`). Il faut également faire attention lors de la
 création des instances à ne pas créer des instances locales, puis à les ajouter
 à une classe abstraite, car les zones mémoire seraient alors désallouées, mais
 les pointeurs ne seraient pas supprimés. La solution est alors d'allouer dynamiquement
@@ -98,6 +101,8 @@ les zones mémoires, en faisant new Class(...).
 Ces valeurs changent avec le temps, il n'y a donc pas de raison de les mettre comme attributs.
 A VOIR : Il pourrait cependant être intéressant de garder les valeurs de départ, notamment pour les faisceaux avec
 une distribution aléatoire.
+(Note du futur : nous avons finalement décidé de les mettre en attributs, car cela
+simplifie les calculs.)
 
 ### Question 13.1
 > Quelle est la complexité de ces deux algorithmes ? (algorithmes d'application des forces interparticules où les
@@ -128,5 +133,4 @@ décidé de faire une liste doublement chaînée circulaire de particules, dans 
 longitudinales. Nous faisons intéragir chaque particule avec les suivantes dans la liste, jusqu'à ce que la suivante
 soit plus loin qu'une certaine distance maximale, et à ce moment-là nous passons à la suivante.
 À chaque pas, nous contrôlons que l'ordre est correct. Un pointeur vers la tête de la liste chaînée est contenu
-dans l'accélérateur et celui-ci gère la liste. Nous expliquons plus longuement son fonctionnement
-dans le fichier CONCEPTION.
+dans l'accélérateur et celui-ci gère la liste.

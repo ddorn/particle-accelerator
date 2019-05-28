@@ -126,9 +126,15 @@ interface graphique. Il reprend l'accélerateur de `testModel.cpp`.
  de la vitesse radiale, en mode diagrame.
 
 ### Améliorations possibles
- Les améliorations possibles sont la mise en place d'une vraie simulation des distributions des particules,
- ainsi que l'ajout d'éléments appliquant des forces électriques, afin de réellement accélérer les particules.
+ Les améliorations possibles sont la mise en place d'une vraie simulation des distributions 
+ des particules, ainsi que l'ajout d'éléments appliquant des forces électriques, 
+ afin de réellement accélérer les particules.
 
 
 --- 
 Le répertoire à été mis en public le mercredi 29 mai, après la date de rendu.
+Nous avons donc respecté les instructions anti-tricherie.
+
+Dans l'historique GIT, de nombreux commit sont mis au nom de Diego, alors qu'ils ont été
+faits ensemble. En effet, nous avons plusieurs fois travaillé à deux sur l'ordinateur 
+de Diego.
