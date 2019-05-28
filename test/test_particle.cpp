@@ -7,6 +7,12 @@
 using namespace std;
 using namespace constants;
 
+/*
+ * Ne compile plus, car le prototype des constructeurs de particules
+ * a changé : on utilise maintenant l'énergie et la direction de la vitesse
+ * plutôt que la quantité de mouvement.
+ *
+ */
 
 int main(){
     Vector3D speed1(-210200, -2.64754e08, 0);

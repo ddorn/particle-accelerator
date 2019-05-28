@@ -9,6 +9,11 @@
 using namespace std;
 using namespace constants;
 
+/* Ne compile plus car le prototype des particules a changé :
+ * il faut maintenant donner un pointeur vers un élément à la
+ * création de la particule.
+ * */
+
 int main(){
     Particle particleIn(1, 1, Vector3D(0.3, 0.1, 0.15), Vector3D(0,0,0));
     Particle particleOut(1, 1, Vector3D(1.1, 0.12, 0.1), Vector3D(0,0,0));
