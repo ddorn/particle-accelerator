@@ -23,13 +23,12 @@ int main() {
 
 
     double radius(0.1);
-    double dipoleIntensity(5.89158);
 
     Vector3D pDipole(2, -3, 0);
     Vector3D pFodo(3, -2, 0);
 
     for (int i = 0; i < 4; ++i) {
-        bobLEponge.addFODO(pFodo, 1, radius, dipoleIntensity);
+        bobLEponge.addFODO(pFodo, 1, radius, 1.2);
         bobLEponge.addDipole(pDipole, radius, 1, mass, charge, energy);
 
         pDipole = pDipole ^ Vector3D::e3;
@@ -47,7 +46,6 @@ int main() {
         bobLEponge.draw(s);
         ++i;
     }
-    cout << "Number of turns: " << i << endl;
 
     return 0;
 }

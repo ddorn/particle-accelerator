@@ -37,7 +37,7 @@ int main() {
 // --- PARAMETRISATION OF ACCELERATOR ---
     TextSupport s(cout);
     double dt(1e-11);
-    double duration(1e-8);
+    double duration(1e-3);
     Accelerator accelerator(Vector3D(3, 2, 0));
 // ------------------------------------
 
