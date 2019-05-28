@@ -389,8 +389,7 @@ void QtSupport::draw(const Vector3D &d) {
 }
 
 void QtSupport::draw(const Particle &particle) {
-    drawSphere(particle.position(), viewInsideAccelerator() ? 0.005 : 0.03,
-            particle.isAlive() ? theme()->particleColor() : Color(1));
+    drawSphere(particle.position(), viewInsideAccelerator() ? 0.005 : 0.03, theme()->particleColor());
 }
 
 void QtSupport::draw(const Accelerator &accelerator) {

@@ -5,6 +5,7 @@
 #ifndef PARTICLEACCELERATOR_SCATTERPLOT_H
 #define PARTICLEACCELERATOR_SCATTERPLOT_H
 
+// TODO: remove if charts not installed
 #include <QtCharts/QChartView>
 #include <QValueAxis>
 #include <QtCharts/QScatterSeries>

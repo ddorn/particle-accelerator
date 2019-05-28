@@ -20,6 +20,7 @@ private:
     double b_;
     double a_;
     double rainbowPeriod_ = 0;
+    double rainbowOffset_ = 0;
 public:
     /**
      * Create a color with red, green, blue and alpha between 0 and 1.
@@ -83,8 +84,12 @@ public:
      * @param rainbowPeriod revolution period  in seconds
      * @param a Alpha between 0 and 1
      */
-    Color(double rainbowPeriod, double a = 1) : a_(a), rainbowPeriod_(rainbowPeriod < 0 ? 1 : rainbowPeriod) {}
-
+    static Color getRainbow(double rainbowPeriod, double rainbowOffset = 0, double a = 1) {
+        Color c(0, 0, 0, a);
+        c.rainbowOffset_ = rainbowOffset;
+        c.rainbowPeriod_ = rainbowPeriod;
+        return c;
+    }
     double r() const { return rainbowPeriod_ == 0 ? r_ : rainbowColor().r(); }
     double g() const { return rainbowPeriod_ == 0 ? g_ : rainbowColor().g(); }
     double b() const { return rainbowPeriod_ == 0 ? b_ : rainbowColor().b(); }
@@ -101,7 +106,7 @@ private:
         double t(system_clock::now().time_since_epoch().count());
         t /=  rainbowPeriod_ * 1e9;
         t *= 360;
-        return Color(int(fmod(t, 360)), 1.0, 1.0);
+        return Color(int(fmod(t + rainbowOffset_, 360)), 1.0, 1.0);
     }
 };
 
@@ -168,10 +173,10 @@ public:
                 Color(0,0,0));
     }
     static Theme RouteArcEnCiel() {
-        return Theme(true, true, 0.7, Color(0, 1., 1.), Color(5));
+        return Theme(true, true, 0.7, Color(0, 1., 1.), Color::getRainbow(5));
     };
     static Theme CurseOfDarkRainbow() {
-        return Theme(true, true, 0.7, Color(1), Color(3), Color(5));
+        return Theme(true, true, 0.7, Color::getRainbow(5), Color::getRainbow(5, 180), Color::getRainbow(5));
     }
     static Theme Zloopix() {
         return Theme(true, true, 0, Color(1., 1., 1., 0), Color(1.0, 1.0, 1.0));
