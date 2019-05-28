@@ -256,3 +256,8 @@ void Accelerator::addElement(unique_ptr<Element> &&ptr) {
     elements_.push_back(std::move(ptr));
     linkElements();
 }
+
+bool Accelerator::isInside(const Vector3D &position) const {
+    const Element* e(elementFromPosition(position));
+    return e != nullptr && !e->collideBorder(position);
+}

@@ -130,10 +130,16 @@ public:
     * @return if the last element ends where the first element begins.
     */
     bool isClosed() const;
+    /**
+     * Return whether the given position is inside an element of the accelerator
+     */
+    bool isInside(const Vector3D & position) const;
     double length() const { return length_; };
     void showElements(std::ostream& os) const;
     void showParticles(std::ostream& os) const;
     void showBeams(std::ostream& os) const;
+private:
+
     /**
      * return a ptr at the element in the direction of the position, ie.
      * the element such that the vector position is between the start and the end.
@@ -141,8 +147,6 @@ public:
      * adequate, it will return a nullptr.
      */
     const Element* elementFromPosition(const Vector3D& position) const;
-
-private:
 
     /**
      * Link the two last elements
