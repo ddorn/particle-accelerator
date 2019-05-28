@@ -1,5 +1,6 @@
 CONFIG += c++14
-QT += core gui opengl widgets charts
+QT += core gui opengl widgets
+
 
 TARGET = qt_accelerator
 DESTDIR = ../bin
@@ -15,16 +16,21 @@ SOURCES += \
     qt_main.cpp \
     QtSupport.cpp \
     GlWidget.cpp \
-    GlSphere.cpp \
-    ScatterPlot.cpp
-
+    GlSphere.cpp
 HEADERS += \
     ../header/QtSupport.h \
     ../header/GlWidget.h \
     ../header/GlSphere.h \
-    ../header/ScatterPlot.cpp \
     ../header/themes.h \
 	../header/all.h
 
 
 RESOURCES += resources.qrc
+
+
+qtHaveModule(charts) {
+    DEFINES += USE_QT_CHARTS
+    QT += charts
+    SOURCES += ScatterPlot.cpp
+    HEADERS += ../header/ScatterPlot.h
+}

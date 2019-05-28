@@ -40,6 +40,7 @@ add_executable(testModele text/testModel.cpp ${SOURCE_FILES} ${TEXT_SOURCES})
 if (NOT WIN32)  # So Gabin can use cmake without problems with qt
 	# This doesn't compile as I don't know how to add files like
 	# shaders with cmake. It's sole purpose it to make clion functional.
+	add_definitions(-DUSE_QT_CHARTS)
 	add_executable(qt_accelerator qt/qt_main.cpp ${SOURCE_FILES} ${QT_SOURCES})
 	find_package(Qt5Core REQUIRED)
 	find_package(Qt5Widgets REQUIRED)

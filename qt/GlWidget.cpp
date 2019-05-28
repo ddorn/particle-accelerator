@@ -4,7 +4,6 @@
 
 #include <QKeyEvent>
 #include <vector>
-#include "ScatterPlot.h"
 #include "Segment.h"
 #include "GlWidget.h"
 #include "Dipole.h"
@@ -32,7 +31,9 @@ void GlWidget::paintGL() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     // And then draw the accelerator
     support.draw(accelerator);
+#ifdef USE_QT_CHARTS
     if (!scatterPlot->isHidden()) scatterPlot->update(accelerator.particles().get());
+#endif
 }
 
 void GlWidget::timerEvent(QTimerEvent *event) {
@@ -158,10 +159,12 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
             if (isFullScreen()) showNormal();
             else showFullScreen();
             break;
+#ifdef USE_QT_CHARTS
         case Qt::Key_G:
             if (scatterPlot->isHidden()) scatterPlot->show();
             else scatterPlot->hide();
             break;
+#endif
         default:
             return;
     }
@@ -170,7 +173,7 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
 }
 
 GlWidget::GlWidget(Accelerator &accelerator, QWidget *parent)
-        : QOpenGLWidget(parent), accelerator(std::move(accelerator)), scatterPlot(new ScatterPlot()) {}
+        : QOpenGLWidget(parent), accelerator(std::move(accelerator)) {}
 
 void GlWidget::addBeam(bool clockwise) {
     // ---- Parametrisation of the particles ----

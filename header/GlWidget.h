@@ -13,8 +13,10 @@
 #include "Accelerator.h"
 #include "Particle.h"
 #include "constants.h"
-#include "ScatterPlot.h"
 
+#ifdef USE_QT_CHARTS
+#   include "ScatterPlot.h"
+#endif
 
 class GlWidget : public QOpenGLWidget {
 private:
@@ -23,7 +25,11 @@ private:
     int steps = 5;
     Accelerator accelerator;
     QtSupport support;
-    ScatterPlot* scatterPlot;
+
+#ifdef USE_QT_CHARTS
+    ScatterPlot* scatterPlot = new ScatterPlot();
+#endif
+
 public:
     GlWidget(Accelerator &accelerator, QWidget *parent = nullptr);
 
