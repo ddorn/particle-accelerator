@@ -526,14 +526,3 @@ void QtSupport::nextTheme(int n) {
     themeIndex += n;
     themeIndex %= themes.size();
 }
-
-QtSupport::~QtSupport() {
-    QGLContext* context =  const_cast<QGLContext*>(QGLContext::currentContext());
-    context->deleteTexture(epflTexture);
-}
-
-
-
-
-
-

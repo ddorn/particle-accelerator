@@ -45,9 +45,7 @@ public:
     void init();
     void initPosition();
     void initThemes();
-
-    virtual ~QtSupport();
-
+    
     void setViewMode(ViewMode v) { viewMode = v; }
     void nextTheme(int n = 1);
     const Theme* theme() const { return themes[themeIndex].get(); }
