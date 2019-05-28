@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
         endDip = endDip ^ Vector3D::e3;
     }
 
-    accelerator.addCircularBeam(mass, charge, energy, RadialVec3D(0, 1, 0), 10, 314, 0.01, 412);
+    accelerator.addCircularBeam(mass, charge, energy, RadialVec3D(0, 1, 0), 10, 5, 0.01, 412);
     // This just create a Window and hands the main loop
     // to Qt. All events and drawing are handled in GlWidget.
     QApplication a(argc, argv);
