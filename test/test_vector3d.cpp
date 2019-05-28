@@ -6,7 +6,7 @@ using namespace std;
 int main() {
     Vector3D nullVector;
     Vector3D a(1, 2, -0.1);
-    Vector3D epsilonVector(.00000001, -.00000001,.0000001);
+    Vector3D epsilonVector(1e-8, -1e-8,1e-8);
     Vector3D b(2.6, 3.5, 4.1);
     Vector3D c(3.9, 3.8, 3.7);
     Vector3D nice(5, 0, 5);
@@ -33,8 +33,8 @@ int main() {
         cout << a << " isn't equal to " << a << " + " << epsilonVector << endl;
 
     }
-    Vector3D::setPrecision(1e-9);
-    cout << "Setting the precision at 1e-9 :" << endl;
+    Vector3D::setPrecision(1e-7);
+    cout << "Setting the precision at 1e-7 :" << endl;
     if(a == (a + epsilonVector)){
         cout << a << " is equal to " << a << " + " << epsilonVector << endl;
     } else {
