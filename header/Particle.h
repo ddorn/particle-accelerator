@@ -229,6 +229,6 @@ public:
 };
 
 
-std::ostream& operator<<(std::ostream &os, const Particle &partic);
+std::ostream& operator<<(std::ostream &os, const Particle &p);
 
 #endif //PARTICLE_ACCELERATOR_PARTICLE_H

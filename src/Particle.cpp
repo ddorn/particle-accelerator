@@ -77,7 +77,9 @@ const Vector3D Particle::electricFieldAt(const Vector3D &pos) const {
 
 void Particle::particleInteraction(Particle& p, double dt){
     if(p.position() == position()){
-        // TODO On fait quoi ? On pourrait juste les mettre mortes, mais elles seraient pas enlevées de la liste de l'accélérateur
+        // If they are at the same position, they collided and they DIE.
+        isAlive_ = false;
+        p.isAlive_ = false;
         return;
     }
     addMagneticForce(p.magneticFieldAt(position()), dt);
@@ -92,17 +94,17 @@ void Particle::updateCachedAttributes() {
     lastForce_ = force_;
 }
 
-std::ostream& operator<<(std::ostream &os, const Particle &partic) {
+std::ostream& operator<<(std::ostream &os, const Particle &p) {
     os << "Particle :" << std::endl
-       << " - mass [GeV/c²]: " << partic.mass() << std::endl
-       << " - charge [C]: " << partic.charge() << std::endl
-       << " - position [m]: " << partic.position() << std::endl
-       << " - longitudinal position [m]: " << partic.longitudinalPosition() << std::endl
-       << " - radial position [m] " << partic.radialPosition().r() << std::endl
-       << " - gamma : " << partic.gamma() << std::endl
-       << " - energy [GeV]: " << partic.energy() << std::endl
-       << " - speed [m/s]: " << partic.speed() << std::endl
-       << " - corrected force [N]: " << partic.lastForce() << std::endl
-       << " - Number of turns: " << partic.nbrOfTurns() << std::endl;
+       << " - mass [GeV/c²]: " << p.mass() << std::endl
+       << " - charge [C]: " << p.charge() << std::endl
+       << " - position [m]: " << p.position() << std::endl
+       << " - longitudinal position [m]: " << p.longitudinalPosition() << std::endl
+       << " - radial position [m] " << p.radialPosition().r() << std::endl
+       << " - gamma : " << p.gamma() << std::endl
+       << " - energy [GeV]: " << p.energy() << std::endl
+       << " - speed [m/s]: " << p.speed() << std::endl
+       << " - corrected force [N]: " << p.lastForce() << std::endl
+       << " - Number of turns: " << p.nbrOfTurns() << std::endl;
     return os;
 }
