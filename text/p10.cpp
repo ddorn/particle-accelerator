@@ -39,6 +39,8 @@ int main() {
     bobLEponge.addParticle(mass, charge, energy, position1, -Vector3D::e2);
     bobLEponge.addParticle(mass, charge, energy, position2, -Vector3D::e2);
 
+    bobLEponge.showElements(cout);
+
     int i(0);
     while (!bobLEponge.particles()->empty()) {
         bobLEponge.evolve(1e-11);

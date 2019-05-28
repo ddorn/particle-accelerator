@@ -1,7 +1,7 @@
 CONFIG += c++14
 QT =
 
-TARGET = text_accelerator
+TARGET = p10
 DESTDIR = ../bin
 OBJECTS_DIR = ../obj
 

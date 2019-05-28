@@ -192,7 +192,7 @@ Accelerator::addCircularBeam(double mass, double charge, double energy, const Ra
 
 const Element * Accelerator::elementFromPosition(const Vector3D &position) const {
     for(auto& e : elements_){
-        if(Vector3D::e3.tripleProduct(position, e->exit()) < 0 and Vector3D::e3.tripleProduct(position, e->start()) > 0){
+        if(Vector3D::e3.tripleProduct(position, e->exit()) < 0 and Vector3D::e3.tripleProduct(position, e->start()) >= 0){
             return e.get();
         }
     }
@@ -237,7 +237,7 @@ void Accelerator::reorderParticleList() const {
 bool Accelerator::addParticle(double mass, double charge, double energy, const Vector3D &position,
                               const Vector3D &direction) {
     const Element* element(elementFromPosition(position));
-    if(element == nullptr) return false;
+    if (element == nullptr) { return false; }
     if (mass < 0) return false;
 
     particles_->insertNode(make_shared<Particle>(mass, charge, energy, position, direction, element));

@@ -6,6 +6,6 @@
 
 std::ostream& Segment::print(std::ostream &os) const {
     StraightElement::print(os);
-    os << " type : segment" << std::endl;
+    os << " - type : segment" << std::endl;
     return os;
 }
