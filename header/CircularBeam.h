@@ -18,7 +18,7 @@ private:
     double standardDeviation;
 public:
     CircularBeam(const Particle &refParticle_, size_t lambda_, size_t nbrMacroParticles,
-                 double standardDeviation = 0.01, int rng = 42)
+                 double standardDeviation = 1e-9, int rng = 42)
             : Beam(refParticle_, lambda_,
                    nbrMacroParticles), rng(rng), standardDeviation(standardDeviation) {}
 

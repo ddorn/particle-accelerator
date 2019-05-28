@@ -5,9 +5,9 @@
 #ifndef PARTICLEACCELERATOR_ELEMENT_H
 #define PARTICLEACCELERATOR_ELEMENT_H
 
+#include <cmath>
 #include "Vector3D.h"
 #include "Content.h"
-
 
 class Particle;
 
@@ -37,22 +37,16 @@ public:
      */
     bool isOut(const Vector3D& pos, bool clockwise) const;
     /**
-     * Return the norm squared of the radial distance of the particle
-     * relative to the ideal trajectory. Unit : m
-     */
-    virtual double radialDistanceSqrd(Vector3D pos) const = 0;
-    /**
      * Test whether or not the particle collided
      * with the border
      * @param position of the particle
      */
-    bool collideBorder(const Vector3D& position) const { return radialDistanceSqrd(position) > radius() * radius(); }
+    bool collideBorder(const Vector3D& position) const;
     /**
      * Return the norm squared of the component of the speed radial
      * relative to the ideal trajectory. Unit : m/s
      */
     virtual double length() const = 0;
-    virtual double radialVelocitySqrd(const Vector3D& position, const Vector3D& speed) const = 0;
 
     // Coordinates change
 

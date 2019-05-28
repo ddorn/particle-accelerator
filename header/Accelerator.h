@@ -119,7 +119,7 @@ public:
      * Add a circular beam.
      */
     bool addCircularBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
-                                      size_t nbrMacroParticle, const Vector3D &color = Vector3D(1, 1, 1), double standardDeviation = 0.01);
+                                      size_t nbrMacroParticle, const Vector3D &color = Vector3D(1, 1, 1), double standardDeviation = 1e-9);
     bool addCircularBeam(double mass, double charge, double energy, const Vector3D &direction, size_t lambda,
                                       size_t nbrMacroParticle, const Vector3D &color, double standardDeviation, int rng);
 

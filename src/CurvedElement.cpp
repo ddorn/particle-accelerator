@@ -16,22 +16,6 @@ const Vector3D CurvedElement::calculateCenterOfCurvature() const {
              * (direction ^ Vector3D::e3);
 }
 
-double CurvedElement::radialDistanceSqrd(Vector3D pos) const{
-    Vector3D X(pos - centerOfCurvature());
-    Vector3D dir(X.x(), X.y(), 0);
-    double transversalDistance(radiusCircle() - dir.norm());
-    return transversalDistance * transversalDistance + X.z() * X.z();
-}
-
-double CurvedElement::radialVelocitySqrd(const Vector3D &position, const Vector3D &speed) const {
-    Vector3D X(position - centerOfCurvature());
-    if(X.x() == 0 and X.y() == 0){
-        return 0;
-    }
-    Vector3D dir(~Vector3D(X.x(), X.y(),0));
-    double transversalVelocity(speed * dir);
-    return transversalVelocity * transversalVelocity + speed.z() * speed.z();
-}
 
 
 std::ostream &CurvedElement::print(std::ostream &os) const {

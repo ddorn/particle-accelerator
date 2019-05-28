@@ -19,10 +19,6 @@ public:
             direction(~(exit - start)),
             radial_direction(Vector3D::e3 ^ direction) {}
 
-    // TODO: remove both
-    double radialDistanceSqrd(Vector3D pos) const override;
-    double radialVelocitySqrd(const Vector3D &position, const Vector3D &speed) const override;
-
     const RadialVec3D radialPosition(Vector3D pos) const override;
     const RadialVec3D radialSpeed(const Vector3D &absolutePosition, const Vector3D &absoluteSpeed) const override;
     const Vector3D absolutePosition(const RadialVec3D &radialPos) const override;

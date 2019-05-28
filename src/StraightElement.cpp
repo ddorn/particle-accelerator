@@ -7,14 +7,6 @@
 using namespace std;
 
 
-double StraightElement::radialDistanceSqrd(Vector3D pos) const {
-    pos -= start();
-    return (pos - (pos * direction) * direction).normSquared();
-}
-
-double StraightElement::radialVelocitySqrd(const Vector3D &, const Vector3D &speed) const {
-    return (speed - (speed * direction) * direction).normSquared();
-}
 
 const RadialVec3D StraightElement::radialPosition(Vector3D pos) const {
     pos -= start();

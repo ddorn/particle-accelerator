@@ -26,4 +26,9 @@ bool Element::isOut(const Vector3D& pos, bool clockwise) const {
 //    else return radialPosition(pos).s() < 0;
 }
 
+bool Element::collideBorder(const Vector3D &position) const {
+    RadialVec3D rad(radialPosition(position));
+    return rad.r() * rad.r() + rad.z() * rad.z() > radius() * radius();
+}
+
 std::ostream &operator<<(std::ostream &os, const Element &elem) { return elem.print(os); }
