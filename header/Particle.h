@@ -34,6 +34,7 @@ class Particle : public Content {
 private:
     double mass_;
     double charge_;
+    double gamma_;
     size_t turns_ = 0;
     const Element *spawn_;  // Used to count number of turns
     Vector3D position_;
@@ -215,7 +216,7 @@ public:
     /**
      * Gamma of the particle. No unit.
      */
-    double gamma() const { return 1.0 / sqrt(1.0 - velocitySquared() / constants::LIGHT_SPEED_SQUARED); }
+    double gamma() const { return gamma_; }
 
     void draw(Support &support) const override { support.draw(*this); }
 

@@ -95,6 +95,7 @@ void Particle::updateCachedAttributes() {
     radialPosition_ = element_->radialPosition(position_);
     radialSpeed_ = element_->radialSpeed(position_, speed_);
     lastForce_ = force_;
+    gamma_ = 1.0 / sqrt(1.0 - velocitySquared() / constants::LIGHT_SPEED_SQUARED);
 }
 
 std::ostream& operator<<(std::ostream &os, const Particle &p) {

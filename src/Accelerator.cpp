@@ -14,7 +14,7 @@
 
 using namespace std;
 
-double Accelerator::MIN_DIST(1e-3);
+const double Accelerator::MIN_DIST(1e-3);
 
 std::ostream &operator<<(std::ostream &os, const Accelerator &accelerator) {
     os << "Accelerator:" << endl;
