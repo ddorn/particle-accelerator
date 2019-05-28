@@ -1,4 +1,11 @@
 # Conception
+### Hierarchie de class
+
+La hierarchie est disponible dynamiquement dans la documentation doxygen, que l'on peut accéder
+en lançant `doxygen` puis en ouvrant `./docs/html/index.html` avec votre navigateur libre préféré.
+Le graphe est alors disponible dans `Classes > Class Hierachy`.
+
+[![Hierarchy of classes](assets/hierachy.png)](./docs/html/inherits.html)
 
 ### Content et Support
 

@@ -1,7 +1,7 @@
 # Particle Accelerator
 Par Gabin Kolly et Diego Dorn, 2019.
 
-![](assets/presentation.png)
+![Vue à la première personne](assets/presentation.png)
 
 Ceci est notre projet de Programmation II à l'epfl. 
 Il permet de simuler un accélérateur de particules,
@@ -52,7 +52,7 @@ pas à pas. L'accélérateur doit être approximativement circulaire, centré à
 le plan xy et les éléments doivent être donnés en suivant le sens horaire.
 
 ### Interface graphique
-![](assets/accel-epfl.png)
+![EPFL power](assets/accel-epfl.png)
 
 
 ##### Contrôles
@@ -130,6 +130,16 @@ interface graphique. Il reprend l'accélerateur de `testModel.cpp`.
  des particules, ainsi que l'ajout d'éléments appliquant des forces électriques, 
  afin de réellement accélérer les particules.
 
+
+### En savoir plus
+
+Sur la conception du projet : [conception](CONCEPTION.md)
+
+Sur l'evolution du projet : [journal](JOURNAL.md)
+
+Sur les questions du cours : [reponses](REPONSES.md)
+
+![The rainbow theme](assets/rainbowAxel.png)
 
 --- 
 Le répertoire à été mis en public le mercredi 29 mai, après la date de rendu.
