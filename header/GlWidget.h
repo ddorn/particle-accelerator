@@ -18,8 +18,7 @@
 
 class GlWidget : public QOpenGLWidget {
 private:
-    int counter;
-    bool stream = false;
+    bool pause_ = false;
     double intensity = 0.5;
     int steps = 5;
     Accelerator accelerator;

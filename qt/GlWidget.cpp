@@ -38,14 +38,11 @@ void GlWidget::paintGL() {
 void GlWidget::timerEvent(QTimerEvent *event) {
     Q_UNUSED(event);
 
-    counter += 1;
-
     //    double dt = chronometre.restart() / 1000.0;
     chronometre.restart();
 
-    for (int i = 0; i < steps * 10; ++i) {
-        accelerator.evolve(1e-12);
-//        if (accelerator.particles().empty()) std::cout << counter << std::endl;
+    for (int i = 0; i < steps * !pause_; ++i) {
+        accelerator.evolve(1e-11);
     }
 
     update();
@@ -118,7 +115,7 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
             addBeam(!isShift);
             break;
         case Qt::Key_Space:
-            stream = !stream;
+            pause_ = !pause_;
             break;
         case Qt::Key_Plus:
             intensity *= 1 + 0.4 * factor;
@@ -173,7 +170,7 @@ void GlWidget::keyPressEvent(QKeyEvent *event) {
 }
 
 GlWidget::GlWidget(Accelerator &accelerator, QWidget *parent)
-        : QOpenGLWidget(parent), counter(0), accelerator(std::move(accelerator)), scatterPlot(new ScatterPlot()) {}
+        : QOpenGLWidget(parent), accelerator(std::move(accelerator)), scatterPlot(new ScatterPlot()) {}
 
 void GlWidget::addBeam(bool clockwise) {
     // ---- Parametrisation of the particles ----
